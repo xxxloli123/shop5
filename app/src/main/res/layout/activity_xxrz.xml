@@ -1,0 +1,259 @@
+<?xml version="1.0" encoding="utf-8"?>
+<LinearLayout xmlns:android="http://schemas.android.com/apk/res/android"
+    xmlns:app="http://schemas.android.com/apk/res-auto"
+    xmlns:tools="http://schemas.android.com/tools"
+    android:layout_width="match_parent"
+    android:layout_height="match_parent"
+    android:orientation="vertical"
+    tools:context="com.example.xxxloli.zshmerchant.Activity.XXRZActivity">
+    <!--头部-->
+    <RelativeLayout
+        android:id="@+id/top_layout"
+        android:layout_width="match_parent"
+        android:layout_height="45dp"
+        android:background="@color/blue">
+
+        <RelativeLayout
+            android:id="@+id/back_rl"
+            android:layout_width="50dp"
+            android:layout_height="match_parent"
+            android:onClick="onClick"
+            android:paddingLeft="16dp">
+
+            <ImageView
+                android:layout_width="12dp"
+                android:layout_height="18dp"
+                android:src="@drawable/finish"
+                android:layout_centerVertical="true" />
+        </RelativeLayout>
+
+        <TextView
+            android:layout_width="wrap_content"
+            android:layout_height="wrap_content"
+            android:layout_centerInParent="true"
+            android:text="信息认证"
+            android:textColor="@color/white"
+            android:textSize="16sp" />
+    </RelativeLayout>
+
+    <LinearLayout
+        android:layout_width="match_parent"
+        android:layout_height="40dp"
+        android:layout_marginLeft="16dp"
+        android:layout_marginRight="16dp"
+        android:orientation="horizontal">
+
+        <TextView
+            android:layout_width="0dp"
+            android:layout_height="match_parent"
+            android:layout_weight="1"
+            android:gravity="center_vertical"
+            android:text="店名"
+            android:textColor="@color/text_color"
+            android:textSize="14sp" />
+
+        <EditText
+            android:id="@+id/shop_name"
+            android:layout_width="0dp"
+            android:layout_height="match_parent"
+            android:layout_weight="5"
+            android:background="@null"
+            android:drawableBottom="@drawable/line"
+            android:gravity="center_vertical"
+            android:hint=""
+            android:inputType="text"
+            android:maxLength="5"
+            android:maxLines="1"
+            android:nextFocusForward="@+id/phone_edit"
+            android:textColor="@color/text_color"
+            android:textColorHint="@color/hint_text_color"
+            android:textSize="14sp" />
+    </LinearLayout>
+
+    <LinearLayout
+        android:layout_width="match_parent"
+        android:layout_height="40dp"
+        android:layout_marginLeft="16dp"
+        android:layout_marginRight="16dp"
+        android:orientation="horizontal">
+
+        <TextView
+            android:layout_width="0dp"
+            android:layout_height="match_parent"
+            android:layout_weight="1"
+            android:gravity="center_vertical"
+            android:text="地址"
+            android:textColor="@color/text_color"
+            android:textSize="14sp" />
+
+        <EditText
+            android:id="@+id/address"
+            android:layout_width="0dp"
+            android:layout_height="match_parent"
+            android:layout_weight="5"
+            android:background="@null"
+            android:drawableBottom="@drawable/line"
+            android:gravity="center_vertical"
+            android:hint=""
+            android:inputType="text"
+            android:maxLength="5"
+            android:maxLines="1"
+            android:nextFocusForward="@+id/phone_edit"
+            android:textColor="@color/text_color"
+            android:textColorHint="@color/hint_text_color"
+            android:textSize="14sp" />
+    </LinearLayout>
+
+    <RelativeLayout
+        android:id="@+id/photo"
+        android:layout_width="match_parent"
+        android:layout_height="40dp"
+        android:layout_marginLeft="16dp"
+        android:layout_marginRight="16dp"
+        android:drawableBottom="@drawable/line"
+        android:orientation="horizontal">
+
+        <TextView
+            android:layout_width="wrap_content"
+            android:layout_height="match_parent"
+            android:gravity="center_vertical"
+            android:text="店铺照片"
+            android:textColor="@color/text_color"
+            android:textSize="14sp" />
+
+        <TextView
+            android:visibility="visible"
+            android:id="@+id/hint"
+            android:layout_width="wrap_content"
+            android:layout_height="match_parent"
+            android:layout_toLeftOf="@+id/i"
+            android:gravity="center_vertical"
+            android:text="点击选择图片"
+            android:textColor="@color/hint_text_color"
+            android:textSize="12sp" />
+
+        <ImageView
+            android:id="@+id/get_photo"
+            android:layout_width="39dp"
+            android:layout_height="39dp"
+            android:layout_alignParentBottom="true"
+            android:layout_toLeftOf="@+id/i" />
+
+        <ImageView
+            android:id="@+id/i"
+            android:layout_width="8dp"
+            android:layout_height="12dp"
+            android:layout_alignParentRight="true"
+            android:layout_centerVertical="true"
+            android:layout_marginLeft="6dp"
+            android:background="@drawable/right" />
+
+    </RelativeLayout>
+
+    <LinearLayout
+        android:layout_width="match_parent"
+        android:layout_height="0.01dp"
+        android:layout_marginLeft="16dp"
+        android:layout_marginRight="16dp"
+        android:background="@color/line"></LinearLayout>
+
+    <RelativeLayout
+        android:drawableBottom="@drawable/line"
+        android:id="@+id/qualification"
+        android:layout_width="match_parent"
+        android:layout_height="40dp"
+        android:layout_marginLeft="16dp"
+        android:layout_marginRight="16dp"
+        android:orientation="horizontal">
+
+        <TextView
+            android:layout_width="wrap_content"
+            android:layout_height="match_parent"
+            android:gravity="center_vertical"
+            android:text="营业资格认证"
+            android:textColor="@color/text_color"
+            android:textSize="14sp" />
+
+        <TextView
+            android:layout_centerVertical="true"
+            android:text="未认证"
+            android:textSize="12sp"
+            android:id="@+id/get_qualification"
+            android:layout_toLeftOf="@+id/im"
+            android:layout_width="wrap_content"
+            android:layout_height="wrap_content" />
+
+        <ImageView
+            android:layout_marginLeft="6dp"
+            android:id="@+id/im"
+            android:layout_alignParentRight="true"
+            android:layout_centerVertical="true"
+            android:layout_width="8dp"
+            android:layout_height="12dp"
+            android:background="@drawable/right" />
+
+    </RelativeLayout>
+
+    <LinearLayout
+        android:layout_marginLeft="16dp"
+        android:layout_marginRight="16dp"
+        android:background="@color/line"
+        android:layout_width="match_parent"
+        android:layout_height="0.01dp"></LinearLayout>
+
+    <RelativeLayout
+        android:id="@+id/identity"
+        android:layout_width="match_parent"
+        android:layout_height="40dp"
+        android:layout_marginLeft="16dp"
+        android:layout_marginRight="16dp"
+        android:drawableBottom="@drawable/line"
+        android:orientation="horizontal">
+
+        <TextView
+            android:layout_width="wrap_content"
+            android:layout_height="match_parent"
+            android:gravity="center_vertical"
+            android:text="个人身份认证"
+            android:textColor="@color/text_color"
+            android:textSize="14sp" />
+
+        <TextView
+            android:text="未认证"
+            android:id="@+id/get_identity"
+            android:layout_width="wrap_content"
+            android:layout_height="wrap_content"
+            android:layout_centerVertical="true"
+            android:layout_toLeftOf="@+id/img"
+            android:textSize="12sp" />
+
+        <ImageView
+            android:layout_marginLeft="6dp"
+            android:id="@+id/img"
+            android:layout_width="8dp"
+            android:layout_height="12dp"
+            android:layout_alignParentRight="true"
+            android:layout_centerVertical="true"
+            android:background="@drawable/right" />
+
+    </RelativeLayout>
+
+    <RelativeLayout
+        android:layout_width="match_parent"
+        android:layout_height="wrap_content"
+        android:background="#EFEFEF"
+        android:orientation="vertical">
+
+        <TextView
+            android:id="@+id/sure_bt"
+            android:layout_width="match_parent"
+            android:layout_height="50dp"
+            android:layout_alignParentBottom="true"
+            android:background="#FAFAFA"
+            android:gravity="center"
+            android:text="确认提交"
+            android:textColor="@color/blue"
+            android:textSize="14sp" />
+    </RelativeLayout>
+
+</LinearLayout>

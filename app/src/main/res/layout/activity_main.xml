@@ -1,0 +1,96 @@
+<?xml version="1.0" encoding="utf-8"?>
+<RelativeLayout xmlns:android="http://schemas.android.com/apk/res/android"
+    xmlns:tools="http://schemas.android.com/tools"
+    android:layout_width="match_parent"
+    android:layout_height="match_parent"
+    android:orientation="vertical"
+    tools:context="com.example.xxxloli.zshmerchant.MainActivity">
+
+
+    <FrameLayout
+        android:id="@+id/menus_frame"
+        android:layout_width="match_parent"
+        android:layout_height="match_parent"
+        android:layout_above="@+id/view"
+        android:layout_weight="1"
+        android:background="@color/white">
+
+    </FrameLayout>
+
+    <View
+        android:id="@+id/view"
+        android:layout_width="match_parent"
+        android:layout_height="1dp"
+        android:layout_above="@+id/group"
+        android:background="@color/line_color" />
+
+    <RadioGroup
+        android:id="@+id/group"
+        android:layout_width="match_parent"
+        android:layout_height="wrap_content"
+        android:layout_alignParentBottom="true"
+        android:layout_alignParentLeft="true"
+        android:layout_alignParentStart="true"
+        android:background="@color/white"
+        android:gravity="center"
+        android:orientation="horizontal">
+
+        <RadioButton
+            android:id="@+id/order_handle"
+            style="@style/RadioStyleDef"
+            android:layout_width="wrap_content"
+            android:layout_height="wrap_content"
+            android:layout_weight="1"
+            android:button="@null"
+            android:checked="true"
+            android:drawablePadding="4dp"
+            android:drawableTop="@drawable/order_handle_selectes"
+            android:gravity="center"
+            android:text="订单处理"
+            android:textColor="@drawable/select_textcolor"
+            android:textSize="12sp" />
+
+        <RadioButton
+            android:id="@+id/order_inquire"
+            style="@style/RadioStyleDef"
+            android:layout_width="wrap_content"
+            android:layout_height="wrap_content"
+            android:layout_weight="1"
+            android:button="@null"
+            android:drawablePadding="4dp"
+            android:drawableTop="@drawable/order_inquire_selectes"
+            android:gravity="center"
+            android:text="订单查询"
+            android:textColor="@drawable/select_textcolor"
+            android:textSize="12sp" />
+
+        <RadioButton
+            android:id="@+id/manage"
+            style="@style/RadioStyleDef"
+            android:layout_width="wrap_content"
+            android:layout_height="wrap_content"
+            android:layout_weight="1"
+            android:button="@null"
+            android:drawablePadding="4dp"
+            android:drawableTop="@drawable/manage_selectes"
+            android:gravity="center"
+            android:text="管理"
+            android:textColor="@drawable/select_textcolor"
+            android:textSize="12sp" />
+
+        <RadioButton
+            android:id="@+id/shop"
+            style="@style/RadioStyleDef"
+            android:layout_width="wrap_content"
+            android:layout_height="wrap_content"
+            android:layout_weight="1"
+            android:button="@null"
+            android:drawablePadding="4dp"
+            android:drawableTop="@drawable/shop_selectes"
+            android:gravity="center"
+            android:text="代卖"
+            android:textColor="@drawable/select_textcolor"
+            android:textSize="12sp" />
+    </RadioGroup>
+
+</RelativeLayout>

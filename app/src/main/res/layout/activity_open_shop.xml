@@ -1,0 +1,208 @@
+<?xml version="1.0" encoding="utf-8"?>
+<LinearLayout xmlns:android="http://schemas.android.com/apk/res/android"
+    xmlns:tools="http://schemas.android.com/tools"
+    android:layout_width="match_parent"
+    android:layout_height="match_parent"
+    android:orientation="vertical"
+    tools:context="com.example.xxxloli.zshmerchant.Activity.OpenShopActivity">
+
+    <!--头部-->
+    <RelativeLayout
+        android:layout_width="match_parent"
+        android:layout_height="45dp"
+        android:background="@color/blue">
+
+        <RelativeLayout
+            android:id="@+id/back_rl"
+            android:layout_width="50dp"
+            android:layout_height="match_parent"
+            android:onClick="onClick"
+            android:paddingLeft="16dp">
+
+            <ImageView
+                android:layout_width="12dp"
+                android:layout_height="18dp"
+                android:src="@drawable/finish"
+                android:layout_centerVertical="true" />
+        </RelativeLayout>
+
+        <TextView
+            android:layout_width="wrap_content"
+            android:layout_height="wrap_content"
+            android:layout_centerInParent="true"
+            android:text="注册"
+            android:textColor="@color/white"
+            android:textSize="16sp" />
+    </RelativeLayout>
+
+    <EditText
+        android:id="@+id/name_edit"
+        android:layout_width="match_parent"
+        android:layout_height="40dp"
+        android:layout_marginLeft="16dp"
+        android:layout_marginRight="16dp"
+        android:background="@null"
+        android:drawableBottom="@drawable/line"
+        android:hint="真实姓名(同身份证上一致)"
+        android:maxLength="6"
+        android:maxLines="1"
+        android:textColor="@color/black"
+        android:textColorHint="#919191"
+        android:textSize="14sp" />
+
+
+    <LinearLayout
+        android:layout_width="match_parent"
+        android:layout_height="40dp"
+        android:layout_marginLeft="16dp"
+        android:layout_marginRight="16dp"
+        android:gravity="center_vertical"
+        android:orientation="horizontal">
+
+        <EditText
+            android:id="@+id/phone_edit"
+            android:layout_width="0dp"
+            android:layout_height="match_parent"
+            android:layout_weight="4"
+            android:background="@null"
+            android:drawableBottom="@drawable/line"
+            android:gravity="center_vertical"
+            android:hint="手机号"
+            android:inputType="phone"
+            android:maxLength="11"
+            android:maxLines="1"
+            android:textColor="@color/black"
+            android:textColorHint="#919191"
+            android:textSize="14sp" />
+
+        <com.example.xxxloli.zshmerchant.view.TimeButton
+            android:id="@+id/verification_code"
+            android:layout_width="0dp"
+            android:layout_height="25dp"
+            android:layout_alignParentRight="true"
+            android:layout_centerVertical="true"
+            android:layout_weight="1.1"
+            android:background="@drawable/bacground_bgall_light_gray"
+            android:enabled="false"
+            android:gravity="center"
+            android:onClick="onClick"
+            android:text="获取验证码"
+            android:textColor="@color/white"
+            android:textSize="12sp" />
+    </LinearLayout>
+
+    <EditText
+        android:id="@+id/verification_code_edit"
+        android:layout_width="match_parent"
+        android:layout_height="40dp"
+        android:layout_marginLeft="16dp"
+        android:layout_marginRight="16dp"
+        android:background="@null"
+        android:drawableBottom="@drawable/line"
+        android:hint="验证码"
+        android:inputType="number"
+        android:maxLength="6"
+        android:maxLines="1"
+        android:textColor="@color/black"
+        android:textColorHint="#919191"
+        android:textSize="14sp" />
+
+    <EditText
+        android:id="@+id/register_pwd1"
+        android:layout_width="match_parent"
+        android:layout_height="40dp"
+        android:layout_marginLeft="16dp"
+        android:layout_marginRight="16dp"
+        android:background="@null"
+        android:drawableBottom="@drawable/line"
+        android:hint="密码"
+        android:inputType="textPassword"
+        android:maxLength="20"
+        android:maxLines="1"
+        android:textColor="@color/black"
+        android:textColorHint="#919191"
+        android:textSize="14sp" />
+
+    <EditText
+        android:id="@+id/register_pwd2"
+        android:layout_width="match_parent"
+        android:layout_height="40dp"
+        android:layout_marginLeft="16dp"
+        android:layout_marginRight="16dp"
+        android:background="@null"
+        android:drawableBottom="@drawable/line"
+        android:hint="确认密码"
+        android:inputType="textPassword"
+        android:maxLength="20"
+        android:maxLines="1"
+        android:textColor="@color/black"
+        android:textColorHint="#919191"
+        android:textSize="14sp" />
+
+    <RelativeLayout
+        android:id="@+id/shop_typeRL"
+        android:layout_marginLeft="16dp"
+        android:layout_marginRight="16dp"
+        android:layout_width="wrap_content"
+        android:layout_height="wrap_content">
+        <TextView
+            android:id="@+id/shop_type"
+            android:layout_width="match_parent"
+            android:layout_height="40dp"
+
+            android:background="@null"
+            android:gravity="center_vertical"
+            android:drawableBottom="@drawable/line"
+            android:hint="选择商家类型"
+            android:maxLength="20"
+            android:maxLines="1"
+            android:textColor="@color/hint1_text_color"
+            android:textColorHint="#919191"
+            android:textSize="14sp" />
+        <ImageView
+            android:layout_alignParentRight="true"
+            android:layout_centerVertical="true"
+            android:layout_width="8dp"
+            android:layout_height="12dp"
+            android:background="@drawable/right" />
+    </RelativeLayout>
+
+    <RelativeLayout
+        android:layout_marginLeft="16dp"
+        android:layout_marginRight="16dp"
+        android:layout_width="wrap_content"
+        android:layout_height="wrap_content">
+        <TextView
+            android:id="@+id/street"
+            android:layout_width="match_parent"
+            android:layout_height="40dp"
+            android:background="@null"
+            android:gravity="center_vertical"
+            android:drawableBottom="@drawable/line"
+            android:hint="选择区域"
+            android:maxLength="20"
+            android:maxLines="1"
+            android:textColor="@color/hint1_text_color"
+            android:textColorHint="#919191"
+            android:textSize="14sp" />
+        <ImageView
+            android:layout_alignParentRight="true"
+            android:layout_centerVertical="true"
+            android:layout_width="8dp"
+            android:layout_height="12dp"
+            android:background="@drawable/right" />
+    </RelativeLayout>
+
+    <Button
+        android:id="@+id/button"
+        android:layout_width="match_parent"
+        android:layout_height="35dp"
+        android:layout_marginLeft="16dp"
+        android:layout_marginRight="16dp"
+        android:layout_marginTop="30dp"
+        android:background="@drawable/background_bgall_light_bule"
+        android:text="注册"
+        android:textColor="@color/white"
+        android:textSize="16sp" />
+
+</LinearLayout>

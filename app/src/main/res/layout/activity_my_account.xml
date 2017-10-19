@@ -1,0 +1,210 @@
+<?xml version="1.0" encoding="utf-8"?>
+<LinearLayout xmlns:android="http://schemas.android.com/apk/res/android"
+    xmlns:app="http://schemas.android.com/apk/res-auto"
+    xmlns:tools="http://schemas.android.com/tools"
+    android:layout_width="match_parent"
+    android:orientation="vertical"
+    android:background="@color/background"
+    android:layout_height="match_parent"
+    tools:context="com.example.xxxloli.zshmerchant.Activity.MyAccountActivity">
+
+    <!--头部-->
+    <RelativeLayout
+        android:id="@+id/top_layout"
+        android:layout_width="match_parent"
+        android:layout_height="45dp"
+        android:background="@color/blue">
+
+        <RelativeLayout
+            android:id="@+id/back_rl"
+            android:layout_width="50dp"
+            android:layout_height="match_parent"
+            android:paddingLeft="16dp">
+
+            <ImageView
+                android:layout_width="12dp"
+                android:layout_height="18dp"
+                android:layout_centerVertical="true"
+                android:src="@drawable/finish" />
+        </RelativeLayout>
+
+        <TextView
+            android:layout_width="wrap_content"
+            android:layout_height="wrap_content"
+            android:layout_centerInParent="true"
+            android:text="我的账户"
+            android:textColor="@color/white"
+            android:textSize="16sp" />
+    </RelativeLayout>
+
+    <LinearLayout
+        android:id="@+id/user_nameLL"
+        android:background="@color/white1"
+        android:orientation="horizontal"
+        android:layout_height="40dp"
+        android:layout_width="match_parent"
+        android:gravity="center_vertical"
+        android:layout_marginBottom="0.5dp"
+        android:clickable="true">
+
+        <TextView
+            android:textSize="14sp"
+            android:layout_height="wrap_content"
+            android:layout_width="wrap_content"
+            android:textColor="@color/text_color"
+            android:text="账户名"
+            android:padding="10dp"/>
+        <LinearLayout
+            android:orientation="horizontal"
+            android:layout_height="wrap_content"
+            android:layout_width="0dp"
+            android:layout_weight="1"
+            android:clickable="false"
+            android:gravity="center_vertical"
+            android:layout_marginRight="5dp"
+            android:layout_marginLeft="5dp">
+
+        </LinearLayout>
+
+        <TextView
+            android:layout_marginRight="3dp"
+            android:text="香蕉君"
+            android:textColor="@color/text_color"
+            android:textSize="14sp"
+            android:id="@+id/user_name"
+            android:layout_width="wrap_content"
+            android:layout_height="wrap_content" />
+
+
+        <ImageView
+            android:layout_height="10dp"
+            android:layout_width="6dp"
+            android:clickable="false"
+            android:layout_marginRight="15dp"
+            android:background="@drawable/right"/>
+    </LinearLayout>
+
+    <LinearLayout
+        android:id="@+id/change_passwordLL"
+        android:background="@color/white1"
+        android:orientation="horizontal"
+        android:layout_height="40dp"
+        android:layout_width="match_parent"
+        android:gravity="center_vertical"
+        android:layout_marginBottom="0.5dp"
+        android:clickable="true">
+
+        <TextView
+            android:textSize="14sp"
+            android:layout_height="wrap_content"
+            android:layout_width="wrap_content"
+            android:textColor="@color/text_color"
+            android:text="修改密码"
+            android:padding="10dp"/>
+        <LinearLayout
+            android:orientation="horizontal"
+            android:layout_height="wrap_content"
+            android:layout_width="0dp"
+            android:layout_weight="1"
+            android:clickable="false"
+            android:gravity="center_vertical"
+            android:layout_marginRight="5dp"
+            android:layout_marginLeft="5dp">
+
+        </LinearLayout>
+
+
+        <ImageView
+            android:layout_height="10dp"
+            android:layout_width="6dp"
+            android:clickable="false"
+            android:layout_marginRight="15dp"
+            android:background="@drawable/right"/>
+    </LinearLayout>
+
+    <LinearLayout
+        android:id="@+id/phoneLL"
+        android:background="@color/white1"
+        android:orientation="horizontal"
+        android:layout_height="40dp"
+        android:layout_width="match_parent"
+        android:gravity="center_vertical"
+        android:layout_marginBottom="0.5dp"
+        android:clickable="true">
+
+        <TextView
+            android:textSize="14sp"
+            android:layout_height="wrap_content"
+            android:layout_width="wrap_content"
+            android:textColor="@color/text_color"
+            android:text="修改手机号"
+            android:padding="10dp"/>
+        <LinearLayout
+            android:orientation="horizontal"
+            android:layout_height="wrap_content"
+            android:layout_width="0dp"
+            android:layout_weight="1"
+            android:clickable="false"
+            android:gravity="center_vertical"
+            android:layout_marginRight="5dp"
+            android:layout_marginLeft="5dp">
+
+        </LinearLayout>
+
+        <TextView
+            android:layout_marginRight="3dp"
+            android:text="2333333333333"
+            android:textColor="@color/text_color"
+            android:textSize="14sp"
+            android:id="@+id/phone"
+            android:layout_width="wrap_content"
+            android:layout_height="wrap_content" />
+
+        <ImageView
+            android:layout_height="10dp"
+            android:layout_width="6dp"
+            android:clickable="false"
+            android:layout_marginRight="15dp"
+            android:background="@drawable/right"/>
+    </LinearLayout>
+
+    <LinearLayout
+        android:id="@+id/manageLL"
+        android:background="@color/white1"
+        android:orientation="horizontal"
+        android:layout_height="40dp"
+        android:layout_width="match_parent"
+        android:gravity="center_vertical"
+        android:layout_marginBottom="0.5dp"
+        android:clickable="true">
+
+        <TextView
+            android:textSize="14sp"
+            android:layout_height="wrap_content"
+            android:layout_width="wrap_content"
+            android:textColor="@color/text_color"
+            android:text="管理账户"
+            android:padding="10dp"/>
+        <LinearLayout
+            android:orientation="horizontal"
+            android:layout_height="wrap_content"
+            android:layout_width="0dp"
+            android:layout_weight="1"
+            android:clickable="false"
+            android:gravity="center_vertical"
+            android:layout_marginRight="5dp"
+            android:layout_marginLeft="5dp">
+
+        </LinearLayout>
+
+
+        <ImageView
+            android:layout_height="10dp"
+            android:layout_width="6dp"
+            android:clickable="false"
+            android:layout_marginRight="15dp"
+            android:background="@drawable/right"/>
+    </LinearLayout>
+
+
+</LinearLayout>

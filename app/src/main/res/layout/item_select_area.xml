@@ -1,0 +1,31 @@
+<?xml version="1.0" encoding="utf-8"?>
+<LinearLayout xmlns:android="http://schemas.android.com/apk/res/android"
+    xmlns:myradio="http://schemas.android.com/apk/res-auto"
+    android:layout_width="match_parent"
+    android:layout_height="match_parent">
+
+    <LinearLayout
+        android:layout_width="match_parent"
+        android:layout_height="40dp">
+
+        <com.example.xxxloli.zshmerchant.view.MyRadioButton
+            android:id="@+id/radio"
+            android:layout_width="match_parent"
+            android:layout_height="40dp"
+            android:layout_weight="1"
+            android:button="@null"
+            android:clickable="false"
+            android:drawablePadding="6dp"
+            android:focusable="false"
+            android:focusableInTouchMode="false"
+            android:gravity="center_vertical"
+            android:padding="10dp"
+            android:text="商品"
+            android:textColor="@color/text_color"
+            android:textSize="12sp"
+            myradio:drawableBottom="@drawable/radio_selecter2"
+            myradio:drawableSize="15dp" />
+
+    </LinearLayout>
+
+</LinearLayout>

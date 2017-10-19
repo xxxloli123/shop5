@@ -1,0 +1,82 @@
+<?xml version="1.0" encoding="utf-8"?>
+<LinearLayout xmlns:android="http://schemas.android.com/apk/res/android"
+    android:layout_width="match_parent"
+    android:layout_height="match_parent"
+    android:gravity="center_horizontal"
+    android:background="@drawable/dialog_bgall"
+    >
+
+    <LinearLayout
+        android:orientation="vertical"
+        android:layout_width="250dp"
+        android:layout_height="wrap_content">
+        <CheckBox
+            android:id="@+id/jsyyd"
+            android:layout_marginTop="6dp"
+            android:textColor="@color/text_color"
+            android:layout_marginLeft="20dp"
+            android:text="  接受预约单"
+            android:button="@null"
+            android:drawableLeft="@drawable/radio_selecter2"
+            android:layout_width="wrap_content"
+            android:layout_height="40dp" />
+
+        <CheckBox
+            android:id="@+id/ddxf"
+            android:textColor="@color/text_color"
+            android:layout_marginLeft="20dp"
+            android:text="  到店消费"
+            android:button="@null"
+            android:drawableLeft="@drawable/radio_selecter2"
+            android:layout_width="wrap_content"
+            android:layout_height="40dp" />
+
+        <CheckBox
+            android:id="@+id/pin_zhuo"
+            android:textColor="@color/text_color"
+            android:layout_marginLeft="20dp"
+            android:text="  拼桌"
+            android:button="@null"
+            android:drawableLeft="@drawable/radio_selecter2"
+            android:layout_width="wrap_content"
+            android:layout_height="40dp" />
+        <View
+            android:layout_marginTop="6dp"
+            android:layout_width="match_parent"
+            android:layout_height="1dp"
+            android:background="@color/line_color" />
+
+        <LinearLayout
+            android:layout_width="match_parent"
+            android:layout_height="40dp"
+            android:orientation="horizontal">
+
+            <Button
+                android:id="@+id/cancel_bt"
+                android:layout_width="0dp"
+                android:layout_height="match_parent"
+                android:layout_weight="1"
+                android:background="@drawable/dialog_background_leftbottom"
+                android:gravity="center"
+                android:text="取消"
+                android:textColor="@color/colorPrimary"
+                android:textSize="16sp" />
+
+            <View
+                android:layout_width="1dp"
+                android:layout_height="match_parent"
+                android:background="@color/line_color" />
+
+            <Button
+                android:id="@+id/sure_bt"
+                android:layout_width="0dp"
+                android:layout_height="match_parent"
+                android:layout_weight="1"
+                android:background="@drawable/dialog_background_rightbottom"
+                android:gravity="center"
+                android:text="确定"
+                android:textColor="@color/colorPrimary"
+                android:textSize="16sp" />
+        </LinearLayout>
+    </LinearLayout>
+</LinearLayout>

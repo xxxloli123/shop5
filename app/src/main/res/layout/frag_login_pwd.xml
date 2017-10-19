@@ -1,0 +1,91 @@
+<?xml version="1.0" encoding="utf-8"?>
+<LinearLayout xmlns:android="http://schemas.android.com/apk/res/android"
+    android:layout_width="match_parent"
+    android:layout_height="match_parent"
+    android:background="@color/white"
+    android:orientation="vertical">
+
+    <EditText
+        android:id="@+id/phone_edit"
+        android:layout_width="match_parent"
+        android:layout_height="40dp"
+        android:layout_marginLeft="16dp"
+        android:layout_marginRight="16dp"
+        android:background="@null"
+        android:drawableBottom="@drawable/line"
+        android:gravity="center_vertical"
+        android:hint="手机号"
+        android:inputType="phone"
+        android:maxLength="11"
+        android:maxLines="1"
+        android:textColor="@color/black"
+        android:textColorHint="#919191"
+        android:textSize="14sp" />
+
+    <RelativeLayout
+        android:layout_width="match_parent"
+        android:layout_height="wrap_content">
+        <EditText
+            android:id="@+id/verification_code_edit"
+            android:layout_width="match_parent"
+            android:layout_height="40dp"
+            android:layout_marginLeft="16dp"
+            android:layout_marginRight="16dp"
+            android:background="@null"
+            android:drawableBottom="@drawable/line"
+            android:hint="密码"
+            android:inputType="textPassword"
+            android:longClickable="false"
+            android:maxLength="20"
+            android:maxLines="1"
+            android:textColor="@color/black"
+            android:textColorHint="#919191"
+            android:textSize="14sp" />
+
+        <com.example.xxxloli.zshmerchant.view.ShSwitchView
+            xmlns:shSwitch="http://schemas.android.com/apk/res-auto"
+            android:id="@+id/switch_view"
+            android:layout_alignParentRight="true"
+            android:layout_width="60dip"
+            android:layout_height="35dip"
+            shSwitch:shadowSpace="7dip"
+            shSwitch:tintColor="@color/blue"  />
+
+    </RelativeLayout>
+
+
+    <Button
+        android:id="@+id/login_bt"
+        android:layout_width="match_parent"
+        android:layout_height="35dp"
+        android:layout_marginLeft="16dp"
+        android:layout_marginRight="16dp"
+        android:layout_marginTop="30dp"
+        android:background="@drawable/background_bgall_light_bule"
+        android:text="登录"
+        android:textColor="@color/white"
+        android:textSize="16sp" />
+
+    <LinearLayout
+        android:layout_width="match_parent"
+        android:layout_height="wrap_content"
+        android:layout_marginLeft="16dp"
+        android:layout_marginRight="16dp"
+        android:gravity="right">
+
+        <TextView
+            android:id="@+id/login_resetPwd"
+            android:layout_width="wrap_content"
+            android:layout_height="wrap_content"
+            android:padding="8dp"
+            android:text="忘记密码" />
+
+
+    </LinearLayout>
+
+    <TextView
+        android:id="@+id/show"
+        android:layout_width="match_parent"
+        android:layout_height="match_parent" />
+
+</LinearLayout>

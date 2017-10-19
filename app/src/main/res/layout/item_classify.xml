@@ -1,0 +1,35 @@
+<?xml version="1.0" encoding="utf-8"?>
+<LinearLayout xmlns:android="http://schemas.android.com/apk/res/android"
+    android:layout_width="90dp"
+    android:layout_height="40dp"
+    android:orientation="horizontal"
+
+    >
+
+    <RelativeLayout
+        android:layout_width="90dp"
+        android:layout_height="40dp"
+        android:orientation="horizontal">
+
+
+
+        <TextView
+            android:id="@+id/classify_text"
+            android:background="@color/grayness"
+            android:textColor="@color/text_color"
+            android:text="折扣"
+            android:gravity="center"
+            android:layout_width="match_parent"
+            android:layout_height="match_parent" />
+
+        <TextView
+            android:layout_centerVertical="true"
+            android:id="@+id/hint"
+            android:visibility="visible"
+            android:background="@color/blue2"
+            android:layout_width="3dp"
+            android:layout_height="28dp" />
+    </RelativeLayout>
+
+
+</LinearLayout>

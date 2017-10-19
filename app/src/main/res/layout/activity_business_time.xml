@@ -1,0 +1,135 @@
+<?xml version="1.0" encoding="utf-8"?>
+<LinearLayout xmlns:android="http://schemas.android.com/apk/res/android"
+    xmlns:tools="http://schemas.android.com/tools"
+    android:layout_width="match_parent"
+    android:layout_height="match_parent"
+    android:orientation="vertical"
+    android:background="@color/background"
+    tools:context="com.example.xxxloli.zshmerchant.Activity.BusinessTimeActivity">
+    <!--头部-->
+    <RelativeLayout
+        android:id="@+id/top_layout"
+        android:layout_width="match_parent"
+        android:layout_height="45dp"
+        android:background="@color/blue">
+
+        <RelativeLayout
+            android:id="@+id/back_rl"
+            android:layout_width="50dp"
+            android:layout_height="match_parent"
+            android:paddingLeft="16dp">
+
+            <ImageView
+                android:layout_width="12dp"
+                android:layout_height="18dp"
+                android:layout_centerVertical="true"
+                android:src="@drawable/finish" />
+        </RelativeLayout>
+
+        <TextView
+            android:layout_width="wrap_content"
+            android:layout_height="wrap_content"
+            android:layout_centerInParent="true"
+            android:text="修改营业时间"
+            android:textColor="@color/white"
+            android:textSize="16sp" />
+    </RelativeLayout>
+
+    <LinearLayout
+        android:background="@color/background"
+        android:layout_width="match_parent"
+        android:layout_height="wrap_content">
+
+        <TextView
+            android:layout_marginLeft="10dp"
+            android:layout_marginTop="20dp"
+            android:layout_marginBottom="10dp"
+            android:textSize="12sp"
+            android:textColor="@color/blue"
+            android:text="设置营业时间"
+            android:layout_width="match_parent"
+            android:layout_height="wrap_content" />
+
+    </LinearLayout>
+
+    <LinearLayout
+        android:layout_width="match_parent"
+        android:layout_height="40dp"
+        android:background="@color/white"
+        android:orientation="horizontal">
+
+        <TextView
+            android:id="@+id/start_time"
+            android:layout_width="80dp"
+            android:layout_height="25dp"
+            android:layout_gravity="center_vertical"
+            android:layout_marginLeft="20dp"
+            android:background="@drawable/line_frame"
+            android:gravity="center"
+            android:inputType="number"
+            android:text="23 : 33"
+            android:textColor="@color/text_color"
+            android:textSize="15dp" />
+
+        <TextView
+            android:layout_width="15dp"
+            android:layout_height="1dp"
+            android:layout_gravity="center_vertical"
+            android:layout_marginLeft="8dp"
+            android:layout_marginRight="8dp"
+            android:background="@color/hint_text_color" />
+
+        <TextView
+            android:id="@+id/end_time"
+            android:layout_width="80dp"
+            android:layout_height="25dp"
+            android:layout_gravity="center_vertical"
+            android:background="@drawable/line_frame"
+            android:gravity="center"
+            android:inputType="number"
+            android:text="23 : 33"
+            android:textColor="@color/text_color"
+            android:textSize="15dp" />
+
+        <TextView
+            android:visibility="gone"
+            android:layout_marginLeft="10dp"
+            android:gravity="center_vertical"
+            android:text="请输入正确的营业时间"
+            android:textSize="12sp"
+            android:textColor="@color/red"
+            android:id="@+id/hint"
+            android:layout_width="wrap_content"
+            android:layout_height="match_parent" />
+
+    </LinearLayout>
+
+    <Button
+        android:id="@+id/save_bt"
+        android:textSize="15sp"
+        android:textColor="@color/white"
+        android:text="保存修改"
+        android:layout_marginTop="40dp"
+        android:layout_marginRight="20dp"
+        android:layout_marginLeft="20dp"
+        android:background="@drawable/rounded_corners"
+        android:layout_width="match_parent"
+        android:layout_height="40dp" />
+
+    <TextView
+        android:textSize="12sp"
+        android:gravity="center_horizontal"
+        android:text="掌生活快递员专送服务时间为00:00—02:00,"
+        android:layout_marginTop="30dp"
+        android:layout_width="match_parent"
+        android:layout_height="wrap_content" />
+    <TextView
+        android:textSize="12sp"
+        android:layout_marginTop="3dp"
+        android:gravity="center_horizontal"
+        android:text="09:00—23:59,超出配送时间的订单,您可以选择自行配送"
+        android:layout_width="match_parent"
+        android:layout_height="wrap_content" />
+
+
+</LinearLayout>

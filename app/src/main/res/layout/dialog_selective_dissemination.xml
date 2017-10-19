@@ -1,0 +1,172 @@
+<?xml version="1.0" encoding="utf-8"?>
+<LinearLayout xmlns:android="http://schemas.android.com/apk/res/android"
+    android:layout_width="match_parent"
+    android:layout_height="match_parent"
+    android:gravity="center_horizontal"
+    android:background="@drawable/dialog_bgall"
+    >
+
+    <LinearLayout
+        android:layout_width="265dp"
+        android:layout_height="wrap_content"
+        android:orientation="vertical">
+
+        <!--<TextView-->
+        <!--android:id="@+id/hint_text"-->
+        <!--android:layout_width="wrap_content"-->
+        <!--android:layout_height="wrap_content"-->
+        <!--android:layout_marginLeft="20dp"-->
+        <!--android:layout_marginTop="6dp"-->
+        <!--android:text="是否接受配送"-->
+        <!--android:textColor="@color/text_color" />-->
+
+        <LinearLayout
+            android:layout_width="match_parent"
+            android:layout_height="wrap_content"
+            android:layout_marginLeft="20dp"
+            android:orientation="horizontal">
+
+            <ImageView
+                android:layout_width="16dp"
+                android:layout_height="match_parent"
+                android:src="@drawable/tick" />
+
+            <TextView
+                android:id="@+id/ddxf"
+                android:layout_width="wrap_content"
+                android:layout_height="40dp"
+                android:button="@null"
+                android:gravity="center_vertical"
+                android:text="  商家配送距离为"
+                android:textColor="@color/text_color" />
+
+            <EditText
+                android:id="@+id/distance"
+                android:layout_width="40dp"
+                android:layout_height="18dp"
+                android:layout_gravity="center_vertical"
+                android:background="@drawable/line_frame"
+                android:gravity="center"
+                android:inputType="number"
+                android:maxLength="3"
+                android:text="3"
+                android:textColor="@color/text_color"
+                android:textSize="15sp" />
+
+            <TextView
+                android:layout_width="wrap_content"
+                android:layout_height="wrap_content"
+                android:layout_gravity="center_vertical"
+                android:layout_marginLeft="4dp"
+                android:text="km"
+                android:textColor="@color/text_color" />
+
+        </LinearLayout>
+
+        <LinearLayout
+            android:layout_width="match_parent"
+            android:layout_height="wrap_content">
+
+            <TextView
+                android:layout_width="wrap_content"
+                android:layout_height="wrap_content"
+                android:layout_marginLeft="45dp"
+                android:text="配送价格为"
+                android:textColor="@color/text_color" />
+
+            <EditText
+                android:id="@+id/price"
+                android:layout_width="40dp"
+                android:layout_height="18dp"
+                android:layout_gravity="center_vertical"
+                android:layout_marginLeft="4dp"
+                android:background="@drawable/line_frame"
+                android:gravity="center"
+                android:inputType="number"
+                android:maxLength="2"
+                android:text="3"
+                android:textColor="@color/text_color"
+                android:textSize="15sp" />
+
+            <TextView
+                android:layout_width="wrap_content"
+                android:layout_height="wrap_content"
+                android:layout_marginLeft="4dp"
+                android:text="元"
+                android:textColor="@color/text_color" />
+
+        </LinearLayout>
+
+        <LinearLayout
+            android:layout_width="match_parent"
+            android:layout_height="wrap_content"
+            android:layout_marginLeft="20dp">
+
+            <ImageView
+                android:layout_width="16dp"
+                android:layout_height="match_parent"
+                android:src="@drawable/tick" />
+
+            <TextView
+                android:id="@+id/is_huidi"
+                android:layout_width="wrap_content"
+                android:layout_height="match_parent"
+                android:layout_gravity="center_vertical"
+                android:layout_marginTop="10dp"
+                android:button="@null"
+                android:text="  超出商家配送距离由惠递配送"
+                android:textColor="@color/text_color" />
+
+
+        </LinearLayout>
+
+
+        <TextView
+            android:layout_width="wrap_content"
+            android:layout_height="wrap_content"
+            android:layout_marginLeft="47dp"
+            android:layout_marginRight="10dp"
+            android:text="如果顾客在商家配送范围内，选择惠递配送由商家承担邮费"
+            android:textColor="@color/red"
+            android:textSize="10sp" />
+
+        <View
+            android:layout_width="match_parent"
+            android:layout_height="1dp"
+            android:layout_marginTop="12dp"
+            android:background="@color/line_color" />
+
+        <LinearLayout
+            android:layout_width="match_parent"
+            android:layout_height="40dp"
+            android:orientation="horizontal">
+
+            <Button
+                android:id="@+id/cancel_bt"
+                android:layout_width="0dp"
+                android:layout_height="match_parent"
+                android:layout_weight="1"
+                android:background="@drawable/dialog_background_leftbottom"
+                android:gravity="center"
+                android:text="取消"
+                android:textColor="@color/colorPrimary"
+                android:textSize="16sp" />
+
+            <View
+                android:layout_width="1dp"
+                android:layout_height="match_parent"
+                android:background="@color/line_color" />
+
+            <Button
+                android:id="@+id/sure_bt"
+                android:layout_width="0dp"
+                android:layout_height="match_parent"
+                android:layout_weight="1"
+                android:background="@drawable/dialog_background_rightbottom"
+                android:gravity="center"
+                android:text="确定"
+                android:textColor="@color/colorPrimary"
+                android:textSize="16sp" />
+        </LinearLayout>
+    </LinearLayout>
+</LinearLayout>

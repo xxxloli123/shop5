@@ -1,0 +1,91 @@
+<?xml version="1.0" encoding="utf-8"?>
+<RelativeLayout xmlns:android="http://schemas.android.com/apk/res/android"
+    xmlns:app="http://schemas.android.com/apk/res-auto"
+    xmlns:tools="http://schemas.android.com/tools"
+    android:orientation="vertical"
+    android:layout_width="match_parent"
+    android:layout_height="match_parent"
+    tools:context="com.example.xxxloli.zshmerchant.Activity.CommodityClassify_1_Activity">
+    <!--头部-->
+    <RelativeLayout
+        android:id="@+id/RL"
+        android:layout_width="match_parent"
+        android:layout_height="45dp"
+        android:background="@color/blue">
+
+        <RelativeLayout
+            android:id="@+id/back_rl"
+            android:layout_width="50dp"
+            android:layout_height="match_parent"
+            android:paddingLeft="16dp">
+
+            <ImageView
+                android:layout_width="12dp"
+                android:layout_height="18dp"
+                android:layout_centerVertical="true"
+                android:src="@drawable/finish" />
+        </RelativeLayout>
+
+        <TextView
+            android:layout_width="wrap_content"
+            android:layout_height="wrap_content"
+            android:layout_centerInParent="true"
+            android:text="编辑一级分类"
+            android:textColor="@color/white"
+            android:textSize="16sp" />
+
+    </RelativeLayout>
+
+    <ScrollView
+        android:layout_below="@+id/RL"
+        android:layout_width="match_parent"
+        android:layout_height="wrap_content"
+        android:layout_marginTop="10dp">
+
+        <RelativeLayout
+            android:layout_width="match_parent"
+            android:layout_height="match_parent">
+
+            <com.example.xxxloli.zshmerchant.view.MyListView
+                android:divider="@null"
+                android:horizontalSpacing="6dp"
+                android:id="@+id/classify_show"
+                android:layout_width="match_parent"
+                android:layout_height="wrap_content">
+
+            </com.example.xxxloli.zshmerchant.view.MyListView>
+
+            <TextView
+                android:layout_below="@+id/classify_show"
+                android:id="@+id/add"
+                android:layout_width="wrap_content"
+                android:layout_height="wrap_content"
+                android:layout_centerHorizontal="true"
+                android:layout_marginBottom="10dp"
+                android:layout_marginTop="10dp"
+                android:background="@drawable/hint_no_solid_bgall"
+                android:drawableLeft="@drawable/add2"
+                android:paddingBottom="3dp"
+                android:paddingLeft="5dp"
+                android:paddingRight="5dp"
+                android:paddingTop="3dp"
+                android:text=" 添加分类"
+                android:textSize="14sp" />
+        </RelativeLayout>
+
+    </ScrollView>
+
+    <Button
+        android:layout_marginTop="6dp"
+        android:layout_alignParentBottom="true"
+        android:textSize="15dp"
+        android:textColor="@color/white"
+        android:text="确定"
+        android:id="@+id/sure"
+        android:layout_marginLeft="20dp"
+        android:layout_marginRight="20dp"
+        android:background="@drawable/rounded_corners"
+        android:layout_width="match_parent"
+        android:layout_height="38dp" />
+
+</RelativeLayout>

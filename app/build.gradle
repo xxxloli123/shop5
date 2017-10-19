@@ -1,0 +1,64 @@
+apply plugin: 'com.android.application'
+
+android {
+    compileSdkVersion 26
+    buildToolsVersion "26.0.1"
+    defaultConfig {
+        applicationId "com.example.xxxloli.zshmerchant"
+        minSdkVersion 16
+        targetSdkVersion 26
+        versionCode 1
+        versionName "1.0"
+        testInstrumentationRunner "android.support.test.runner.AndroidJUnitRunner"
+
+        ndk {
+            //根据需要 自行选择添加的对应cpu类型的.so库。
+            abiFilters 'armeabi', 'armeabi-v7a', 'arm64-v8a'
+            // 还可以添加 'x86', 'x86_64', 'mips', 'mips64'
+        }
+
+        manifestPlaceholders = [
+                XG_ACCESS_ID : "2100268432",
+                XG_ACCESS_KEY: "AYJF22LI479I",
+        ]
+
+    }
+    buildTypes {
+        release {
+            minifyEnabled false
+            proguardFiles getDefaultProguardFile('proguard-android.txt'), 'proguard-rules.pro'
+        }
+    }
+}
+
+apply plugin: 'org.greenrobot.greendao'
+//数据库版本以及Dao的相关设置
+greendao {
+    schemaVersion 1 //数据库schema版本
+    daoPackage 'com.example.xxxloli.zshmerchant.greendao.gen'
+    targetGenDir 'src/main/java'
+}
+
+dependencies {
+    compile fileTree(include: ['*.jar'], dir: 'libs')
+    androidTestCompile('com.android.support.test.espresso:espresso-core:2.2.2', {
+        exclude group: 'com.android.support', module: 'support-annotations'
+    })
+    compile project(path: ':library')
+    compile project(':tabstrip')
+    //信鸽稳定版
+    //wup包 如果和其他腾讯系的sdk 发生wup冲突，这个依赖可不添加
+    //mid包
+    compile files('libs/AMap_Location_V3.6.0_20170918.jar')
+    compile 'com.tencent.xinge:xinge:3.1.81-alpha'
+    compile 'com.tencent.wup:wup:1.0.0.E-alpha'
+    compile 'org.greenrobot:greendao:3.2.2'
+    compile 'com.tencent.mid:mid:3.72.4-alpha'
+    compile 'com.android.support:appcompat-v7:26.+'
+    compile 'com.android.support:recyclerview-v7:26.+'
+    compile 'com.android.support.constraint:constraint-layout:1.0.2'
+    compile 'com.nineoldandroids:library:2.4.0'
+    compile 'de.hdodenhof:circleimageview:2.1.0'
+    compile 'com.squareup.picasso:picasso:2.5.2'
+    testCompile 'junit:junit:4.12'
+}

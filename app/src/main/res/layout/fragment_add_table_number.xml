@@ -1,0 +1,115 @@
+<?xml version="1.0" encoding="utf-8"?>
+<LinearLayout xmlns:android="http://schemas.android.com/apk/res/android"
+    android:orientation="vertical"
+    android:layout_width="match_parent"
+    android:layout_height="match_parent">
+
+    <RelativeLayout
+        android:focusable="true"
+        android:focusableInTouchMode="true"
+        android:layout_width="match_parent"
+        android:layout_height="35dp"
+        android:layout_marginLeft="10dp"
+        android:layout_marginRight="10dp"
+        android:orientation="horizontal">
+
+        <EditText
+            android:id="@+id/table_number"
+            android:layout_width="match_parent"
+            android:layout_height="35dp"
+            android:background="@null"
+            android:hint="所需要的桌数"
+            android:inputType="number"
+            android:maxLength="2"
+            android:textColor="@color/text_color"
+            android:textColorHint="@color/text_color"
+            android:textSize="15sp" />
+
+        <Button
+            android:id="@+id/sure"
+            android:layout_width="40dp"
+            android:layout_height="23dp"
+            android:layout_alignParentRight="true"
+            android:layout_centerVertical="true"
+            android:background="@drawable/rounded_corners"
+            android:text="确认"
+            android:textColor="@color/white" />
+
+    </RelativeLayout>
+
+    <LinearLayout
+        android:background="@color/line2"
+        android:layout_width="match_parent"
+        android:layout_height="1dp"></LinearLayout>
+
+    <RelativeLayout
+        android:orientation="horizontal"
+        android:layout_width="match_parent"
+        android:layout_height="40dp">
+
+        <TextView
+            android:layout_marginLeft="20dp"
+            android:gravity="center_vertical"
+            android:text="桌号"
+            android:layout_width="wrap_content"
+            android:layout_height="match_parent" />
+
+        <TextView
+            android:layout_centerHorizontal="true"
+            android:layout_marginLeft="20dp"
+            android:gravity="center_vertical"
+            android:text="二维码"
+            android:layout_width="wrap_content"
+            android:layout_height="match_parent" />
+
+    </RelativeLayout>
+
+    <LinearLayout
+        android:background="@color/line2"
+        android:layout_width="match_parent"
+        android:layout_height="2dp"></LinearLayout>
+
+    <ScrollView
+        android:layout_width="match_parent"
+        android:layout_height="wrap_content"
+        android:layout_marginTop="10dp">
+
+        <RelativeLayout
+            android:layout_width="match_parent"
+            android:layout_height="match_parent">
+
+            <com.example.xxxloli.zshmerchant.view.MyListView
+                android:divider="@null"
+                android:horizontalSpacing="6dp"
+                android:id="@+id/table_show"
+                android:layout_width="match_parent"
+                android:layout_height="wrap_content">
+
+            </com.example.xxxloli.zshmerchant.view.MyListView>
+
+            <TextView
+                android:layout_below="@+id/table_show"
+                android:id="@+id/add"
+                android:layout_width="wrap_content"
+                android:layout_height="wrap_content"
+                android:layout_centerHorizontal="true"
+                android:layout_marginBottom="10dp"
+                android:layout_marginTop="10dp"
+                android:background="@drawable/hint_no_solid_bgall"
+                android:drawableLeft="@drawable/add2"
+                android:paddingBottom="3dp"
+                android:paddingLeft="5dp"
+                android:paddingRight="5dp"
+                android:paddingTop="3dp"
+                android:text=" 添加桌数"
+                android:textSize="14sp" />
+        </RelativeLayout>
+
+    </ScrollView>
+
+    <ImageView
+        android:id="@+id/show"
+        android:layout_width="match_parent"
+        android:layout_height="match_parent" />
+
+</LinearLayout>

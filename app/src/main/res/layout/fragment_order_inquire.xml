@@ -1,0 +1,79 @@
+<?xml version="1.0" encoding="utf-8"?>
+<LinearLayout xmlns:android="http://schemas.android.com/apk/res/android"
+    android:layout_width="match_parent"
+    android:orientation="vertical"
+    android:layout_height="match_parent">
+
+    <!--头部-->
+    <RelativeLayout
+        android:id="@+id/top_layout"
+        android:layout_width="match_parent"
+        android:layout_height="45dp"
+        android:background="@color/blue">
+
+        <RelativeLayout
+           android:layout_alignParentRight="true"
+            android:id="@+id/inquireRL"
+            android:layout_width="40dp"
+            android:layout_height="match_parent"
+            android:paddingLeft="16dp">
+
+            <ImageView
+                android:src="@drawable/inquire"
+                android:layout_width="wrap_content"
+                android:layout_height="18dp"
+                android:layout_centerVertical="true" />
+        </RelativeLayout>
+
+        <TextView
+            android:layout_width="wrap_content"
+            android:layout_height="wrap_content"
+            android:layout_centerInParent="true"
+            android:text="最近订单"
+            android:textColor="@color/white"
+            android:textSize="16sp" />
+    </RelativeLayout>
+
+    <RadioGroup
+        android:background="@color/background"
+        android:id="@+id/radio"
+        android:orientation="horizontal"
+        android:layout_above="@+id/sure"
+        android:layout_width="match_parent"
+        android:layout_height="38dp">
+
+        <RadioButton
+            android:id="@+id/line_up_expense"
+            android:layout_width="90dp"
+            android:layout_height="match_parent"
+            android:layout_gravity="center_vertical"
+            android:background="@color/white1"
+            android:button="@null"
+            android:checked="true"
+            android:gravity="center"
+            android:text="线上消费"
+            android:textColor="@drawable/select_textcolor1" />
+
+        <RadioButton
+            android:id="@+id/line_down_expense"
+            android:textColor="@drawable/select_textcolor1"
+            android:button="@null"
+            android:background="@color/background"
+            android:text="线下消费"
+            android:gravity="center"
+            android:layout_gravity="center_vertical"
+            android:layout_width="90dp"
+            android:layout_height="match_parent" />
+
+    </RadioGroup>
+
+    <FrameLayout
+        android:id="@+id/menus_frame"
+        android:layout_width="match_parent"
+        android:layout_height="match_parent"
+        android:background="@color/white"
+        >
+
+    </FrameLayout>
+
+</LinearLayout>

@@ -1,0 +1,23 @@
+<?xml version="1.0" encoding="utf-8"?>
+<LinearLayout xmlns:android="http://schemas.android.com/apk/res/android"
+    android:layout_width="match_parent"
+    android:layout_height="match_parent"
+    android:layout_margin="20dp"
+
+    >
+        <CheckBox
+            android:paddingLeft="4dp"
+            android:paddingRight="4dp"
+            android:paddingBottom="1dp"
+            android:paddingTop="1dp"
+            android:button="@null"
+            android:background="@drawable/checkbox_background"
+            android:gravity="center"
+            android:textSize="10sp"
+            android:textColor="@drawable/checkbox_textcolor"
+            android:id="@+id/second_level"
+            android:text="大优惠"
+            android:layout_width="wrap_content"
+            android:layout_height="wrap_content" />
+
+</LinearLayout>

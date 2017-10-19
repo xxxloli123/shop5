@@ -1,0 +1,14 @@
+<?xml version="1.0" encoding="utf-8"?>
+<resources>
+
+    <item name="header_back" type="id" />
+    <item name="header_title" type="id" />
+    <item name="header_menu" type="id" />
+    <item name="refresh" type="id" />
+
+
+    <item name="dialog_title" type="id" />
+    <item name="dialog_done" type="id" />
+    <item name="dialog_cancel" type="id" />
+    <item name="dialog_close" type="id" />
+</resources>

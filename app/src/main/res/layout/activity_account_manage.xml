@@ -1,0 +1,96 @@
+<?xml version="1.0" encoding="utf-8"?>
+<LinearLayout xmlns:android="http://schemas.android.com/apk/res/android"
+    xmlns:app="http://schemas.android.com/apk/res-auto"
+    xmlns:tools="http://schemas.android.com/tools"
+    android:layout_width="match_parent"
+    android:background="@color/background"
+    android:orientation="vertical"
+    android:layout_height="match_parent"
+    tools:context="com.example.xxxloli.zshmerchant.Activity.AccountManageActivity">
+
+    <!--头部-->
+    <RelativeLayout
+        android:layout_width="match_parent"
+        android:layout_height="45dp"
+        android:background="@color/blue">
+
+        <RelativeLayout
+            android:id="@+id/back_rl"
+            android:layout_width="50dp"
+            android:layout_height="match_parent"
+            android:paddingLeft="16dp">
+
+            <ImageView
+                android:layout_width="12dp"
+                android:layout_height="18dp"
+                android:layout_centerVertical="true"
+                android:src="@drawable/finish" />
+        </RelativeLayout>
+
+        <TextView
+            android:layout_width="wrap_content"
+            android:layout_height="wrap_content"
+            android:layout_centerInParent="true"
+            android:text="管理账户"
+            android:textColor="@color/white"
+            android:textSize="16sp" />
+    </RelativeLayout>
+
+    <TextView
+        android:layout_marginTop="10dp"
+        android:layout_marginLeft="10dp"
+        android:text="切换账号"
+        android:layout_width="wrap_content"
+        android:layout_height="wrap_content" />
+
+    <ScrollView
+        android:layout_width="match_parent"
+        android:layout_height="wrap_content">
+
+        <com.example.xxxloli.zshmerchant.view.MyListView
+            android:id="@+id/account_list"
+            android:paddingRight="10dp"
+            android:paddingLeft="10dp"
+            android:layout_marginTop="6dp"
+            android:background="@color/white1"
+            android:layout_width="match_parent"
+            android:layout_height="wrap_content">
+
+        </com.example.xxxloli.zshmerchant.view.MyListView>
+
+    </ScrollView>
+
+   <LinearLayout
+       android:id="@+id/add_registerLL"
+       android:orientation="horizontal"
+       android:background="@color/white1"
+       android:layout_width="match_parent"
+       android:layout_height="35dp">
+
+       <ImageView
+           android:src="@drawable/add2"
+           android:layout_marginLeft="10dp"
+           android:layout_gravity="center_vertical"
+           android:layout_width="20dp"
+           android:layout_height="20dp" />
+
+       <TextView
+           android:text="添加或注册账号"
+           android:textColor="@color/blue2"
+           android:gravity="center_vertical"
+           android:layout_marginLeft="10dp"
+           android:layout_width="wrap_content"
+           android:layout_height="match_parent" />
+
+   </LinearLayout>
+
+    <Button
+        android:id="@+id/log_out"
+        android:layout_width="match_parent"
+        android:layout_height="30dp"
+        android:layout_margin="10dp"
+        android:background="@drawable/rounded_corners_bt"
+        android:text="退出当前账号"
+        android:textColor="@color/text_color" />
+
+</LinearLayout>

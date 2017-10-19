@@ -1,0 +1,45 @@
+[
+    {
+        "outputFile": "E:\\Android\\pro\\zshMerchant\\Grid\\build\\intermediates\\incremental\\mergeDebugAndroidTestResources\\merged.dir\\values\\values.xml",
+        "map": [
+            {
+                "to": {
+                    "startLine": 3,
+                    "startColumn": 4,
+                    "startOffset": 327,
+                    "endColumn": 74,
+                    "endOffset": 397
+                },
+                "from": {
+                    "file": "C:\\Users\\Administrator\\.android\\build-cache\\d8e396bffd18f6e4147432d86fbb53fc29da6d97\\output\\res\\values\\values.xml",
+                    "position": {
+                        "startLine": 5,
+                        "startColumn": 4,
+                        "startOffset": 500,
+                        "endColumn": 74,
+                        "endOffset": 570
+                    }
+                }
+            },
+            {
+                "to": {
+                    "startLine": 4,
+                    "startColumn": 4,
+                    "startOffset": 402,
+                    "endColumn": 65,
+                    "endOffset": 463
+                },
+                "from": {
+                    "file": "C:\\Users\\Administrator\\.android\\build-cache\\d8e396bffd18f6e4147432d86fbb53fc29da6d97\\output\\res\\values\\values.xml",
+                    "position": {
+                        "startLine": 8,
+                        "startColumn": 4,
+                        "startOffset": 745,
+                        "endColumn": 65,
+                        "endOffset": 806
+                    }
+                }
+            }
+        ]
+    }
+]

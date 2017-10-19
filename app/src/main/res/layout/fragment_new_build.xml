@@ -1,0 +1,239 @@
+<?xml version="1.0" encoding="utf-8"?>
+<LinearLayout xmlns:android="http://schemas.android.com/apk/res/android"
+    android:orientation="vertical"
+    android:layout_width="match_parent"
+    android:layout_height="match_parent">
+
+    <ScrollView
+        android:layout_width="match_parent"
+        android:layout_height="match_parent">
+
+        <GridLayout
+            android:columnCount="2"
+            android:orientation="horizontal"
+            android:rowCount="3"
+            android:layout_width="match_parent"
+            android:layout_height="match_parent">
+
+            <LinearLayout
+                android:layout_gravity="fill"
+                android:orientation="vertical"
+                >
+
+                <ImageView
+                    android:layout_marginTop="15dp"
+                    android:src="@drawable/huodong"
+                    android:layout_gravity="center_horizontal"
+                    android:layout_width="100dp"
+                    android:layout_height="100dp" />
+
+                <TextView
+                    android:textColor="@color/black"
+                    android:gravity="center"
+                    android:layout_gravity="center_horizontal"
+                    android:text="满减活动"
+                    android:textSize="15sp"
+                    android:layout_width="wrap_content"
+                    android:layout_height="30dp" />
+
+                <TextView
+                    android:textColor="@color/text_color"
+                    android:gravity="center"
+                    android:layout_gravity="center_horizontal"
+                    android:text="下单满足条件后可享受满减优惠"
+                    android:textSize="10sp"
+                    android:layout_width="wrap_content"
+                    android:layout_height="wrap_content" />
+
+                <Button
+                    android:id="@+id/MJ"
+                    android:layout_marginBottom="16dp"
+                    android:textSize="13sp"
+                    android:textColor="@color/white"
+                    android:text="新建"
+                    android:layout_gravity="center_horizontal"
+                    android:background="@drawable/background_bgall_bule"
+                    android:layout_marginTop="8dp"
+                    android:layout_width="60dp"
+                    android:layout_height="25dp" />
+
+            </LinearLayout>
+
+            <LinearLayout
+                android:orientation="vertical"
+                android:layout_columnWeight="1">
+
+                <ImageView
+                    android:layout_marginTop="15dp"
+                    android:src="@drawable/huodong"
+                    android:layout_gravity="center_horizontal"
+                    android:layout_width="100dp"
+                    android:layout_height="100dp" />
+
+                <TextView
+                    android:textColor="@color/black"
+                    android:gravity="center"
+                    android:layout_gravity="center_horizontal"
+                    android:text="成为会员送优惠劵"
+                    android:textSize="15sp"
+                    android:layout_width="wrap_content"
+                    android:layout_height="30dp" />
+
+                <TextView
+                    android:textColor="@color/text_color"
+                    android:gravity="center"
+                    android:layout_gravity="center_horizontal"
+                    android:text="下单满足条件后可享受满减优惠"
+                    android:textSize="10sp"
+                    android:layout_width="wrap_content"
+                    android:layout_height="wrap_content" />
+
+                <Button
+                    android:id="@+id/CWHY"
+                    android:layout_marginBottom="16dp"
+                    android:textSize="13sp"
+                    android:textColor="@color/white"
+                    android:text="新建"
+                    android:layout_gravity="center_horizontal"
+                    android:background="@drawable/background_bgall_bule"
+                    android:layout_marginTop="8dp"
+                    android:layout_width="60dp"
+                    android:layout_height="25dp" />
+
+            </LinearLayout>
+
+            <LinearLayout
+                android:orientation="vertical"
+                android:layout_columnWeight="1">
+
+                <ImageView
+                    android:layout_marginTop="15dp"
+                    android:src="@drawable/huodong"
+                    android:layout_gravity="center_horizontal"
+                    android:layout_width="100dp"
+                    android:layout_height="100dp" />
+
+                <TextView
+                    android:textColor="@color/black"
+                    android:gravity="center"
+                    android:layout_gravity="center_horizontal"
+                    android:text="分享关注送优惠劵"
+                    android:textSize="15sp"
+                    android:layout_width="wrap_content"
+                    android:layout_height="30dp" />
+
+                <TextView
+                    android:textColor="@color/text_color"
+                    android:gravity="center"
+                    android:layout_gravity="center_horizontal"
+                    android:text="下单满足条件后可享受满减优惠"
+                    android:textSize="10sp"
+                    android:layout_width="wrap_content"
+                    android:layout_height="wrap_content" />
+
+                <Button
+                    android:id="@+id/FXGZ"
+                    android:layout_marginBottom="16dp"
+                    android:textSize="13sp"
+                    android:textColor="@color/white"
+                    android:text="新建"
+                    android:layout_gravity="center_horizontal"
+                    android:background="@drawable/background_bgall_bule"
+                    android:layout_marginTop="8dp"
+                    android:layout_width="60dp"
+                    android:layout_height="25dp" />
+
+            </LinearLayout>
+
+            <LinearLayout
+                android:orientation="vertical"
+                android:layout_columnWeight="1">
+
+                <ImageView
+                    android:layout_marginTop="15dp"
+                    android:src="@drawable/huodong"
+                    android:layout_gravity="center_horizontal"
+                    android:layout_width="100dp"
+                    android:layout_height="100dp" />
+
+                <TextView
+                    android:textColor="@color/black"
+                    android:gravity="center"
+                    android:layout_gravity="center_horizontal"
+                    android:text="满赠活动"
+                    android:textSize="15sp"
+                    android:layout_width="wrap_content"
+                    android:layout_height="30dp" />
+
+                <TextView
+                    android:textColor="@color/text_color"
+                    android:gravity="center"
+                    android:layout_gravity="center_horizontal"
+                    android:text="下单满足条件后可享受满减优惠"
+                    android:textSize="10sp"
+                    android:layout_width="wrap_content"
+                    android:layout_height="wrap_content" />
+
+                <Button
+                    android:id="@+id/MZ"
+                    android:layout_marginBottom="16dp"
+                    android:textSize="13sp"
+                    android:textColor="@color/white"
+                    android:text="新建"
+                    android:layout_gravity="center_horizontal"
+                    android:background="@drawable/background_bgall_bule"
+                    android:layout_marginTop="8dp"
+                    android:layout_width="60dp"
+                    android:layout_height="25dp" />
+
+            </LinearLayout>
+
+            <LinearLayout
+                android:orientation="vertical"
+                android:layout_columnWeight="1">
+
+                <ImageView
+                    android:layout_marginTop="15dp"
+                    android:src="@drawable/huodong"
+                    android:layout_gravity="center_horizontal"
+                    android:layout_width="100dp"
+                    android:layout_height="100dp" />
+
+                <TextView
+                    android:textColor="@color/black"
+                    android:gravity="center"
+                    android:layout_gravity="center_horizontal"
+                    android:text="满免配送费活动"
+                    android:textSize="15sp"
+                    android:layout_width="wrap_content"
+                    android:layout_height="30dp" />
+
+                <TextView
+                    android:textColor="@color/text_color"
+                    android:gravity="center"
+                    android:layout_gravity="center_horizontal"
+                    android:text="下单满足条件后可享受满减优惠"
+                    android:textSize="10sp"
+                    android:layout_width="wrap_content"
+                    android:layout_height="wrap_content" />
+
+                <Button
+                    android:id="@+id/MMPSF"
+                    android:layout_marginBottom="16dp"
+                    android:textSize="13sp"
+                    android:textColor="@color/white"
+                    android:text="新建"
+                    android:layout_gravity="center_horizontal"
+                    android:background="@drawable/background_bgall_bule"
+                    android:layout_marginTop="8dp"
+                    android:layout_width="60dp"
+                    android:layout_height="25dp" />
+
+            </LinearLayout>
+
+        </GridLayout>
+
+    </ScrollView>
+
+
+</LinearLayout>

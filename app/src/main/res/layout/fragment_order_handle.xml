@@ -1,0 +1,96 @@
+<?xml version="1.0" encoding="utf-8"?>
+<LinearLayout xmlns:android="http://schemas.android.com/apk/res/android"
+    xmlns:app="http://schemas.android.com/apk/res-auto"
+    android:orientation="vertical"
+    android:layout_width="match_parent"
+    android:layout_height="match_parent">
+
+    <!--头部-->
+    <RelativeLayout
+        android:layout_width="match_parent"
+        android:layout_height="45dp"
+        android:background="@color/blue">
+
+        <TextView
+            android:layout_width="wrap_content"
+            android:layout_height="wrap_content"
+            android:layout_centerInParent="true"
+            android:text="订单"
+            android:textColor="@color/white"
+            android:textSize="16sp" />
+    </RelativeLayout>
+
+    <RelativeLayout
+            android:background="@color/white"
+            android:layout_width="match_parent"
+            android:layout_height="40dp"
+            android:orientation="horizontal">
+
+            <TextView
+                android:layout_marginLeft="16dp"
+                android:layout_width="wrap_content"
+                android:layout_height="match_parent"
+                android:gravity="center_vertical"
+                android:text="自动接单"
+                android:textColor="@color/text_color"
+                android:textSize="16sp" />
+
+            <com.example.xxxloli.zshmerchant.view.ShSwitchView
+                android:layout_toLeftOf="@+id/printer_img"
+                android:layout_centerVertical="true"
+                android:layout_marginRight="20dp"
+                xmlns:shSwitch="http://schemas.android.com/apk/res-auto"
+                android:id="@+id/is_automatic_order"
+                android:layout_width="30dp"
+                android:layout_height="16dp"
+                shSwitch:shadowSpace="0dip"
+                shSwitch:tintColor="@color/blue"  />
+
+            <View
+                android:layout_margin="10dp"
+                android:layout_toLeftOf="@+id/printer_img"
+                android:background="@color/line2"
+                android:layout_width="0.5dp"
+                android:layout_height="30dp"></View>
+
+            <ImageView
+                android:id="@+id/printer_img"
+                android:layout_centerVertical="true"
+                android:layout_marginRight="10dp"
+                android:layout_alignParentRight="true"
+                android:src="@drawable/printer"
+                android:layout_width="20dp"
+                android:layout_height="20dp" />
+        </RelativeLayout>
+
+    <View
+        android:layout_width="match_parent"
+        android:layout_height="4dp"
+        android:background="@color/background"></View>
+
+    <com.example.xxxloli.zshmerchant.view.PagerSlidingTabStrip
+        android:id="@+id/tabs"
+        android:layout_width="match_parent"
+        android:layout_height="30dp"
+        android:layout_gravity="center"
+        android:textColor="@color/black"
+        android:textSize="12sp"
+        app:pstsDividerColor="@android:color/transparent"
+        app:pstsIndicatorColor="@color/blue"
+        app:pstsIndicatorHeight="1dp"
+        app:pstsIndicatorWrap="true"
+        app:pstsScaleZoomMax="0"
+        app:pstsShouldExpand="true"
+        app:pstsTextSelectedColor="@color/blue"
+        app:pstsUnderlineColor="@color/colorAccent"
+        app:pstsUnderlineHeight="0dp"
+        app:pstsTabBackground="?attr/selectableItemBackground"
+        />
+
+    <android.support.v4.view.ViewPager
+        android:id="@+id/pager"
+        android:layout_width="match_parent"
+        android:layout_height="wrap_content"
+        android:layout_below="@+id/tabs" />
+
+</LinearLayout>

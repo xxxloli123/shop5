@@ -1,0 +1,66 @@
+<?xml version="1.0" encoding="utf-8"?>
+<LinearLayout xmlns:android="http://schemas.android.com/apk/res/android"
+    xmlns:tools="http://schemas.android.com/tools"
+    xmlns:app="http://schemas.android.com/apk/res-auto"
+    android:orientation="vertical"
+    android:layout_width="match_parent"
+    android:layout_height="match_parent"
+    tools:context="com.example.xxxloli.zshmerchant.Activity.BuildactivityActivity">
+
+    <!--头部-->
+    <RelativeLayout
+        android:layout_width="match_parent"
+        android:layout_height="45dp"
+        android:background="@color/blue">
+
+        <RelativeLayout
+            android:id="@+id/back_rl"
+            android:layout_width="50dp"
+            android:layout_height="match_parent"
+            android:paddingLeft="16dp">
+
+            <ImageView
+                android:layout_width="12dp"
+                android:layout_height="18dp"
+                android:layout_centerVertical="true"
+                android:src="@drawable/finish" />
+        </RelativeLayout>
+
+        <TextView
+            android:layout_width="wrap_content"
+            android:layout_height="wrap_content"
+            android:layout_centerInParent="true"
+            android:text="自建活动"
+            android:textColor="@color/white"
+            android:textSize="16sp" />
+    </RelativeLayout>
+
+
+    <com.example.xxxloli.zshmerchant.view.PagerSlidingTabStrip
+        android:id="@+id/commodityTab"
+        android:layout_width="match_parent"
+        android:layout_height="40dp"
+        android:layout_gravity="center"
+        android:textColor="@color/black"
+        android:textSize="12sp"
+        app:pstsDividerColor="@android:color/transparent"
+        app:pstsIndicatorColor="@color/blue"
+        app:pstsIndicatorHeight="1dp"
+        app:pstsIndicatorWrap="true"
+        app:pstsScaleZoomMax="0"
+        app:pstsShouldExpand="true"
+        app:pstsTextSelectedColor="@color/blue"
+        app:pstsUnderlineColor="@color/colorAccent"
+        app:pstsUnderlineHeight="0dp"
+        app:pstsTabBackground="?attr/selectableItemBackground"
+        />
+
+    <android.support.v4.view.ViewPager
+        android:id="@+id/show_viewpager"
+        android:layout_width="match_parent"
+        android:layout_height="match_parent"
+        >
+
+    </android.support.v4.view.ViewPager>
+
+</LinearLayout>

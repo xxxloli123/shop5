@@ -1,0 +1,82 @@
+<?xml version="1.0" encoding="utf-8"?>
+<LinearLayout xmlns:android="http://schemas.android.com/apk/res/android"
+    android:layout_width="match_parent"
+    android:orientation="vertical"
+    android:layout_height="match_parent">
+
+    <LinearLayout
+        android:layout_marginTop="10dp"
+        android:orientation="vertical"
+        android:layout_width="match_parent"
+        android:layout_height="wrap_content">
+
+        <RelativeLayout
+            android:orientation="horizontal"
+            android:layout_width="wrap_content"
+            android:layout_height="wrap_content">
+
+            <ImageView
+                android:id="@+id/commodity_img"
+                android:src="@drawable/pipixia"
+                android:layout_width="60dp"
+                android:layout_height="40dp" />
+
+            <TextView
+                android:id="@+id/commodity_name"
+                android:layout_marginLeft="6dp"
+                android:textColor="@color/text_color"
+                android:gravity="center_vertical"
+                android:textSize="15sp"
+                android:layout_toRightOf="@+id/commodity_img"
+                android:text="霄张皮皮虾"
+                android:layout_width="wrap_content"
+                android:layout_height="20dp" />
+
+            <TextView
+                android:layout_toRightOf="@+id/commodity_img"
+                android:layout_marginLeft="6dp"
+                android:textColor="@color/red"
+                android:gravity="center_vertical"
+                android:textSize="15sp"
+                android:layout_below="@+id/commodity_name"
+                android:text="￥ 66.6"
+                android:layout_width="wrap_content"
+                android:layout_height="20dp" />
+
+        </RelativeLayout>
+
+        <LinearLayout
+            android:layout_gravity="end"
+            android:orientation="horizontal"
+            android:layout_width="wrap_content"
+            android:layout_height="wrap_content">
+
+            <Button
+                android:text="编辑"
+                android:textSize="12sp"
+                android:textColor="@color/text_color"
+                android:id="@+id/edit_bt"
+                android:layout_marginRight="6dp"
+                android:background="@color/grey3"
+                android:layout_width="40dp"
+                android:layout_height="20dp" />
+
+            <Button
+                android:text="停售"
+                android:textSize="12sp"
+                android:textColor="@color/text_color"
+                android:id="@+id/suspension_of_sale"
+                android:layout_marginRight="6dp"
+                android:background="@color/grey3"
+                android:layout_width="40dp"
+                android:layout_height="20dp" />
+        </LinearLayout>
+
+    </LinearLayout>
+    <LinearLayout
+        android:background="@color/grayness"
+        android:layout_marginTop="10dp"
+        android:layout_width="match_parent"
+        android:layout_height="1dp"></LinearLayout>
+
+    </LinearLayout>

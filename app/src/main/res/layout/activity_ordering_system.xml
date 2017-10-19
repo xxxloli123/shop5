@@ -1,0 +1,83 @@
+<?xml version="1.0" encoding="utf-8"?>
+<RelativeLayout xmlns:android="http://schemas.android.com/apk/res/android"
+    android:layout_width="match_parent"
+    android:layout_height="match_parent"
+    android:orientation="vertical"
+     >
+
+    <!--头部-->
+    <RelativeLayout
+        android:id="@+id/top_layout"
+        android:layout_width="match_parent"
+        android:layout_height="45dp"
+        android:background="@color/blue">
+
+        <RelativeLayout
+            android:id="@+id/back_rl"
+            android:layout_width="50dp"
+            android:layout_height="match_parent"
+            android:paddingLeft="16dp">
+
+            <ImageView
+                android:src="@drawable/finish"
+                android:layout_width="12dp"
+                android:layout_height="18dp"
+                android:layout_centerVertical="true" />
+        </RelativeLayout>
+
+        <TextView
+            android:layout_width="wrap_content"
+            android:layout_height="wrap_content"
+            android:layout_centerInParent="true"
+            android:text="点餐系统"
+            android:textColor="@color/white"
+            android:textSize="16sp" />
+    </RelativeLayout>
+
+    <FrameLayout
+        android:layout_below="@+id/top_layout"
+        android:id="@+id/menus_frame"
+        android:layout_width="match_parent"
+        android:layout_height="wrap_content"
+        android:background="@color/white"
+        android:layout_above="@+id/radio">
+
+    </FrameLayout>
+
+    <RadioGroup
+        android:layout_alignParentBottom="true"
+        android:id="@+id/radio"
+        android:orientation="horizontal"
+        android:layout_marginLeft="20dp"
+        android:layout_marginRight="20dp"
+        android:layout_width="match_parent"
+        android:layout_height="38dp">
+
+        <RadioButton
+            android:id="@+id/add_table_number"
+            android:layout_width="0dp"
+            android:layout_height="match_parent"
+            android:layout_gravity="center_vertical"
+            android:layout_weight="1"
+            android:background="@color/grayness"
+            android:button="@null"
+            android:checked="true"
+            android:gravity="center"
+            android:text="添加桌号"
+            android:textColor="@drawable/select_textcolor1" />
+
+        <RadioButton
+            android:id="@+id/add_expense_code"
+            android:textColor="@drawable/select_textcolor1"
+            android:button="@null"
+            android:background="@color/grayness"
+            android:text="添加消费码"
+            android:gravity="center"
+            android:layout_gravity="center_vertical"
+            android:layout_weight="1"
+            android:layout_width="0dp"
+            android:layout_height="match_parent" />
+
+    </RadioGroup>
+
+</RelativeLayout>
