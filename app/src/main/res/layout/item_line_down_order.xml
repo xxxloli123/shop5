@@ -2,6 +2,7 @@
 <LinearLayout xmlns:android="http://schemas.android.com/apk/res/android"
     android:layout_width="match_parent"
     android:orientation="vertical"
+    android:id="@+id/LL"
     android:layout_height="match_parent">
 
     <RelativeLayout
@@ -127,15 +128,21 @@
 
     </RelativeLayout>
 
-    <View
+    <ListView
+        android:divider="@null"
         android:layout_marginTop="10dp"
-        android:background="@color/line2"
+        android:layout_marginLeft="10dp"
+        android:layout_marginRight="10dp"
+        android:visibility="gone"
+        android:background="@color/blue3"
+        android:id="@+id/bill_list"
         android:layout_width="match_parent"
-        android:layout_height="0.5dp"></View>
-
+        android:layout_height="wrap_content">
+    </ListView>
 
     <RelativeLayout
-        android:visibility="visible"
+        android:id="@+id/red_LL"
+        android:visibility="gone"
         android:orientation="vertical"
         android:background="@color/blue3"
         android:layout_width="match_parent"
@@ -180,17 +187,16 @@
 
     <LinearLayout
         android:layout_width="match_parent"
-        android:layout_height="wrap_content"
+        android:layout_height="40dp"
         android:layout_marginLeft="5dp"
         android:layout_marginRight="0dp">
 
         <Button
+            android:layout_marginLeft="8dp"
+            android:layout_gravity="bottom"
             android:id="@+id/print_order"
             android:layout_width="0dp"
             android:layout_height="25dp"
-            android:layout_marginLeft="5dp"
-            android:layout_marginRight="5dp"
-            android:layout_marginTop="35dp"
             android:layout_weight="1"
             android:background="@drawable/line_frame"
             android:text="打印订单"
@@ -212,6 +218,7 @@
                 android:background="@drawable/line_frame">
 
                 <ImageView
+                    android:id="@+id/indicate_img"
                     android:layout_width="10dp"
                     android:layout_height="5dp"
                     android:layout_centerInParent="true"
@@ -223,77 +230,23 @@
 
         <RelativeLayout
             android:layout_width="0dp"
-            android:layout_height="wrap_content"
-            android:layout_marginBottom="8dp"
+            android:layout_height="match_parent"
             android:layout_weight="1">
 
             <LinearLayout
-                android:id="@+id/l"
+                android:layout_alignParentBottom="true"
                 android:layout_marginRight="10dp"
                 android:layout_width="wrap_content"
                 android:layout_height="wrap_content"
                 android:layout_alignParentRight="true"
-                android:layout_marginTop="10dp"
-                android:orientation="horizontal">
-
-                <TextView
-                    android:textSize="10sp"
-                    android:layout_width="wrap_content"
-                    android:layout_height="wrap_content"
-                    android:text="总数量："
-                    android:textColor="@color/text_color" />
-
-                <TextView
-                    android:textSize="10sp"
-                    android:id="@+id/quantity"
-                    android:layout_width="wrap_content"
-                    android:layout_height="wrap_content"
-                    android:text="666"
-                    android:textColor="@color/text_color" />
-
-            </LinearLayout>
-
-            <LinearLayout
-                android:id="@+id/ll"
-                android:layout_below="@+id/l"
-                android:layout_marginRight="10dp"
-                android:layout_width="wrap_content"
-                android:layout_height="wrap_content"
-                android:layout_alignParentRight="true"
-                android:layout_marginTop="5dp"
-                android:orientation="horizontal">
-
-                <TextView
-                    android:textSize="10sp"
-                    android:layout_width="wrap_content"
-                    android:layout_height="wrap_content"
-                    android:text="总价："
-                    android:textColor="@color/text_color" />
-
-                <TextView
-                    android:textSize="10sp"
-                    android:id="@+id/total_prices"
-                    android:layout_width="wrap_content"
-                    android:layout_height="wrap_content"
-                    android:text="666"
-                    android:textColor="@color/text_color" />
-
-            </LinearLayout>
-
-            <LinearLayout
-                android:layout_below="@+id/ll"
-                android:layout_marginRight="10dp"
-                android:layout_width="wrap_content"
-                android:layout_height="wrap_content"
-                android:layout_alignParentRight="true"
-                android:layout_marginTop="5dp"
+                android:layout_marginBottom="4dp"
                 android:orientation="horizontal">
 
                 <TextView
                     android:textSize="14sp"
                     android:layout_width="wrap_content"
                     android:layout_height="wrap_content"
-                    android:text="实际付款：￥"
+                    android:text="总价：￥"
                     android:textColor="@color/blue2" />
 
                 <TextView
@@ -310,6 +263,7 @@
     </LinearLayout>
 
     <View
+        android:layout_marginTop="6dp"
         android:background="@color/background"
         android:layout_width="match_parent"
         android:layout_height="6dp"></View>

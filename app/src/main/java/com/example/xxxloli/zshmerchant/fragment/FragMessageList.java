@@ -1,27 +1,41 @@
 package com.example.xxxloli.zshmerchant.fragment;
 
 import android.annotation.SuppressLint;
+import android.content.Context;
+import android.content.Intent;
 import android.os.Bundle;
 import android.support.v4.widget.SwipeRefreshLayout;
 import android.view.LayoutInflater;
 import android.view.View;
 import android.view.ViewGroup;
 import android.widget.AbsListView;
+import android.widget.AdapterView;
 import android.widget.LinearLayout;
 import android.widget.ListView;
 import android.widget.Toast;
 
+import com.example.xxxloli.zshmerchant.Activity.EditCommodityActivity;
+import com.example.xxxloli.zshmerchant.Activity.MessageContentActivity;
 import com.example.xxxloli.zshmerchant.R;
 import com.example.xxxloli.zshmerchant.adapter.MessageListAdapter;
+import com.example.xxxloli.zshmerchant.adapter.OrderListAdapter;
+import com.example.xxxloli.zshmerchant.greendao.DBManagerShop;
+import com.example.xxxloli.zshmerchant.greendao.Shop;
 import com.example.xxxloli.zshmerchant.objectmodel.Message;
+import com.example.xxxloli.zshmerchant.objectmodel.OrderEntity;
+import com.google.gson.Gson;
 import com.interfaceconfig.Config;
 import com.sgrape.BaseFragment;
 
+import org.json.JSONArray;
 import org.json.JSONException;
 import org.json.JSONObject;
 
+import java.io.Serializable;
 import java.util.ArrayList;
+import java.util.HashMap;
 import java.util.List;
+import java.util.Map;
 
 import butterknife.BindView;
 import butterknife.ButterKnife;
@@ -45,36 +59,31 @@ public class FragMessageList extends BaseFragment implements SwipeRefreshLayout.
     SwipeRefreshLayout srl;
 
     private int page = 0;
-    protected String rob;
     protected MessageListAdapter adapter;
-    protected String status;
     protected boolean enable;
+    private DBManagerShop dbManagerShop;
+    private Shop shop;
+    public static final String READ_Message = "messages";
 
     public FragMessageList() {
     }
 
-    public FragMessageList(String rob, String status) {
-        this(rob, status, null);
+    public FragMessageList( String type) {
+        this( type, true);
     }
 
-    public FragMessageList(String rob, String status, String type) {
-        this(rob, status, type, true);
-    }
-
-    public FragMessageList(String rob, String status, String type, boolean enable) {
+    public FragMessageList( String type, boolean enable) {
         super();
-        this.rob = rob;
-        this.status = status;
         this.type = type;
         this.enable = enable;
-        getArguments().putString("rob", this.rob);
-        getArguments().putString("status", this.status);
         getArguments().putString("type", type);
         getArguments().putBoolean("enable", enable);
     }
 
     @Override
     protected void init() {
+        dbManagerShop = DBManagerShop.getInstance(getContext());
+        shop = dbManagerShop.queryById((long) 2333).get(0);
         if (listview.getAdapter() == null)
             listview.setAdapter(adapter);
         if (listview.getCount() > 0) {
@@ -94,28 +103,27 @@ public class FragMessageList extends BaseFragment implements SwipeRefreshLayout.
 
     @Override
     protected void initListener() {
+        listview.setOnItemClickListener(new AdapterView.OnItemClickListener() {
+            @Override
+            public void onItemClick(AdapterView<?> parent, View view, int position, long id) {
+                Intent intent = new Intent(getActivity(), MessageContentActivity.class);
+                intent.putExtra(READ_Message, (Serializable) adapter.getData().get(position));
+                startActivity(intent);
+            }
+        });
         listview.setOnScrollListener(new OnScrollListener());
         srl.setOnRefreshListener(this);
     }
 
     @Override
     protected void loadData() {
-        List<Message> messages = adapter.getData();
-        Toast.makeText(getActivity(),"丢了个雷姆"+messages.size(),Toast.LENGTH_SHORT);
-        if (messages == null) messages = new ArrayList<>();
-        ++page;
-        if (page == 1 && !messages.isEmpty()) messages.clear();
-        for (int i = 0; i < 5; i++) {
-            Message message = new Message();
-            message.setId(i);
-            message.setContent("香蕉君或许会迟到但永不缺席" + i);
-            messages.add(message);
-        }
-        adapter.notifyDataSetChanged(messages);
-        if (messages.isEmpty()) noMessage.setVisibility(View.VISIBLE);
-        else noMessage.setVisibility(View.GONE);
-        srl.setRefreshing(false);
-        firstLoad = false;
+//        查询商家消息 type==全部all 公告 消息 PlatformNotice(平台公告),ShopNews(商家消息);
+//        参数：[shopId, type]
+        Map<String, Object> map = new HashMap<>();
+        map.put("shopId", shop.getId());
+        map.put("userId", shop.getShopkeeperId());
+        map.put("type",type);
+        newCall(Config.Url.getUrl(Config.GET_Message), map);
     }
 
     @Override
@@ -137,11 +145,21 @@ public class FragMessageList extends BaseFragment implements SwipeRefreshLayout.
     @Override
     public void onSuccess(Object tag, JSONObject json) throws JSONException {
         switch (tag.toString()) {
-            case Config.SHOP_TYPE:
+            case Config.GET_Message:
                 List<Message> messages = adapter.getData();
+                if (messages == null) messages = new ArrayList<>();
+                if (!messages.isEmpty()) messages.clear();
+                JSONArray arr = json.getJSONObject("shopnews").getJSONArray("aaData");
+                Gson gson = new Gson();
+                for (int i = 0; i < arr.length(); i++) {
+                    final JSONObject cache = arr.getJSONObject(i);
+                    messages.add(messages.size(), gson.fromJson(cache.toString(), Message.class));
+                }
                 adapter.notifyDataSetChanged(messages);
                 if (messages.isEmpty()) noMessage.setVisibility(View.VISIBLE);
                 else noMessage.setVisibility(View.GONE);
+                srl.setRefreshing(false);
+                firstLoad = false;
                 break;
         }
     }
@@ -154,20 +172,27 @@ public class FragMessageList extends BaseFragment implements SwipeRefreshLayout.
         loadData();
     }
 
+    class Adapter extends MessageListAdapter {
+        public Adapter() {
+            super(getContext());
+        }
+    }
+
     @Override
     protected void readInstanceState() {
         super.readInstanceState();
-        rob = getArguments().getString("rob");
-        status = getArguments().getString("status");
-
+        if (adapter == null) adapter = new Adapter();
+        type = getArguments().getString("type");
+        if (adapter == null) {
+            adapter = new MessageListAdapter(getContext());
+            adapter.setEnable(enable);
+        }
     }
 
     @Override
     public void onDestroyView() {
         super.onDestroyView();
         Bundle bundle = getArguments();
-        getArguments().putString("rob", this.rob);
-        getArguments().putString("status", this.status);
         unbinder.unbind();
     }
 
@@ -176,6 +201,7 @@ public class FragMessageList extends BaseFragment implements SwipeRefreshLayout.
         // TODO: inflate a fragment view
         View rootView = super.onCreateView(inflater, container, savedInstanceState);
         unbinder = ButterKnife.bind(this, rootView);
+        init();
         return rootView;
     }
 

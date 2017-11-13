@@ -3,97 +3,112 @@
     android:layout_width="match_parent"
     android:orientation="vertical"
 
-    android:layout_height="match_parent">
+    android:layout_height="wrap_content">
+
+    <View
+        android:background="@color/line_color"
+        android:layout_width="match_parent"
+        android:layout_height="6dp"></View>
 
     <LinearLayout
-        android:layout_margin="10dp"
-        android:orientation="vertical"
         android:layout_width="match_parent"
-        android:layout_height="match_parent">
+        android:layout_height="match_parent"
+        android:layout_margin="10dp"
+        android:orientation="vertical">
 
         <LinearLayout
-            android:orientation="horizontal"
             android:layout_width="match_parent"
-            android:layout_height="wrap_content">
+            android:layout_height="wrap_content"
+            android:orientation="horizontal">
 
-            <com.example.xxxloli.zshmerchant.view.RatingBar
-                xmlns:lxhRatingBar="http://schemas.android.com/apk/res-auto"
+            <com.example.xxxloli.zshmerchant.view.RatingBar xmlns:lxhRatingBar="http://schemas.android.com/apk/res-auto"
                 android:id="@+id/rb_speed"
                 android:layout_width="wrap_content"
                 android:layout_height="wrap_content"
+                android:layout_alignParentRight="true"
+                android:layout_gravity="center_horizontal"
                 lxhRatingBar:canEdit="true"
                 lxhRatingBar:countSelected="0"
                 lxhRatingBar:dividerWidth="2dp"
                 lxhRatingBar:starCount="5"
                 lxhRatingBar:stateResId="@drawable/five_rating_bar2"
-                lxhRatingBar:widthAndHeight="14dp"
-                android:layout_alignParentRight="true"
-                android:layout_gravity="center_horizontal" />
+                lxhRatingBar:widthAndHeight="14dp" />
 
             <TextView
-                android:textSize="12sp"
-                android:text="2999-01-24  12:44"
-                android:gravity="end"
                 android:id="@+id/time"
                 android:layout_width="match_parent"
-                android:layout_height="match_parent" />
+                android:layout_height="match_parent"
+                android:gravity="end"
+                android:text="2999-01-24  12:44"
+                android:textSize="12sp" />
 
         </LinearLayout>
 
         <TextView
-            android:layout_marginTop="6dp"
-            android:textSize="12sp"
-            android:textColor="@color/text_color"
             android:id="@+id/evaluate"
             android:layout_width="wrap_content"
-            android:layout_height="wrap_content" />
+            android:layout_height="wrap_content"
+            android:layout_marginTop="6dp"
+            android:textColor="@color/text_color"
+            android:textSize="12sp" />
+
+        <TextView
+            android:padding="3dp"
+            android:background="@color/line_color"
+            android:visibility="gone"
+            android:id="@+id/reply_Tv"
+            android:layout_width="wrap_content"
+            android:layout_height="wrap_content"
+            android:layout_marginTop="6dp"
+            android:textColor="@color/text_color"
+            android:textSize="12sp" />
 
         <EditText
+            android:visibility="visible"
             android:id="@+id/reply"
-            android:paddingLeft="3dp"
-            android:paddingTop="3dp"
+            android:layout_width="match_parent"
+            android:layout_height="50dp"
+            android:layout_marginTop="6dp"
+            android:background="@color/line_color"
             android:gravity="start"
             android:hint="请输入回复内容"
-            android:textSize="12sp"
-            android:background="@color/line_color"
-            android:layout_marginTop="6dp"
-            android:layout_width="match_parent"
-            android:layout_height="50dp" />
+            android:maxLength="200"
+            android:padding="3dp"
+            android:textSize="13sp" />
 
         <RelativeLayout
-            android:layout_marginTop="6dp"
-            android:orientation="horizontal"
             android:layout_width="match_parent"
-            android:layout_height="wrap_content">
+            android:layout_height="wrap_content"
+            android:layout_marginTop="6dp"
+            android:orientation="horizontal">
 
             <TextView
-                android:visibility="visible"
-                android:layout_toLeftOf="@+id/sure"
+                android:id="@+id/hint"
+                android:layout_width="wrap_content"
+                android:layout_height="wrap_content"
                 android:layout_centerVertical="true"
                 android:layout_gravity="end"
+                android:layout_marginRight="8dp"
+                android:layout_toLeftOf="@+id/sure"
                 android:text="0/200"
                 android:textColor="@color/hint_text_color"
                 android:textSize="10sp"
-                android:id="@+id/hint"
-                android:layout_width="wrap_content"
-                android:layout_height="wrap_content" />
+                android:visibility="visible" />
 
             <Button
-                android:visibility="visible"
                 android:id="@+id/sure"
+                android:layout_width="40dp"
+                android:layout_height="25dp"
                 android:layout_alignParentRight="true"
-                android:textSize="12sp"
-                android:textColor="@color/text_color"
-                android:text="确定"
                 android:background="@color/bt"
-                android:layout_width="30dp"
-                android:layout_height="18dp" />
+                android:text="回复"
+                android:textColor="@color/text_color"
+                android:textSize="12sp"
+                android:visibility="visible" />
 
         </RelativeLayout>
 
 
-
     </LinearLayout>
 
-   
 </LinearLayout>

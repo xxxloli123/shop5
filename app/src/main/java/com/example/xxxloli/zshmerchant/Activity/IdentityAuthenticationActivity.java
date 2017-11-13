@@ -1,13 +1,19 @@
 package com.example.xxxloli.zshmerchant.Activity;
 
 import android.app.Activity;
+import android.content.ContentUris;
 import android.content.Intent;
+import android.database.Cursor;
 import android.graphics.Bitmap;
 import android.graphics.BitmapFactory;
 import android.graphics.drawable.BitmapDrawable;
 import android.net.Uri;
+import android.os.Build;
 import android.os.Bundle;
+import android.os.Environment;
+import android.provider.DocumentsContract;
 import android.provider.MediaStore;
+import android.support.v4.content.FileProvider;
 import android.support.v7.app.AppCompatActivity;
 import android.util.Log;
 import android.view.Gravity;
@@ -24,8 +30,13 @@ import android.widget.TextView;
 import android.widget.Toast;
 
 import com.example.xxxloli.zshmerchant.R;
+import com.example.xxxloli.zshmerchant.greendao.DBManagerShop;
+import com.example.xxxloli.zshmerchant.greendao.DBManagerUser;
+import com.example.xxxloli.zshmerchant.greendao.Shop;
+import com.example.xxxloli.zshmerchant.greendao.User;
 import com.example.xxxloli.zshmerchant.util.BitmapCompressUtils;
 import com.interfaceconfig.Config;
+import com.squareup.picasso.Picasso;
 
 import org.json.JSONException;
 import org.json.JSONObject;
@@ -81,19 +92,22 @@ public class IdentityAuthenticationActivity extends AppCompatActivity {
     TextView identity;
     @BindView(R.id.authentication)
     LinearLayout authentication;
+
     private File file1, file2;
     private boolean tag;
+    private DBManagerUser dbManagerUser;
+    private User user;
+    private String mImagePath = Environment.getExternalStorageDirectory()+"/meta/";
+    private String imagePath;
 
     @Override
     protected void onCreate(Bundle savedInstanceState) {
         super.onCreate(savedInstanceState);
         setContentView(R.layout.activity_identity_authentication);
         ButterKnife.bind(this);
+        dbManagerUser= DBManagerUser.getInstance(this);
+        user = dbManagerUser.queryById((long) 2333).get(0);
         if (savedInstanceState != null) tag = savedInstanceState.getBoolean("tag");
-        initView();
-    }
-
-    private void initView() {
     }
 
     /**
@@ -124,17 +138,33 @@ public class IdentityAuthenticationActivity extends AppCompatActivity {
         bt1.setOnClickListener(new View.OnClickListener() {
             public void onClick(View v) {//拍照
                 Intent it = new Intent(MediaStore.ACTION_IMAGE_CAPTURE);
-                it.putExtra(MediaStore.EXTRA_OUTPUT, Uri.fromFile(tag ? file1 : file2));
-                startActivityForResult(it, 1);
+                if (it.resolveActivity(getPackageManager()) != null) {
+                    File path = new File(mImagePath);
+                    if (!path.exists()) {
+                        path.mkdir();
+                    }
+                    Uri photoUri;
+                    if (tag){
+                        file1 = new File(mImagePath, UUID.randomUUID().toString()+".jpg");
+                        photoUri = FileProvider.getUriForFile(IdentityAuthenticationActivity.this,
+                                "com.example.xxxloli.zshmerchant" + ".provider", file1);
+                    }else {
+                        file2 = new File(mImagePath, UUID.randomUUID().toString()+".jpg");
+                        photoUri = FileProvider.getUriForFile(IdentityAuthenticationActivity.this,
+                                "com.example.xxxloli.zshmerchant" + ".provider", file2);
+                    }
+                    it.addFlags(Intent.FLAG_GRANT_READ_URI_PERMISSION);
+                    it.putExtra(MediaStore.EXTRA_OUTPUT, photoUri);
+                    startActivityForResult(it, 1);
+                }
                 pop.dismiss();
                 popwindows.clearAnimation();
             }
         });
         bt2.setOnClickListener(new View.OnClickListener() {
             public void onClick(View v) {//从相册中选择
-                Intent local = new Intent();
-                local.setType("image/*");
-                local.setAction(Intent.ACTION_GET_CONTENT);
+                Intent local =new  Intent(Intent.ACTION_PICK, MediaStore.Images.Media.EXTERNAL_CONTENT_URI);
+                local.setDataAndType(MediaStore.Images.Media.EXTERNAL_CONTENT_URI, "image/*");
                 startActivityForResult(local, 2);
                 pop.dismiss();
                 popwindows.clearAnimation();
@@ -157,12 +187,10 @@ public class IdentityAuthenticationActivity extends AppCompatActivity {
                 break;
             case R.id.upload_front:
                 tag = true;
-                file1 = new File(getExternalCacheDir(), UUID.randomUUID().toString() + ".png");
                 popwindowsshow();
                 break;
             case R.id.upload_opposite://上传身份证反面照
                 tag = false;
-                file2 = new File(getExternalCacheDir(), UUID.randomUUID().toString() + ".png");
                 popwindowsshow();
                 break;
             case R.id.sure_bt://确认提交
@@ -185,18 +213,30 @@ public class IdentityAuthenticationActivity extends AppCompatActivity {
                         Toast.makeText(this, "图片文件读取出错", Toast.LENGTH_LONG).show();
                         return;
                     }
-                    Bitmap img;
-                    try {
-                         img= BitmapFactory.decodeStream(getContentResolver().openInputStream(uri));
-                        img= BitmapCompressUtils.imageZoom(img,800);
-                        img.compress(Bitmap.CompressFormat.PNG, 100, new FileOutputStream(tag ? file1 : file2));
-                        if (tag) {
-                            identityFront.setImageBitmap(img);
-                        } else identityOpposite.setImageBitmap(img);
-                    } catch (FileNotFoundException e) {
-                        e.printStackTrace();
+                    if (Build.VERSION.SDK_INT >= Build.VERSION_CODES.KITKAT) {
+                        imagePath = null;
+                        if (DocumentsContract.isDocumentUri(this, uri)) {
+                            //如果是document类型的uri,则通过document id处理
+                            String docId = DocumentsContract.getDocumentId(uri);
+                            if ("com.android.providers.media.documents".equals(uri.getAuthority())) {
+                                String id = docId.split(":")[1];//解析出数字格式的id
+                                String selection = MediaStore.Images.Media._ID + "=" + id;
+                                imagePath = getImagePath(MediaStore.Images.Media.EXTERNAL_CONTENT_URI, selection);
+                            } else if ("com.android.downloads.documents".equals(uri.getAuthority())) {
+                                Uri contentUri = ContentUris.withAppendedId(Uri.parse("content://downloads/public_downloads"), Long.valueOf(docId));
+                                imagePath = getImagePath(contentUri, null);
+                            }
+                        } else if ("content".equalsIgnoreCase(uri.getScheme())) {
+                            //如果是content类型的Uri，则使用普通方式处理
+                            imagePath = getImagePath(uri, null);
+                        } else if ("file".equalsIgnoreCase(uri.getScheme())) {
+                            //如果是file类型的Uri,直接获取图片路径即可
+                            imagePath = uri.getPath();
+                        }
+                        Picasso.with(this).load(uri).into(tag?identityFront:identityOpposite);
+                        if (tag) file1 = new File(imagePath);
+                        else file2= new File(imagePath);
                     }
-
                     break;
                 case 1:
                     File file = tag ? file1 : file2;
@@ -204,16 +244,15 @@ public class IdentityAuthenticationActivity extends AppCompatActivity {
                         Toast.makeText(this, "图片文件读取出错", Toast.LENGTH_LONG).show();
                         return;
                     }
-                    try {
-                        Log.e("大小", "丢了个雷姆" + getFileSize(file));
-                        Toast.makeText(IdentityAuthenticationActivity.this, "丢了个雷姆" + getFileSize(file), Toast.LENGTH_SHORT);
-                    } catch (Exception e) {
-                        e.printStackTrace();
-                        Log.e("获取文件大小", "文件不存在!");
-                    }
+//                    try {
+//                        Log.e("大小", "丢了个雷姆" + getFileSize(file));
+//                        Toast.makeText(IdentityAuthenticationActivity.this, "丢了个雷姆" + getFileSize(file), Toast.LENGTH_SHORT);
+//                    } catch (Exception e) {
+//                        e.printStackTrace();
+//                        Log.e("获取文件大小", "文件不存在!");
+//                    }
                     Bitmap bitmap = BitmapFactory.decodeFile(file.getAbsolutePath());
                     compressPicture(file, file);
-
                     if (tag) {
                         identityFront.setImageBitmap(bitmap);
                     } else identityOpposite.setImageBitmap(bitmap);
@@ -222,8 +261,20 @@ public class IdentityAuthenticationActivity extends AppCompatActivity {
         }
     }
 
-    private void submit() {
+    private String getImagePath(Uri uri, String selection) {
+        String path = null;
+        //通过Uri和selection老获取真实的图片路径
+        Cursor cursor = getContentResolver().query(uri, null, selection, null, null);
+        if (cursor != null) {
+            if (cursor.moveToFirst()) {
+                path = cursor.getString(cursor.getColumnIndex(MediaStore.Images.Media.DATA));
+            }
+            cursor.close();
+        }
+        return path;
+    }
 
+    private void submit() {
         if (isEmpty(idNumberEdit.getText().toString().trim())) {
             Toast.makeText(this, "请输入身份证号", Toast.LENGTH_SHORT).show();
         }else try {
@@ -236,7 +287,7 @@ public class IdentityAuthenticationActivity extends AppCompatActivity {
                 try {
                     JSONObject userStr = new JSONObject();
     //                userStr.put("id", info.getId());
-                    userStr.put("id", "402880ea5ef0b3a4015ef0b48df80001");
+                    userStr.put("id", user.getId());
                     userStr.put("idNumber", idNumberEdit.getText().toString().trim());
                     Map<String, Object> params = new HashMap<>();
                     params.put("userStr", userStr);
@@ -326,11 +377,7 @@ public class IdentityAuthenticationActivity extends AppCompatActivity {
 
     /**
      * 按照图片尺寸压缩：
-     *
-     * @param srcPath
-     * @param desPath
      */
-
     public void compressPicture(File srcPath, File desPath) {
         FileOutputStream fos = null;
         BitmapFactory.Options op = new BitmapFactory.Options();
@@ -343,8 +390,6 @@ public class IdentityAuthenticationActivity extends AppCompatActivity {
         // 缩放图片的尺寸
         float w = op.outWidth;
         float h = op.outHeight;
-        float hh = 200f;//
-        float ww = 200f;//
         // 最长宽度或高度1024
         float be = 1.0f;
         try {
@@ -386,13 +431,8 @@ public class IdentityAuthenticationActivity extends AppCompatActivity {
         }
     }
 
-
     /**
      * 获取指定文件大小
-     *
-     * @param
-     * @return
-     * @throws Exception
      */
     public static float getFileSize(File file) throws Exception {
         float size = 0;

@@ -58,7 +58,7 @@ public class SelectCommodityImgAdapter extends BaseAdapter {
             holder = (ViewHolder) view.getTag();
         }
         holder.headlineText.setText(selectCommodityImgs.get(i).getImgName());
-        Picasso.with(context).load(Config.Url.getUrl(Config.IMG)+selectCommodityImgs.get(i).getSmallImg()).into(holder.commodityImg);
+        Picasso.with(context).load(Config.Url.getUrl(Config.IMG_Commodity)+selectCommodityImgs.get(i).getSmallImg()).into(holder.commodityImg);
         return view;
     }
 

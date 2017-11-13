@@ -5,12 +5,13 @@
     android:layout_height="match_parent">
 
     <LinearLayout
-        android:layout_marginTop="10dp"
+        android:id="@+id/backgroundLL"
         android:orientation="vertical"
         android:layout_width="match_parent"
         android:layout_height="wrap_content">
 
         <RelativeLayout
+            android:layout_marginTop="10dp"
             android:orientation="horizontal"
             android:layout_width="wrap_content"
             android:layout_height="wrap_content">
@@ -33,6 +34,7 @@
                 android:layout_height="20dp" />
 
             <TextView
+                android:id="@+id/price_tv"
                 android:layout_toRightOf="@+id/commodity_img"
                 android:layout_marginLeft="6dp"
                 android:textColor="@color/red"
@@ -46,6 +48,7 @@
         </RelativeLayout>
 
         <LinearLayout
+            android:layout_marginBottom="10dp"
             android:layout_gravity="end"
             android:orientation="horizontal"
             android:layout_width="wrap_content"
@@ -54,10 +57,10 @@
             <Button
                 android:text="编辑"
                 android:textSize="12sp"
-                android:textColor="@color/text_color"
+                android:textColor="@color/white"
                 android:id="@+id/edit_bt"
                 android:layout_marginRight="6dp"
-                android:background="@color/grey3"
+                android:background="@color/blue"
                 android:layout_width="40dp"
                 android:layout_height="20dp" />
 
@@ -70,13 +73,9 @@
                 android:background="@color/grey3"
                 android:layout_width="40dp"
                 android:layout_height="20dp" />
+
         </LinearLayout>
 
     </LinearLayout>
-    <LinearLayout
-        android:background="@color/grayness"
-        android:layout_marginTop="10dp"
-        android:layout_width="match_parent"
-        android:layout_height="1dp"></LinearLayout>
 
     </LinearLayout>

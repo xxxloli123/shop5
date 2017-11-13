@@ -319,12 +319,12 @@
                     android:layout_width="wrap_content"
                     android:layout_height="wrap_content"
                     android:layout_centerVertical="true"
-                    android:layout_toLeftOf="@+id/ima"
+                    android:layout_toLeftOf="@+id/ima1"
                     android:textSize="12sp" />
 
                 <ImageView
                     android:layout_marginLeft="6dp"
-                    android:id="@+id/ima"
+                    android:id="@+id/ima1"
                     android:layout_alignParentRight="true"
                     android:layout_centerVertical="true"
                     android:layout_height="10dp"
@@ -366,7 +366,6 @@
                     android:gravity="center_vertical"
                     android:hint=""
                     android:inputType="text"
-                    android:maxLength="5"
                     android:maxLines="1"
                     android:nextFocusForward="@+id/phone_edit"
                     android:textColor="@color/hint_text_color"
@@ -450,6 +449,7 @@
                 android:background="@color/line"></LinearLayout>
 
             <RelativeLayout
+                android:visibility="gone"
                 android:id="@+id/selective_dissemination"
                 android:layout_width="match_parent"
                 android:layout_height="40dp"

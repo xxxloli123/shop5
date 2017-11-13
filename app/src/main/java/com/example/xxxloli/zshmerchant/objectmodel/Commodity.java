@@ -1,10 +1,12 @@
 package com.example.xxxloli.zshmerchant.objectmodel;
 
+import java.io.Serializable;
+
 /**
  * Created by Administrator on 2017/9/18.
  */
 
-public class Commodity {
+public class Commodity  implements Serializable {
 
     /**
      * id : 402880ef5f14b449015f14bb7c2f0002
@@ -63,16 +65,16 @@ public class Commodity {
     private String productName;
     private Object keywords;
     private int shopsort;
-    private int platformsort;
+    private double platformsort;
     private String isStandard;
-    private int singlePrice;
+    private double singlePrice;
     private String createDate;
     private String details;
     private String modifyDate;
     private long modifyId;
     private Object effect;
-    private int sales;
-    private int commentCount;
+    private double sales;
+    private double commentCount;
 
     public String getId() {
         return id;
@@ -250,11 +252,11 @@ public class Commodity {
         this.shopsort = shopsort;
     }
 
-    public int getPlatformsort() {
+    public double getPlatformsort() {
         return platformsort;
     }
 
-    public void setPlatformsort(int platformsort) {
+    public void setPlatformsort(double platformsort) {
         this.platformsort = platformsort;
     }
 
@@ -266,11 +268,11 @@ public class Commodity {
         this.isStandard = isStandard;
     }
 
-    public int getSinglePrice() {
+    public double getSinglePrice() {
         return singlePrice;
     }
 
-    public void setSinglePrice(int singlePrice) {
+    public void setSinglePrice(double singlePrice) {
         this.singlePrice = singlePrice;
     }
 
@@ -314,19 +316,19 @@ public class Commodity {
         this.effect = effect;
     }
 
-    public int getSales() {
+    public double getSales() {
         return sales;
     }
 
-    public void setSales(int sales) {
+    public void setSales(double sales) {
         this.sales = sales;
     }
 
-    public int getCommentCount() {
+    public double getCommentCount() {
         return commentCount;
     }
 
-    public void setCommentCount(int commentCount) {
+    public void setCommentCount(double commentCount) {
         this.commentCount = commentCount;
     }
 }

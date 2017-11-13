@@ -3,86 +3,76 @@ package com.example.xxxloli.zshmerchant.fragment;
 import android.annotation.SuppressLint;
 import android.os.Bundle;
 import android.support.v4.widget.SwipeRefreshLayout;
+import android.support.v7.widget.LinearLayoutManager;
+import android.support.v7.widget.RecyclerView;
 import android.view.LayoutInflater;
 import android.view.View;
 import android.view.ViewGroup;
-import android.widget.AbsListView;
 import android.widget.LinearLayout;
-import android.widget.ListView;
 import android.widget.Toast;
 
 import com.example.xxxloli.zshmerchant.R;
-import com.example.xxxloli.zshmerchant.adapter.EvaluateListAdapter;
-import com.example.xxxloli.zshmerchant.objectmodel.Message;
+import com.example.xxxloli.zshmerchant.adapter.EvaluateListAdapter1;
+import com.example.xxxloli.zshmerchant.greendao.DBManagerShop;
+import com.example.xxxloli.zshmerchant.greendao.Shop;
+import com.example.xxxloli.zshmerchant.objectmodel.Evaluate;
+import com.google.gson.Gson;
 import com.interfaceconfig.Config;
 import com.sgrape.BaseFragment;
 
+import org.json.JSONArray;
 import org.json.JSONException;
 import org.json.JSONObject;
 
 import java.util.ArrayList;
-import java.util.List;
+import java.util.HashMap;
+import java.util.Map;
 
 import butterknife.BindView;
 import butterknife.ButterKnife;
-import butterknife.OnClick;
-import butterknife.Unbinder;
 
 /**
  * Created by sgrape on 2017/5/25.
  * e-mail: sgrape1153@gmail.com
  */
 @SuppressLint("ValidFragment")
-public class FragEvaluateList extends BaseFragment implements SwipeRefreshLayout.OnRefreshListener {
+public class FragEvaluateList extends BaseFragment implements SwipeRefreshLayout.OnRefreshListener, EvaluateListAdapter1.Callback {
+
     @BindView(R.id.no_message)
     LinearLayout noMessage;
-    Unbinder unbinder;
-    private String type;
     @BindView(R.id.listview)
-    ListView listview;
+    RecyclerView listview;
+    private String type;
 
     @BindView(com.sgrape.library.R.id.refresh)
     SwipeRefreshLayout srl;
 
-    private int page = 0;
-    protected String rob;
-    protected EvaluateListAdapter adapter;
     protected String status;
     protected boolean enable;
+    private DBManagerShop dbManagerShop;
+    private Shop shop;
+    private ArrayList<Evaluate> evaluates;
+    private EvaluateListAdapter1 evaluateListAdapter1;
 
     public FragEvaluateList() {
     }
 
-    public FragEvaluateList(String rob, String status) {
-        this(rob, status, null);
+    public FragEvaluateList(String type) {
+        this(type, true);
     }
 
-    public FragEvaluateList(String rob, String status, String type) {
-        this(rob, status, type, true);
-    }
-
-    public FragEvaluateList(String rob, String status, String type, boolean enable) {
+    public FragEvaluateList(String type, boolean enable) {
         super();
-        this.rob = rob;
-        this.status = status;
         this.type = type;
         this.enable = enable;
-        getArguments().putString("rob", this.rob);
-        getArguments().putString("status", this.status);
         getArguments().putString("type", type);
         getArguments().putBoolean("enable", enable);
     }
 
     @Override
     protected void init() {
-        if (listview.getAdapter() == null)
-            listview.setAdapter(adapter);
-        if (listview.getCount() > 0) {
-            noMessage.setVisibility(View.GONE);
-        } else {
-            noMessage.setVisibility(View.VISIBLE);
-        }
-        loadData();
+        dbManagerShop = DBManagerShop.getInstance(getActivity());
+        shop = dbManagerShop.queryById((long) 2333).get(0);
     }
 
     @Override
@@ -91,36 +81,19 @@ public class FragEvaluateList extends BaseFragment implements SwipeRefreshLayout
         if (rootView != null && isVisibleToUser) onRefresh();
     }
 
-
-    @Override
-    protected void initListener() {
-        listview.setOnScrollListener(new OnScrollListener());
-        srl.setOnRefreshListener(this);
-    }
-
     @Override
     protected void loadData() {
-        List<Message> messages = adapter.getData();
-        Toast.makeText(getActivity(),"丢了个雷姆"+messages.size(),Toast.LENGTH_SHORT);
-        if (messages == null) messages = new ArrayList<>();
-        ++page;
-        if (page == 1 && !messages.isEmpty()) messages.clear();
-        for (int i = 0; i < 5; i++) {
-            Message message = new Message();
-            message.setId(i);
-            message.setContent("香蕉君或许会迟到但永不缺席" + i);
-            messages.add(message);
-        }
-        adapter.notifyDataSetChanged(messages);
-        if (messages.isEmpty()) noMessage.setVisibility(View.VISIBLE);
-        else noMessage.setVisibility(View.GONE);
-        srl.setRefreshing(false);
-        firstLoad = false;
+//        商家获取全部评价，获取未回复评价 type=[All==全部，NotReply==未回复]
+//        参数：[shopId, type]
+        Map<String, Object> map = new HashMap<>();
+        map.put("shopId", shop.getId());
+        map.put("type", type);
+        newCall(Config.Url.getUrl(Config.GET_Evaluate), map);
     }
 
     @Override
     protected int getLayoutId() {
-        return R.layout.fragment_message_list;
+        return R.layout.fragment_evaluate_list;
     }
 
     @Override
@@ -137,67 +110,105 @@ public class FragEvaluateList extends BaseFragment implements SwipeRefreshLayout
     @Override
     public void onSuccess(Object tag, JSONObject json) throws JSONException {
         switch (tag.toString()) {
-            case Config.SHOP_TYPE:
-                List<Message> messages = adapter.getData();
-                adapter.notifyDataSetChanged(messages);
-                if (messages.isEmpty()) noMessage.setVisibility(View.VISIBLE);
-                else noMessage.setVisibility(View.GONE);
+            case Config.GET_Evaluate:
+                srl.setRefreshing(false);
+                firstLoad = false;
+                evaluates = new ArrayList<>();
+                JSONArray arr = json.getJSONArray("evaluate");
+                Gson gson = new Gson();
+                for (int i = 0; i < arr.length(); i++) {
+                    final JSONObject cache = arr.getJSONObject(i);
+                    evaluates.add(evaluates.size(), gson.fromJson(cache.toString(), Evaluate.class));
+                }
+                if (evaluates.isEmpty()) {
+                    noMessage.setVisibility(View.VISIBLE);
+                    if (evaluateListAdapter1 != null) evaluateListAdapter1.refresh(evaluates);
+                    return;
+                } else noMessage.setVisibility(View.GONE);
+                if (evaluateListAdapter1 != null) {
+                    evaluateListAdapter1.refresh(evaluates);
+                    return;
+                }
+                LinearLayoutManager linearLayoutManager = new LinearLayoutManager(getActivity());
+                linearLayoutManager.setOrientation(LinearLayoutManager.VERTICAL);
+                listview.setLayoutManager(linearLayoutManager);
+                evaluateListAdapter1 = new EvaluateListAdapter1(getActivity(), evaluates, this);
+                listview.setAdapter(evaluateListAdapter1);
+                break;
+            case Config.Reply_Evaluate:
+                Toast.makeText(getActivity(), json.getString("message"), Toast.LENGTH_SHORT).show();
+
                 break;
         }
     }
 
     @Override
     public void onRefresh() {
-        page = 0;
         if (srl != null && !srl.isRefreshing())
             srl.setRefreshing(true);
         loadData();
     }
 
+//    class Adapter extends EvaluateListAdapter {
+//
+//        public Adapter() {
+//            super(getContext());
+//        }
+//
+//        @Override
+//        protected void setData(View view, final Evaluate evaluate, final int position) {
+//            super.setData(view, evaluate, position);
+//            final ViewHolder holder = (ViewHolder) view.getTag();
+//            holder.sure.setOnClickListener(new View.OnClickListener() {
+//                @Override
+//                public void onClick(View view) {
+////                    商家回复评价 evaluateId：评价id； replycomment：回复内容
+////                    参数：[evaluateId, replycomment]
+//                    String string=holder.reply.getText().toString();
+//                    if (isEmpty1(string)){
+//                        Toast.makeText(getActivity(), "请输入回复", Toast.LENGTH_SHORT).show();
+//                        return;
+//                    }
+//                    Map<String, Object> params = new HashMap<>();
+//                    params.put("evaluateId", evaluate.getId());
+//                    params.put("replycomment", string);
+//                    newCall(Config.Url.getUrl(Config.Reply_Evaluate), params);
+//                    if (type.equals("NotReply")){
+//                        //List移除某Item
+//                        adapter.getData().remove(evaluate);
+//                        adapter.notifyDataSetChanged();
+//                    }else loadData();
+//                }
+//            });
+//        }
+//    }
     @Override
-    protected void readInstanceState() {
-        super.readInstanceState();
-        rob = getArguments().getString("rob");
-        status = getArguments().getString("status");
-
+    protected void initListener() {
+        srl.setOnRefreshListener(this);
     }
+
+    private boolean isEmpty1(CharSequence str) {
+        if (str == null || str.length() == 0) return true;
+        else return false;
+    }
+//
+//    @Override
+//    protected void readInstanceState() {
+//        super.readInstanceState();
+//        if (adapter == null) adapter = new Adapter();
+//        rob = getArguments().getString("rob");
+//        status = getArguments().getString("status");
+//
+//    }
 
     @Override
     public void onDestroyView() {
         super.onDestroyView();
-        Bundle bundle = getArguments();
-        getArguments().putString("rob", this.rob);
         getArguments().putString("status", this.status);
-        unbinder.unbind();
     }
 
     @Override
-    public View onCreateView(LayoutInflater inflater, ViewGroup container, Bundle savedInstanceState) {
-        // TODO: inflate a fragment view
-        View rootView = super.onCreateView(inflater, container, savedInstanceState);
-        unbinder = ButterKnife.bind(this, rootView);
-        return rootView;
-    }
+    public void click(View v) {
 
-    @OnClick(R.id.no_message)
-    public void onViewClicked() {
-    }
-
-    class OnScrollListener implements AbsListView.OnScrollListener {
-
-        @Override
-        public void onScrollStateChanged(AbsListView view, int scrollState) {
-
-        }
-
-        @Override
-        public void onScroll(AbsListView view, int firstVisibleItem,
-                             int visibleItemCount, int totalItemCount) {
-            if (firstVisibleItem + visibleItemCount > listview.getAdapter().getCount() - 5
-                    && listview.getAdapter().getCount() % 20 == 0
-                    && listview.getAdapter().getCount() != 0) {
-                loadData();
-            }
-        }
     }
 }

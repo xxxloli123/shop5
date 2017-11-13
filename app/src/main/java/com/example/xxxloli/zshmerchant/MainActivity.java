@@ -1,6 +1,12 @@
 package com.example.xxxloli.zshmerchant;
 
+import android.app.DownloadManager;
+import android.content.Context;
+import android.content.pm.PackageInfo;
+import android.content.pm.PackageManager;
+import android.net.Uri;
 import android.os.Bundle;
+import android.os.Handler;
 import android.support.v4.app.Fragment;
 import android.support.v4.app.FragmentManager;
 import android.support.v4.app.FragmentTransaction;
@@ -10,16 +16,28 @@ import android.widget.Button;
 import android.widget.FrameLayout;
 import android.widget.RadioButton;
 import android.widget.RadioGroup;
+import android.widget.Toast;
 
 import com.example.xxxloli.zshmerchant.fragment.ManageFragment;
 import com.example.xxxloli.zshmerchant.fragment.OrderHandleFragment;
 import com.example.xxxloli.zshmerchant.fragment.OrderInquireFragment;
 import com.example.xxxloli.zshmerchant.fragment.ShopFragment;
 import com.example.xxxloli.zshmerchant.util.CacheActivity;
+import com.interfaceconfig.Config;
+
+import org.json.JSONException;
+import org.json.JSONObject;
+
+import java.io.IOException;
 
 import butterknife.BindView;
 import butterknife.ButterKnife;
 import butterknife.OnClick;
+import okhttp3.Call;
+import okhttp3.Callback;
+import okhttp3.OkHttpClient;
+import okhttp3.Request;
+import okhttp3.Response;
 
 public class MainActivity extends AppCompatActivity {
     @BindView(R.id.menus_frame)
@@ -32,8 +50,6 @@ public class MainActivity extends AppCompatActivity {
     RadioButton orderInquire;
     @BindView(R.id.manage)
     RadioButton manage;
-    @BindView(R.id.shop)
-    RadioButton shop;
     @BindView(R.id.group)
     RadioGroup group;
 
@@ -68,10 +84,74 @@ public class MainActivity extends AppCompatActivity {
         }
         setContentView(R.layout.activity_main);
         ButterKnife.bind(this);
+        update(this,getVersionCode(this));
         init(savedInstanceState);
     }
 
+    public static int getVersionCode(Context context) {
+        try {
+            PackageInfo packageInfo = context.getPackageManager().getPackageInfo(context.getPackageName(), 0);
+            return packageInfo.versionCode;
+        } catch (PackageManager.NameNotFoundException e) {
+            e.printStackTrace();
+        }
+        return 0;
+    }
 
+    public static void update(final Context context, final int versionCode) {
+        Request req = new Request.Builder()
+                .tag("")
+                .url(Config.Url.getUrl(Config.UPDATE)).build();
+        new OkHttpClient().newCall(req).enqueue(new Callback() {
+            @Override
+            public void onFailure(Call call, IOException e) {
+            }
+
+            @Override
+            public void onResponse(Call call, Response response) throws IOException {
+                try {
+                    JSONObject json = new JSONObject(response.body().string());
+                    int ver = json.getJSONObject("appVersion").getInt("version");
+                    if (ver > versionCode) {
+                        handler.post(new Runnable() {
+                            @Override
+                            public void run() {
+                                Toast.makeText(context, "检测到新的版本，自动为您下载。。。", Toast.LENGTH_SHORT).show();
+                                //创建下载任务,downloadUrl就是下载链接
+                                DownloadManager.Request request = new DownloadManager.Request(
+                                        Uri.parse(Config.Url.getUrl("/slowlife/share/appdownload?type=android_zsh_shop")));
+                                //指定下载路径和下载文件名
+                                request.setDestinationInExternalPublicDir("/sdcard/Android/" + context.getPackageName(), "掌升活(商家端).apk");
+                                request.setDescription("掌升活(商家端)新版本下载");
+                                request.setNotificationVisibility(DownloadManager.Request.VISIBILITY_VISIBLE_NOTIFY_COMPLETED);
+                                request.setMimeType("application/vnd.android.package-archive");
+                                // 设置为可被媒体扫描器找到
+                                request.allowScanningByMediaScanner();
+                                // 设置为可见和可管理
+                                request.setVisibleInDownloadsUi(true);
+                                //获取下载管理器
+                                DownloadManager downloadManager = (DownloadManager) context.getSystemService(Context.DOWNLOAD_SERVICE);
+                                //将下载任务加入下载队列，否则不会进行下载
+                                downloadManager.enqueue(request);
+                            }
+                        });
+                    }
+//                    else {
+//                        handler.post(new Runnable() {
+//                            @Override
+//                            public void run() {
+//                                Toast.makeText(context, "已安装最新版", Toast.LENGTH_SHORT).show();
+//                            }
+//                        });
+//                    }
+                } catch (JSONException e) {
+                    e.printStackTrace();
+                }
+            }
+
+        });
+    }
+    private static Handler handler = new Handler();
 
     /*
      * onSaveInstanceState方法会在什么时候被执行，有这么几种情况：
@@ -107,8 +187,7 @@ public class MainActivity extends AppCompatActivity {
         orderHandle.setOnClickListener(onClickListener);
         orderInquire.setOnClickListener(onClickListener);
         manage.setOnClickListener(onClickListener);
-        shop.setOnClickListener(onClickListener);
-        rButton = new RadioButton[]{orderHandle, orderInquire,manage,shop};
+        rButton = new RadioButton[]{orderHandle, orderInquire,manage};
 
         int index = 0;
         if (savedInstanceState != null) {
@@ -158,12 +237,12 @@ public class MainActivity extends AppCompatActivity {
             changeFragment(manageFragment);
         }
 
-        else if (selectButton == shop) {
-            if (shopFragment == null) {
-                shopFragment = addFragment(ShopFragment.class, SHOP, bundle);
-            }
-            changeFragment(shopFragment);
-        }
+//        else if (selectButton == shop) {
+//            if (shopFragment == null) {
+//                shopFragment = addFragment(ShopFragment.class, SHOP, bundle);
+//            }
+//            changeFragment(shopFragment);
+//        }
     }
 
     /**
@@ -192,8 +271,6 @@ public class MainActivity extends AppCompatActivity {
         return (T) fragment;
     }
 
-
-
     /**
      * 切换fragment
      *
@@ -221,12 +298,6 @@ public class MainActivity extends AppCompatActivity {
             orderFragment.setUserVisibleHint(false);
         }
 
-        Fragment myFragment = manager.findFragmentByTag(SHOP);
-        if (myFragment != null && myFragment != fragment) {
-            transaction.detach(myFragment);
-            myFragment.setUserVisibleHint(false);
-        }
-
         if (fragment != null) {
             if (fragment != homeFragment && fragment.isDetached()) {
                 transaction.attach(fragment);
@@ -236,21 +307,5 @@ public class MainActivity extends AppCompatActivity {
             fragment.setUserVisibleHint(true);
         }
         transaction.commit();
-    }
-
-
-
-    @OnClick({R.id.order_handle, R.id.order_inquire, R.id.manage, R.id.shop})
-    public void onViewClicked(View view) {
-        switch (view.getId()) {
-            case R.id.order_handle:
-                break;
-            case R.id.order_inquire:
-                break;
-            case R.id.manage:
-                break;
-            case R.id.shop:
-                break;
-        }
     }
 }

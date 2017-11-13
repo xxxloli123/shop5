@@ -47,8 +47,7 @@
                 android:layout_gravity="center_vertical"
                 android:background="@drawable/line_frame"
                 android:gravity="center"
-                android:inputType="number"
-                android:maxLength="3"
+                android:inputType="number|numberDecimal"
                 android:text="3"
                 android:textColor="@color/text_color"
                 android:textSize="15sp" />
@@ -126,7 +125,7 @@
             android:layout_height="wrap_content"
             android:layout_marginLeft="47dp"
             android:layout_marginRight="10dp"
-            android:text="如果顾客在商家配送范围内，选择惠递配送由商家承担邮费"
+            android:text="如商家不配送，可选择配送距离为0km。如果顾客在商家配送范围内，选择惠递配送由商家承担邮费"
             android:textColor="@color/red"
             android:textSize="10sp" />
 

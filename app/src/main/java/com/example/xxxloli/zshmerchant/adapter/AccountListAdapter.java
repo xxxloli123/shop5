@@ -10,7 +10,10 @@ import android.widget.LinearLayout;
 import android.widget.TextView;
 
 import com.example.xxxloli.zshmerchant.R;
+import com.example.xxxloli.zshmerchant.greendao.Account;
 import com.example.xxxloli.zshmerchant.objectmodel.Info;
+import com.interfaceconfig.Config;
+import com.squareup.picasso.Picasso;
 
 import java.util.List;
 
@@ -23,23 +26,23 @@ import butterknife.ButterKnife;
 
 public class AccountListAdapter extends BaseAdapter {
 
-    private List<Info> infos;
+    private List<Account> accounts;
     private Context context;
 
-    public AccountListAdapter(Context context, List<Info> infos) {
-        this.infos = infos;
+    public AccountListAdapter(Context context, List<Account> accounts) {
+        this.accounts = accounts;
         this.context = context;
     }
 
 
     @Override
     public int getCount() {
-        return infos == null ? 0 : infos.size();
+        return accounts == null ? 0 : accounts.size();
     }
 
     @Override
     public Object getItem(int i) {
-        return infos.get(i);
+        return accounts.get(i);
     }
 
     @Override
@@ -57,7 +60,9 @@ public class AccountListAdapter extends BaseAdapter {
         } else {
             holder = (ViewHolder) view.getTag();
         }
-        holder.name.setText(infos.get(i).getName());
+        Picasso.with(context).load(Config.Url.getUrl(Config.IMG_Hear)+accounts.get(i).getHead()).into(holder.headImg);
+        holder.name.setText(accounts.get(i).getName());
+        holder.phone.setText(accounts.get(i).getPhone());
         return view;
     }
 

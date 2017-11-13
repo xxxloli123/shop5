@@ -4,6 +4,7 @@ import android.app.TimePickerDialog;
 import android.content.DialogInterface;
 import android.os.Bundle;
 import android.support.v7.app.AppCompatActivity;
+import android.util.Log;
 import android.view.View;
 import android.widget.Button;
 import android.widget.RelativeLayout;
@@ -12,6 +13,10 @@ import android.widget.TimePicker;
 import android.widget.Toast;
 
 import com.example.xxxloli.zshmerchant.R;
+import com.example.xxxloli.zshmerchant.greendao.DBManagerShop;
+import com.example.xxxloli.zshmerchant.greendao.DBManagerUser;
+import com.example.xxxloli.zshmerchant.greendao.Shop;
+import com.example.xxxloli.zshmerchant.greendao.User;
 import com.interfaceconfig.Config;
 import com.sgrape.BaseActivity;
 
@@ -38,18 +43,33 @@ public class BusinessTimeActivity extends BaseActivity {
     @BindView(R.id.hint)
     TextView hint;
 
+    private DBManagerShop dbManagerShop;
+    private Shop shop;
 
-    private String  startHour ="2333", startMinute ="2333" , endHour ="2333", endMinute ="2333";
+    private int  startHour , startMinute  , endHour , endMinute;
+    private String sH,sM,eH,eM;
 
     @Override
     protected void onCreate(Bundle savedInstanceState) {
         super.onCreate(savedInstanceState);
 //        setContentView(R.layout.activity_business_time);
+        dbManagerShop=DBManagerShop.getInstance(this);
+        shop=dbManagerShop.queryById((long) 2333).get(0);
         ButterKnife.bind(this);
         initView();
     }
 
     private void initView() {
+        sH= shop.getStartDate().substring(0,2);
+        sM  = shop.getStartDate().substring(3,5);
+        eH= shop.getEndDate().substring(0,2);
+        eM= shop.getEndDate().substring(3,5);
+        startHour= Integer.parseInt(sH);
+        startMinute= Integer.parseInt(sM);
+        endHour= Integer.parseInt(eH);
+        endMinute= Integer.parseInt(eM);
+        startTime.setText(sH+" : "+sM);
+        endTime.setText(eH+" : "+eM);
     }
 
     @Override
@@ -77,21 +97,24 @@ public class BusinessTimeActivity extends BaseActivity {
     }
 
     private void submit() {
-        int start= Integer.parseInt(startHour);
-        int end= Integer.parseInt(endHour);
-        if (start>end){
+        if (startHour>endHour){
             Toast.makeText(this,"请输入正确的营业时间",Toast.LENGTH_SHORT).show();
             return;
         }
+        if (startHour==endHour&&startMinute>=endMinute){
+            Toast.makeText(this,"请输入正确的营业时间",Toast.LENGTH_SHORT).show();
+            return;
+        }
+
         Map<String, Object> params = new HashMap<>();
         JSONObject shopStr = new JSONObject();
         try {
-            shopStr.put("id", "402880e75f000ab6015f0043a1fc0004");
-            shopStr.put("startDate", startHour+"-"+startMinute);
-            shopStr.put("endDate", endHour+"-"+endMinute);
+            shopStr.put("id", shop.getId());
+            shopStr.put("startDate", sH+"-"+sM);
+            shopStr.put("endDate", eH+"-"+eM);
 
             params.put("shopStr", shopStr);
-            params.put("userId", "402880e75f000ab6015f0043a1210002");
+            params.put("userId", shop.getShopkeeperId());
             newCall(Config.Url.getUrl(Config.EDIT_SHOP_INFO), params);
         } catch (JSONException e) {
             e.printStackTrace();
@@ -103,48 +126,26 @@ public class BusinessTimeActivity extends BaseActivity {
             @Override
             public void onTimeSet(TimePicker timePicker, int i, int i1) {
                 if (isStart) {
-                    startHour = String.valueOf(i);
-                    startMinute = String.valueOf(i1);
-                    if (startHour.length()==1){
-                        StringBuilder  sb = new StringBuilder (startHour);
-                        sb.insert(0,"0");
-                        startHour=sb.toString();
-                    }
-                    if (startMinute.length()==1){
-                        StringBuilder  sb = new StringBuilder (startMinute);
-                        sb.insert(0,"0");
-                        startMinute=sb.toString();
-                    }
-                    startTime.setText(startHour+" : "+startMinute);
+                    startHour = i;
+                    startMinute = i1;
+                    sH=(startHour<10)?"0"+startHour:""+startHour;
+                    sM=(startMinute<10)?"0"+startMinute:""+startMinute;
+                    startTime.setText(sH+" : "+sM);
                 } else {
-                    endHour = String.valueOf(i);
-                    endMinute = String.valueOf(i1);
-                    if (endHour.length()==1){
-                        StringBuilder  sb = new StringBuilder (endHour);
-                        sb.insert(0,"0");
-                        endHour=sb.toString();
-                    }
-                    if (endMinute.length()==1){
-                        StringBuilder  sb = new StringBuilder (endMinute);
-                        sb.insert(0,"0");
-                        endMinute=sb.toString();
-                    }
-                    endTime.setText(endHour+" : "+endMinute);
+                    endHour = i;
+                    endMinute = i1;
+                    eH=(endHour<10)?"0"+endHour:""+endHour;
+                    eM=(endMinute<10)?"0"+endMinute:""+endMinute;
+                    endTime.setText(eH+" : "+eM);
                 }
             }
         }, 0, 0, true);
         timePickerDialog.setOnDismissListener(new DialogInterface.OnDismissListener() {
             @Override
             public void onDismiss(DialogInterface dialogInterface) {
-                if (startHour.equals("2333")&&endHour.equals("2333"))return;
-                int start= Integer.parseInt(startHour);
-                int end= Integer.parseInt(endHour);
-                if (start>end){
-                    hint.setVisibility(View.VISIBLE);
-                    return;
-                }else {
-                    hint.setVisibility(View.GONE);
-                }
+                if (startHour>endHour) hint.setVisibility(View.VISIBLE);
+                else if (startHour==endHour&&startMinute>=endMinute)hint.setVisibility(View.VISIBLE);
+                else hint.setVisibility(View.GONE);
             }
         });
         timePickerDialog.show();
@@ -153,5 +154,9 @@ public class BusinessTimeActivity extends BaseActivity {
     @Override
     public void onSuccess(Object tag, JSONObject json) throws JSONException {
         Toast.makeText(this, json.getString("message"), Toast.LENGTH_SHORT).show();
+        shop.setStartDate(sH+":"+sM);
+        shop.setEndDate(eH+":"+eM);
+        dbManagerShop.updateShop(shop);
+        finish();
     }
 }

@@ -1,0 +1,93 @@
+<?xml version="1.0" encoding="utf-8"?>
+<LinearLayout xmlns:android="http://schemas.android.com/apk/res/android"
+    android:orientation="vertical"
+    android:layout_width="match_parent"
+    android:layout_height="match_parent">
+
+    <ScrollView
+        android:layout_width="match_parent"
+        android:layout_height="match_parent">
+
+        <GridLayout
+            android:columnCount="2"
+            android:orientation="horizontal"
+            android:rowCount="3"
+            android:layout_width="match_parent"
+            android:layout_height="match_parent">
+
+            <LinearLayout
+                android:layout_columnWeight="1"
+                android:orientation="vertical"
+                >
+
+                <ImageView
+                    android:layout_marginTop="15dp"
+                    android:src="@drawable/huodong"
+                    android:layout_gravity="center_horizontal"
+                    android:layout_width="80dp"
+                    android:layout_height="80dp" />
+
+                <TextView
+                    android:layout_marginTop="6dp"
+                    android:textColor="@color/black"
+                    android:gravity="center"
+                    android:layout_gravity="center_horizontal"
+                    android:text="整点秒杀"
+                    android:textSize="15sp"
+                    android:layout_width="wrap_content"
+                    android:layout_height="30dp" />
+
+                <Button
+                    android:id="@+id/ZDMS"
+                    android:layout_marginBottom="16dp"
+                    android:textSize="13sp"
+                    android:textColor="@color/white"
+                    android:text="上传商品"
+                    android:layout_gravity="center_horizontal"
+                    android:background="@drawable/background_bgall_bule"
+                    android:layout_width="60dp"
+                    android:layout_height="25dp" />
+
+            </LinearLayout>
+
+            <LinearLayout
+                android:layout_columnWeight="1"
+                android:orientation="vertical"
+                >
+
+                <ImageView
+                    android:layout_marginTop="15dp"
+                    android:src="@drawable/huodong"
+                    android:layout_gravity="center_horizontal"
+                    android:layout_width="80dp"
+                    android:layout_height="80dp" />
+
+                <TextView
+                    android:layout_marginTop="6dp"
+                    android:textColor="@color/black"
+                    android:gravity="center"
+                    android:layout_gravity="center_horizontal"
+                    android:text="特价商品"
+                    android:textSize="15sp"
+                    android:layout_width="wrap_content"
+                    android:layout_height="30dp" />
+
+                <Button
+                    android:id="@+id/TJSP"
+                    android:layout_marginBottom="16dp"
+                    android:textSize="13sp"
+                    android:textColor="@color/white"
+                    android:text="上传商品"
+                    android:layout_gravity="center_horizontal"
+                    android:background="@drawable/background_bgall_bule"
+                    android:layout_width="60dp"
+                    android:layout_height="25dp" />
+
+            </LinearLayout>
+
+        </GridLayout>
+
+    </ScrollView>
+
+
+</LinearLayout>

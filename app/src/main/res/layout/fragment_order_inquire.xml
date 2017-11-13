@@ -12,6 +12,7 @@
         android:background="@color/blue">
 
         <RelativeLayout
+            android:visibility="gone"
            android:layout_alignParentRight="true"
             android:id="@+id/inquireRL"
             android:layout_width="40dp"

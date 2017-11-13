@@ -80,6 +80,8 @@ public class SelectCommodityImgActivity extends BaseActivity {
                 Intent intent = new Intent();
                 intent.putExtra("pictureLibraryId",selectCommodityImgs.get(i).getId());
                 intent.putExtra("img",selectCommodityImgs.get(i).getSmallImg());
+                intent.putExtra("name",selectCommodityImgs.get(i).getImgName());
+                intent.putExtra("describe",selectCommodityImgs.get(i).getImgTextDescription());
                 setResult(Activity.RESULT_OK, intent);
                 finish();
             }

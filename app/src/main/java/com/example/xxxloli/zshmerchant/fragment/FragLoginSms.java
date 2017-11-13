@@ -9,9 +9,14 @@ import android.widget.EditText;
 import android.widget.Toast;
 
 
+import com.example.xxxloli.zshmerchant.Activity.AccountManageActivity;
 import com.example.xxxloli.zshmerchant.Activity.ResetPasswordActivity;
 import com.example.xxxloli.zshmerchant.R;
-import com.example.xxxloli.zshmerchant.greendao.DBManager;
+import com.example.xxxloli.zshmerchant.greendao.Account;
+import com.example.xxxloli.zshmerchant.greendao.DBManagerAccount;
+import com.example.xxxloli.zshmerchant.greendao.DBManagerShop;
+import com.example.xxxloli.zshmerchant.greendao.DBManagerUser;
+import com.example.xxxloli.zshmerchant.greendao.Shop;
 import com.example.xxxloli.zshmerchant.greendao.User;
 import com.example.xxxloli.zshmerchant.util.Common;
 import com.example.xxxloli.zshmerchant.view.TimeButton;
@@ -45,9 +50,10 @@ public class FragLoginSms extends BaseFragment {
     @BindView(R.id.verification_code)
     TimeButton verificationCode;
     private String smsId = "";
-    private String token;
-    private DBManager dbManager;
-
+    private String token,phone;
+    private DBManagerUser dbManagerUser;
+    private DBManagerAccount dbManagerAccount;
+    private DBManagerShop dbManagerShop;
 
     public FragLoginSms() {
         super();
@@ -62,56 +68,56 @@ public class FragLoginSms extends BaseFragment {
     protected void init() {
         verificationCode.setEnabled(false);
     }
-
-    @Override
-    protected void initListener() {
-        super.initListener();
-        verificationCode.setOnClickListener(this);
-        phoneEdit.addTextChangedListener(new TextWatcher() {
-            @Override
-            public void beforeTextChanged(CharSequence s, int start, int count, int after) {
-
-            }
-
-            @Override
-            public void onTextChanged(CharSequence s, int start, int before, int count) {
-
-            }
-
-            @Override
-            public void afterTextChanged(Editable s) {
-                if (Common.matchePhone(phoneEdit.getText().toString().trim())) {
-                    verificationCode.setEnabled(true);
-                } else verificationCode.setEnabled(false);
-            }
-        });
-        /**
-         *         //开启信鸽日志输出
-
-         */
-
-        XGPushConfig.enableDebug(getActivity(), true);
-
-        //信鸽注册代码
-
-        XGPushManager.registerPush(getActivity(), new XGIOperateCallback() {
-
-            @Override
-            public void onSuccess(Object data, int flag) {
-                token = data.toString();
-                Log.d("TPush", "注册成功，设备token为：" + data);
-
-            }
-
-            @Override
-            public void onFail(Object data, int errCode, String msg) {
-
-                Log.d("TPush", "注册失败，错误码：" + errCode + ",错误信息：" + msg);
-
-            }
-        });
-
-    }
+//
+//    @Override
+//    protected void initListener() {
+//        super.initListener();
+//        verificationCode.setOnClickListener(this);
+//        phoneEdit.addTextChangedListener(new TextWatcher() {
+//            @Override
+//            public void beforeTextChanged(CharSequence s, int start, int count, int after) {
+//
+//            }
+//
+//            @Override
+//            public void onTextChanged(CharSequence s, int start, int before, int count) {
+//
+//            }
+//
+//            @Override
+//            public void afterTextChanged(Editable s) {
+//                if (Common.matchePhone(phoneEdit.getText().toString().trim())) {
+//                    verificationCode.setEnabled(true);
+//                } else verificationCode.setEnabled(false);
+//            }
+//        });
+//        /**
+//         *         //开启信鸽日志输出
+//
+//         */
+//
+//        XGPushConfig.enableDebug(getActivity(), true);
+//
+//        //信鸽注册代码
+//
+//        XGPushManager.registerPush(getActivity(), new XGIOperateCallback() {
+//
+//            @Override
+//            public void onSuccess(Object data, int flag) {
+//                token = data.toString();
+//                Log.d("TPush", "注册成功，设备token为：" + data);
+//
+//            }
+//
+//            @Override
+//            public void onFail(Object data, int errCode, String msg) {
+//
+//                Log.d("TPush", "注册失败，错误码：" + errCode + ",错误信息：" + msg);
+//
+//            }
+//        });
+//
+//    }
 
     @OnClick({ R.id.login_bt, R.id.login_resetPwd})
 
@@ -142,7 +148,7 @@ public class FragLoginSms extends BaseFragment {
             Toast.makeText(getContext(), "请先获取验证码", Toast.LENGTH_SHORT).show();
             return;
         }
-        String phone = phoneEdit.getText().toString().trim();
+        phone = phoneEdit.getText().toString().trim();
         if (!Common.matchePhone(phone)) {
             Toast.makeText(getContext(), "手机号格式不正确", Toast.LENGTH_SHORT).show();
             return;
@@ -189,10 +195,32 @@ public class FragLoginSms extends BaseFragment {
                 Toast.makeText(getContext(), json.getString("message"), Toast.LENGTH_SHORT).show();
                 if (json.getInt("statusCode")==200) {
                     Toast.makeText(getContext(), "成功了", Toast.LENGTH_SHORT).show();
-                    dbManager = DBManager.getInstance(getActivity());
-                    User user=new Gson().fromJson(json.getString("user"), User.class);
+                    dbManagerUser = DBManagerUser.getInstance(getActivity());
+                    User user = new Gson().fromJson(json.getString("user"), User.class);
                     user.setWritId((long) 2333);
-                    dbManager.insertUser(user);
+                    dbManagerShop=DBManagerShop.getInstance(getActivity());
+                    Shop shop = new Gson().fromJson(json.getString("shop"), Shop.class);
+                    shop.setWritId((long) 2333);
+                    dbManagerUser.insertUser(user);
+                    dbManagerShop.insertShop(shop);
+
+                    dbManagerAccount = DBManagerAccount.getInstance(getActivity());
+                    Account account=new Account();
+                    if (dbManagerAccount.queryByPhone(phone).size()==0) {
+                        account.setHead(shop.getShopImage());
+                        account.setName(shop.getShopkeeperName());
+                        account.setPhone(phone);
+                        account.setWritId((long) 2333);
+                        dbManagerAccount.insertAccount(account);
+                    }else {
+                        account=dbManagerAccount.queryByPhone(phone).get(0);
+                        account.setName(shop.getShopkeeperName());
+                        account.setHead(shop.getShopImage());
+                        dbManagerAccount.deleteById(account.getWritId());
+                        account.setWritId((long) 2333);
+                        dbManagerAccount.insertAccount(account);
+                    }
+                    startActivity(new Intent(getContext(), AccountManageActivity.class));
                 }
 //                startActivity(new Intent(getContext(), MainActivity.class));
 //                ((MyApplicatio) getContext().getApplicationContext()).setInfo(new Gson().fromJson(json.getString("user"), Info.class));

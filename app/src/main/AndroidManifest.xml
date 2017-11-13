@@ -36,20 +36,38 @@
 
     <application
         android:allowBackup="true"
-        android:icon="@mipmap/ic_launcher"
+        android:icon="@mipmap/ic_logo"
         android:label="@string/app_name"
-        android:roundIcon="@mipmap/ic_launcher_round"
+        android:roundIcon="@mipmap/ic_logo"
         android:supportsRtl="true"
         android:theme="@style/AppTheme.NoActionBar"
         tools:replace="android:icon, android:theme">
+
+        <provider
+            android:name="android.support.v4.content.FileProvider"
+            android:authorities="${applicationId}.provider"
+            android:exported="false"
+            android:grantUriPermissions="true">
+            <meta-data
+                android:name="android.support.FILE_PROVIDER_PATHS"
+                android:resource="@xml/provider_paths" />
+        </provider>
+
         <activity
             android:name=".Activity.FirstActivity"
             android:launchMode="singleTop"
             android:theme="@style/AppTheme.NoActionBar"
-            android:windowSoftInputMode="adjustPan" />
+            android:windowSoftInputMode="adjustPan" >
+            <intent-filter>
+                <action android:name="android.intent.action.MAIN" />
+
+                <category android:name="android.intent.category.LAUNCHER" />
+            </intent-filter>
+        </activity>
+
         <activity
             android:name=".Activity.LoginActivity"
-            android:windowSoftInputMode="adjustPan" />
+            android:windowSoftInputMode="adjustPan"></activity>
         <activity
             android:name=".Activity.ResetPasswordActivity"
             android:theme="@style/AppTheme.NoActionBar"
@@ -58,29 +76,32 @@
             android:name=".MainActivity"
             android:launchMode="singleTop"
             android:theme="@style/AppTheme.NoActionBar"
-            android:windowSoftInputMode="adjustPan"></activity>
+            android:windowSoftInputMode="adjustPan">
+
+        </activity>
         <activity android:name=".Activity.OpenShopActivity" />
-        <activity android:name=".Activity.XXRZActivity" />
+
+        <activity android:name=".Activity.XXRZActivity" >
+        </activity>
+
         <activity android:name=".Activity.IdentityAuthenticationActivity" />
         <activity android:name=".Activity.QualificationAuthenticationActivity" />
         <activity android:name=".Activity.ShopInfoActivity" />
         <activity android:name=".Activity.OrderingSystemActivity" />
         <activity android:name=".Activity.BusinessTimeActivity" />
         <activity android:name=".Activity.ShopQRcodeActivity" />
-        <activity android:name=".Activity.CommodityActivity" />
-        <activity android:name=".Activity.AddCommodityActivity">
-            <intent-filter>
-                <action android:name="android.intent.action.MAIN" />
 
-                <category android:name="android.intent.category.LAUNCHER" />
-            </intent-filter>
+        <activity android:name=".Activity.CommodityActivity" >
+
         </activity>
+
+        <activity android:name=".Activity.AddCommodityActivity" />
+        <activity android:name=".Activity.EditCommodityActivity" />
         <activity android:name=".Activity.EditDishesActivity" />
-        <activity android:name=".Activity." />
-        <activity android:name=".Activity.NewMessageActivity" />
+        <activity android:name=".Activity.NewMessageActivity"></activity>
         <activity android:name=".Activity.MessageContentActivity" />
-        <activity android:name=".Activity.OrderingEvaluateActivity" />
-        <activity android:name=".Activity.BusinessAnalyzeActivity" />
+        <activity android:name=".Activity.OrderingEvaluateActivity"></activity>
+        <activity android:name=".Activity.BusinessAnalyzeActivity"></activity>
         <activity android:name=".Activity.DistributionActivity" />
         <activity android:name=".Activity.DistributionServiceActivity" />
         <activity android:name=".Activity.SettingActivity" />
@@ -103,13 +124,37 @@
             android:name="com.amap.api.v2.apikey"
             android:value="a2f96fa3700d25be1b74250544cdeaeb" />
 
+        <activity
+            android:name="com.alipay.sdk.app.H5PayActivity"
+            android:configChanges="orientation|keyboardHidden|navigation|screenSize"
+            android:exported="false"
+            android:screenOrientation="behind"
+            android:windowSoftInputMode="adjustResize|stateHidden"></activity>
+        <activity
+            android:name="com.alipay.sdk.app.H5AuthActivity"
+            android:configChanges="orientation|keyboardHidden|navigation"
+            android:exported="false"
+            android:screenOrientation="behind"
+            android:windowSoftInputMode="adjustResize|stateHidden"></activity>
         <activity android:name=".Activity.DomeActivity" />
         <activity android:name=".Activity.CommodityClassify_1_Activity" />
         <activity android:name=".Activity.CommodityClassify_2_Activity" />
         <activity android:name=".Activity.SpecificationActivity" />
         <activity android:name=".Activity.BuildactivityActivity" />
         <activity android:name=".Activity.MJActivity" />
-        <activity android:name=".Activity.SelectCommodityImgActivity"></activity>
+        <activity android:name=".Activity.SelectCommodityImgActivity" />
+        <activity android:name=".Activity.CWHYSYHJActivity" />
+        <activity android:name=".Activity.FXGZSYHQActivity" />
+        <activity android:name=".Activity.MMPSFHDActivity" />
+        <activity android:name=".Activity.MZActivity" />
+        <activity android:name=".Activity.PlatformActivitsActivity" />
+        <activity android:name=".Activity.AddSpecialOfferCommodityActivity" />
+        <activity android:name=".Activity.MyBillActivity"></activity>
+        <activity android:name=".Activity.Main2Activity"></activity>
+        <activity android:name=".Activity.SearchBluetoothActivity"></activity>
+        <activity android:name=".Activity.PersonnelManageActivity"></activity>
+        <activity android:name=".Activity.ExceptionActivity"></activity>
+        <activity android:name=".Activity.FeedbackRecordActivity"></activity>
     </application>
 
 </manifest>

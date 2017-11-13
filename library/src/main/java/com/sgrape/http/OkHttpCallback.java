@@ -82,7 +82,9 @@ public class OkHttpCallback implements Callback {
                             if (json.getInt("statusCode") == 200) {
                                 impl.onSuccess(tag, json);
                             } else {
-                                Toast.makeText(impl.getContext(), json.getString("message"), Toast.LENGTH_SHORT).show();
+
+                                    Toast.makeText(impl.getContext(), json.getString("message"), Toast.LENGTH_SHORT).show();
+
                                 Log.e("okhttpCallback", json.toString());
                                 impl.fail(tag, response.code(), json);
                             }

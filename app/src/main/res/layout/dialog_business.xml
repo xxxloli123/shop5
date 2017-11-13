@@ -1,0 +1,63 @@
+<?xml version="1.0" encoding="utf-8"?>
+<LinearLayout xmlns:android="http://schemas.android.com/apk/res/android"
+    android:orientation="vertical" android:layout_width="match_parent"
+    android:layout_height="match_parent"
+    android:gravity="center">
+    <LinearLayout
+        android:layout_width="match_parent"
+        android:layout_height="wrap_content"
+        android:orientation="vertical"
+        android:layout_marginLeft="60dp"
+        android:layout_marginRight="60dp"
+        android:background="@color/qianghui">
+        <LinearLayout
+            android:id="@+id/linea_gd"
+            android:orientation="horizontal"
+            android:background="@drawable/baise_huise"
+            android:layout_height="60dp"
+            android:layout_width="match_parent"
+            android:layout_marginBottom="0.5dp"
+            android:clickable="true">
+            <TextView
+                android:layout_height="match_parent"
+                android:layout_width="wrap_content"
+                android:textColor="@color/black"
+                android:gravity="center_vertical"
+                android:text="开店"
+                android:padding="20dp"/>
+        </LinearLayout>
+        <LinearLayout
+            android:id="@+id/linea_ljgd"
+            android:orientation="horizontal"
+            android:background="@drawable/baise_huise"
+            android:layout_height="60dp"
+            android:layout_width="match_parent"
+            android:layout_marginBottom="0.5dp"
+            android:clickable="true">
+            <TextView
+                android:layout_height="match_parent"
+                android:layout_width="wrap_content"
+                android:textColor="@color/black"
+                android:text="立即关店"
+                android:gravity="center_vertical"
+                android:padding="20dp"/>
+        </LinearLayout>
+        <LinearLayout
+            android:id="@+id/linea_qx"
+            android:orientation="horizontal"
+            android:background="@drawable/baise_huise"
+            android:layout_height="60dp"
+            android:layout_width="match_parent"
+            android:clickable="true">
+            <TextView
+                android:layout_height="match_parent"
+                android:layout_width="wrap_content"
+                android:textColor="@color/black"
+                android:text="取消"
+                android:gravity="center_vertical"
+                android:padding="20dp"/>
+        </LinearLayout>
+    </LinearLayout>
+
+
+</LinearLayout>

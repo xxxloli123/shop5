@@ -14,6 +14,7 @@ import android.support.v4.view.ViewPager;
 import android.support.v4.view.ViewPager.OnPageChangeListener;
 import android.util.AttributeSet;
 import android.util.DisplayMetrics;
+import android.util.Log;
 import android.util.TypedValue;
 import android.view.Gravity;
 import android.view.MotionEvent;
@@ -231,7 +232,9 @@ public class PagerSlidingTabStrip extends HorizontalScrollView {
                         String s = pager.getAdapter().getPageTitle(i).toString();
                         //计算所有tab的实际字体的宽
                         mPaintTabText.setTextSize(tabTextSize);
-                        mTabsTextWidth += (int) mPaintTabText.measureText(s, 0, s.length());
+                        mTabsTextWidth += (int) mPaintTabText.measureText(s, 0, s.length())+50;
+                        Log.e("mTabsTextWidth","丢了个雷姆  "+mTabsTextWidth);
+
                     }
                     if (mTabsTextWidth > 0) {
                         tabPadding = (getMeasuredWidth() - mTabsTextWidth) / tabCount / 2;

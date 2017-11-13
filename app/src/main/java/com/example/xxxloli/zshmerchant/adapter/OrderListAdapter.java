@@ -1,9 +1,13 @@
 package com.example.xxxloli.zshmerchant.adapter;
 
 import android.content.Context;
+import android.util.Log;
 import android.view.View;
+import android.view.ViewGroup;
 import android.widget.Button;
 import android.widget.LinearLayout;
+import android.widget.ListAdapter;
+import android.widget.ListView;
 import android.widget.RelativeLayout;
 import android.widget.TextView;
 
@@ -44,15 +48,16 @@ public class OrderListAdapter extends BaseAdapter<OrderEntity> {
         holder.money.setText(order.getUserActualFee() + "");
         holder.downOrderTime.setText(order.getCreateDate());
         holder.orderNumber.setText(order.getOrderNumber());
-        if (order.getLineOrder_value().equals("预定单")) {
+//        所有新订单 All，ReserveOrder(预定单),NormalOrder(配送到家),ShopConsumption(到店消费单)
+        if (order.getLineOrder().equals("ReserveOrder")) {
             holder.psdjText.setText("预定单");
             holder.psdjText.setBackgroundResource(R.drawable.round_yellow_background);
-        } else if (order.getLineOrder_value().equals("到店消费")) {
+        } else if (order.getLineOrder().equals("ShopConsumption")) {
             holder.psdjText.setText("到店消费");
             holder.psdjText.setBackgroundResource(R.drawable.round_red_background);
         }
         holder.namePhone.setText(order.getCreateUserName() + "  " + order.getCreateUserPhone());
-        holder.address.setText(order.getEndHouseNumber());
+        holder.address.setText(order.getEndHouseNumber()+"");
         holder.distance.setText(order.getShopUserDistance() + "km");
 
         holder.packagingDispatchingRL.setVisibility(View.GONE);
@@ -79,6 +84,9 @@ public class OrderListAdapter extends BaseAdapter<OrderEntity> {
                     holder.packagingDispatchingRL.setVisibility(View.VISIBLE);
                     holder.orderMoneyRL.setVisibility(View.VISIBLE);
                     holder.line.setVisibility(View.VISIBLE);
+                    ListView.LayoutParams params = new ListView.LayoutParams(ListView.LayoutParams.MATCH_PARENT,
+                            holder.LL.getMeasuredHeight());//设置宽度和高度
+                    view.setLayoutParams(params);
                 } else {
                     holder.packagingDispatchingRL.setVisibility(View.GONE);
                     holder.remark.setVisibility(View.GONE);
@@ -146,5 +154,25 @@ public class OrderListAdapter extends BaseAdapter<OrderEntity> {
         public ViewHolder(View view) {
             super(view);
         }
+    }
+
+    // 动态改变listView的高度
+    public int getListView(ListView listView) {
+        ListAdapter listAdapter = listView.getAdapter();
+        if (listAdapter == null) {
+            return 0;
+        }
+        int totalHeight = 0;
+        for (int i = 0; i < listAdapter.getCount(); i++) {
+            View listItem = listAdapter.getView(i, null, listView);
+            listItem.measure(0, 0);
+            totalHeight += 250;
+        }
+        // 减掉底部分割线的高度
+//        int historyHeight = totalHeight
+//                + (listView.getDividerHeight() * listAdapter.getCount() - 1);
+
+        Log.d("ListView","丢了个雷姆 = "+totalHeight); //输出最终ListView的高度
+        return totalHeight;
     }
 }

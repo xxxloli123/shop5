@@ -1,6 +1,7 @@
 package com.example.xxxloli.zshmerchant.fragment;
 
 import android.content.Intent;
+import android.net.Uri;
 import android.os.Bundle;
 import android.support.annotation.Nullable;
 import android.text.InputType;
@@ -13,9 +14,17 @@ import android.widget.EditText;
 import android.widget.TextView;
 import android.widget.Toast;
 
+import com.example.xxxloli.zshmerchant.Activity.AccountManageActivity;
+import com.example.xxxloli.zshmerchant.Activity.AddSpecialOfferCommodityActivity;
+import com.example.xxxloli.zshmerchant.Activity.MyBillActivity;
 import com.example.xxxloli.zshmerchant.Activity.ResetPasswordActivity;
+import com.example.xxxloli.zshmerchant.MainActivity;
 import com.example.xxxloli.zshmerchant.R;
-import com.example.xxxloli.zshmerchant.greendao.DBManager;
+import com.example.xxxloli.zshmerchant.greendao.Account;
+import com.example.xxxloli.zshmerchant.greendao.DBManagerAccount;
+import com.example.xxxloli.zshmerchant.greendao.DBManagerShop;
+import com.example.xxxloli.zshmerchant.greendao.DBManagerUser;
+import com.example.xxxloli.zshmerchant.greendao.Shop;
 import com.example.xxxloli.zshmerchant.greendao.User;
 import com.example.xxxloli.zshmerchant.util.Common;
 import com.example.xxxloli.zshmerchant.view.ShSwitchView;
@@ -60,7 +69,10 @@ public class FragLoginPwd extends BaseFragment {
 
 
     private String token;
-    private DBManager dbManager;
+    private DBManagerUser dbManagerUser;
+    private DBManagerAccount dbManagerAccount;
+    private DBManagerShop dbManagerShop;
+    private String phone,pwd;
 
 
     public FragLoginPwd() {
@@ -75,6 +87,9 @@ public class FragLoginPwd extends BaseFragment {
     @Override
     public void onViewCreated(View view, @Nullable Bundle savedInstanceState) {
         super.onViewCreated(view, savedInstanceState);
+        dbManagerUser = DBManagerUser.getInstance(getActivity());
+        dbManagerShop=DBManagerShop.getInstance(getActivity());
+        dbManagerAccount = DBManagerAccount.getInstance(getActivity());
         switchView.setOn(false);
         switchView.setOnSwitchStateChangeListener(new ShSwitchView.OnSwitchStateChangeListener() {
             @Override
@@ -88,21 +103,11 @@ public class FragLoginPwd extends BaseFragment {
                 }
             }
         });
-//        dbManager = DBManager.getInstance(getActivity());
-//        User user;
-//        if (dbManager.queryById((long) 2333).size()!=0) {
-//            User user1=dbManager.queryById((long) 2333).get(0);
-//            user=user1;
-//            user.setWritId((long) 2333);
-//            dbManager.insertUser(user);
-//            dbManager.insertUser(user1);
-//            show.setText(user1.getName()+user1.getType_value()+user1.getWritId());
-//        }
+
 /**
  *         //开启信鸽日志输出
 
  */
-
         XGPushConfig.enableDebug(getActivity(), true);
 
         //信鸽注册代码
@@ -129,7 +134,6 @@ public class FragLoginPwd extends BaseFragment {
     @Override
     public void onClick(View v) {
         switch (v.getId()) {
-
             case R.id.login_resetPwd:
                 startActivity(new Intent(getContext(), ResetPasswordActivity.class));
                 break;
@@ -140,8 +144,8 @@ public class FragLoginPwd extends BaseFragment {
     }
 
     private void login() {
-        String phone = phoneEdit.getText().toString().trim();
-        String pwd = verificationCodeEdit.getText().toString().trim();
+        phone = phoneEdit.getText().toString().trim();
+         pwd = verificationCodeEdit.getText().toString().trim();
         if (!Common.matchePhone(phone)) {
             Toast.makeText(getContext(), "手机号格式不正确", Toast.LENGTH_SHORT).show();
             return;
@@ -174,12 +178,33 @@ public class FragLoginPwd extends BaseFragment {
                 Toast.makeText(getContext(), json.getString("message"), Toast.LENGTH_SHORT).show();
                 if (json.getInt("statusCode") == 200) {
                     Log.e("信息", "丢了个雷姆" + json.toString());
-                    show.setText(json.toString());
-                    dbManager = DBManager.getInstance(getActivity());
+//                    show.setText(json.toString());
+                    if (dbManagerShop.queryById((long) 2333).size()!=0){
+                        dbManagerAccount.deleteById((long) 2333);
+                        dbManagerShop.deleteById((long) 2333);
+                        dbManagerUser.deleteById((long) 2333);
+                    }
                     User user = new Gson().fromJson(json.getString("user"), User.class);
                     user.setWritId((long) 2333);
-//                    dbManager.insertUser(user);
-//                    startActivity(new Intent(getContext(), MainActivity.class));
+                    Shop shop = new Gson().fromJson(json.getString("shop"), Shop.class);
+                    shop.setWritId((long) 2333);
+                    dbManagerUser.insertUser(user);
+                    dbManagerShop.insertShop(shop);
+
+                    Account account=new Account();
+
+                    if (dbManagerAccount.queryByPhone(phone).size()!=0) {
+                        Account account1=dbManagerAccount.queryByPhone(phone).get(0);
+                        dbManagerAccount.deleteById(account1.getWritId());
+                    }
+                        account.setHead(shop.getShopImage());
+                        account.setName(shop.getShopName());
+                        account.setPhone(phone);
+                        account.setPwd(pwd);
+                        account.setWritId((long) 2333);
+                        dbManagerAccount.insertAccount(account);
+
+                    startActivity(new Intent(getContext(), MainActivity.class));
 //                    if (getActivity() != null) getActivity().finish();
                 }
                 break;

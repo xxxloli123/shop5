@@ -9,7 +9,7 @@ import android.widget.EditText;
 import android.widget.TextView;
 
 import com.example.xxxloli.zshmerchant.R;
-import com.example.xxxloli.zshmerchant.objectmodel.Message;
+import com.example.xxxloli.zshmerchant.objectmodel.Evaluate;
 import com.example.xxxloli.zshmerchant.view.RatingBar;
 import com.sgrape.adapter.BaseAdapter;
 
@@ -22,13 +22,14 @@ import butterknife.BindView;
  * Created by Administrator on 2017/2/27 0027.
  */
 
-public class EvaluateListAdapter extends BaseAdapter<Message> {
+public class EvaluateListAdapter extends BaseAdapter<Evaluate> {
+
 
     private int textNumer;
 
     public EvaluateListAdapter(Context context) {
 
-        super(context, new ArrayList<Message>());
+        super(context, new ArrayList<Evaluate>());
     }
 
     private boolean enable = true;
@@ -37,11 +38,19 @@ public class EvaluateListAdapter extends BaseAdapter<Message> {
         this.enable = enable;
     }
 
-
     @Override
-    protected void setData(final View view, Message message, int position) {
+    protected void setData(final View view, Evaluate evaluate, int position) {
         final ViewHolder holder = (ViewHolder) view.getTag();
-        holder.evaluate.setText(message.getContent());
+        holder.rbSpeed.setCountSelected(evaluate.getGrade());
+        holder.time.setText(evaluate.getCreateDate());
+        holder.evaluate.setText(evaluate.getComment());
+        if (evaluate.getReplyStatus().equals("yes")) {
+            holder.reply.setVisibility(View.GONE);
+            holder.hint.setVisibility(View.GONE);
+            holder.sure.setVisibility(View.GONE);
+            holder.replyTv.setVisibility(View.VISIBLE);
+        }
+        holder.replyTv.setText(evaluate.getReplycomment()+"");
         holder.reply.addTextChangedListener(new TextWatcher() {
             @Override
             public void beforeTextChanged(CharSequence charSequence, int i, int i1, int i2) {
@@ -50,8 +59,8 @@ public class EvaluateListAdapter extends BaseAdapter<Message> {
 
             @Override
             public void onTextChanged(CharSequence charSequence, int i, int i1, int i2) {
-                textNumer =charSequence.length();
-                holder.hint.setText(textNumer+"/200");
+                textNumer = charSequence.length();
+                holder.hint.setText(textNumer + "/200");
             }
 
             @Override
@@ -60,7 +69,6 @@ public class EvaluateListAdapter extends BaseAdapter<Message> {
             }
         });
     }
-
 
     @Override
     protected VH newViewHolder(View v) {
@@ -71,7 +79,6 @@ public class EvaluateListAdapter extends BaseAdapter<Message> {
     protected int getLayoutId() {
         return R.layout.item_evaluate;
     }
-
 
     public static class ViewHolder extends VH {
 
@@ -86,7 +93,9 @@ public class EvaluateListAdapter extends BaseAdapter<Message> {
         @BindView(R.id.sure)
         public Button sure;
         @BindView(R.id.reply)
-        EditText reply;
+        public EditText reply;
+        @BindView(R.id.reply_Tv)
+        TextView replyTv;
 
         public ViewHolder(View view) {
             super(view);

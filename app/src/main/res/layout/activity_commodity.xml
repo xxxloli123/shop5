@@ -90,54 +90,39 @@
             android:layout_alignParentLeft="true"
             android:layout_alignParentStart="true">
 
-            <RelativeLayout
+            <LinearLayout
+                android:background="@color/white"
                 android:orientation="horizontal"
                 android:layout_width="match_parent"
                 android:layout_height="wrap_content">
 
-                <com.danxx.tabstrip.FlymeTabStrip
-                    android:id="@+id/commodityTab"
-                    android:layout_marginRight="62dp"
-                    android:layout_width="match_parent"
-                    android:layout_height="40dp"
-                    custom:indicatorColor="@color/blue"
-                    custom:indicatorHeight="4dp"
-                    custom:indicatorMargin="15dp"
-                    custom:indicatorTextColor="@android:color/black"
-                    custom:indicatorTextSize="15sp"
-                    custom:selectedIndicatorTextSize="15sp">
+                <android.support.v7.widget.RecyclerView
+                    android:id="@+id/classify_2_show"
+                    android:layout_weight="1"
+                    android:layout_width="0dp"
+                    android:layout_height="35dp">
 
-                </com.danxx.tabstrip.FlymeTabStrip>
+                </android.support.v7.widget.RecyclerView>
 
                 <Button
                     android:id="@+id/edit_commodity_2"
                     android:layout_width="60dp"
                     android:layout_height="23dp"
-                    android:layout_alignParentRight="true"
-                    android:layout_centerVertical="true"
-                    android:layout_gravity="center_horizontal"
+                    android:layout_gravity="center_vertical"
                     android:layout_margin="5dp"
                     android:background="@drawable/rounded_corners_bt"
                     android:text="编辑分类"
                     android:textColor="#1577E3"
                     android:textSize="12sp" />
 
-            </RelativeLayout>
+            </LinearLayout>
 
-            <View
-                android:background="@color/grey3"
+            <ListView
+                android:id="@+id/commodity_show"
                 android:layout_width="match_parent"
-                android:layout_height="0.5dp"></View>
+                android:layout_height="match_parent">
 
-            <android.support.v4.view.ViewPager
-                android:id="@+id/show_viewpager"
-                android:layout_width="wrap_content"
-                android:layout_height="wrap_content"
-                android:layout_marginBottom="38dp"
-                >
-
-            </android.support.v4.view.ViewPager>
-
+            </ListView>
 
         </LinearLayout>
 

@@ -9,7 +9,6 @@
 
     <!--头部-->
     <RelativeLayout
-        android:id="@+id/top_layout"
         android:layout_width="match_parent"
         android:layout_height="45dp"
         android:background="@color/blue">
@@ -43,6 +42,7 @@
         android:layout_height="wrap_content">
 
         <TextView
+            android:layout_centerVertical="true"
             android:layout_width="wrap_content"
             android:layout_height="wrap_content"
             android:layout_margin="10dp"
@@ -74,14 +74,16 @@
     </RelativeLayout>
 
     <RelativeLayout
+        android:id="@+id/location_RL"
         android:layout_marginTop="6dp"
         android:background="@color/white1"
         android:layout_width="match_parent"
-        android:layout_height="wrap_content">
+        android:layout_height="38dp">
 
         <TextView
+            android:gravity="center"
             android:layout_width="wrap_content"
-            android:layout_height="wrap_content"
+            android:layout_height="match_parent"
             android:layout_margin="10dp"
             android:text="取货地址"
             android:textColor="@color/text_color"
@@ -97,6 +99,7 @@
             android:layout_height="12dp" />
 
         <TextView
+            android:id="@+id/text"
             android:layout_marginTop="1dp"
             android:layout_marginRight="10dp"
             android:textSize="8sp"
@@ -105,6 +108,52 @@
             android:text="定位当前"
             android:layout_width="wrap_content"
             android:layout_height="wrap_content" />
+
+        <TextView
+            android:layout_alignParentRight="true"
+            android:textSize="15sp"
+            android:textColor="@color/text_color"
+            android:id="@+id/address_TV"
+            android:layout_marginRight="8dp"
+            android:gravity="center"
+            android:layout_width="wrap_content"
+            android:layout_height="match_parent" />
+
+    </RelativeLayout>
+
+    <View
+        android:layout_marginLeft="10dp"
+        android:layout_marginRight="10dp"
+        android:background="@color/background"
+        android:layout_width="match_parent"
+        android:layout_height="1dp"></View>
+
+    <RelativeLayout
+        android:background="@color/white1"
+        android:id="@+id/selective_dissemination"
+        android:layout_width="match_parent"
+        android:layout_height="40dp"
+        android:drawableBottom="@drawable/line"
+        android:orientation="horizontal">
+
+        <TextView
+            android:layout_marginLeft="10dp"
+            android:layout_width="wrap_content"
+            android:layout_height="match_parent"
+            android:gravity="center_vertical"
+            android:text="选择配送"
+            android:textColor="@color/text_color"
+            android:textSize="14sp" />
+
+        <ImageView
+            android:layout_marginRight="10dp"
+            android:id="@+id/imagev"
+            android:layout_height="10dp"
+            android:layout_width="6dp"
+            android:layout_alignParentRight="true"
+            android:layout_centerVertical="true"
+            android:layout_marginLeft="6dp"
+            android:background="@drawable/right" />
 
     </RelativeLayout>
 

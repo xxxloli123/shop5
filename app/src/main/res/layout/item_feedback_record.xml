@@ -1,0 +1,42 @@
+<?xml version="1.0" encoding="utf-8"?>
+<LinearLayout xmlns:android="http://schemas.android.com/apk/res/android"
+    android:orientation="vertical" android:layout_width="match_parent"
+    android:layout_margin="@dimen/margin16"
+    android:layout_height="wrap_content"
+    android:background="@color/white">
+    <TextView
+        android:id="@+id/text_time"
+        android:layout_width="match_parent"
+        android:layout_height="wrap_content"
+        android:text="2017-01-24-12:44"
+        android:textSize="@dimen/size16"
+        android:textColor="@color/hint_text_color"/>
+    <TextView
+        android:id="@+id/text_query"
+        android:layout_width="match_parent"
+        android:layout_height="wrap_content"
+        android:layout_marginTop="@dimen/interval8"
+        android:text="JSON(JavaScript Object Notation, JS 对象标记) 是一种轻量级的数据交换格式。它基于 ECMAScript (w3c制定的js规范)的一个子集，采用完全独立于编程语言的文本格式来存储和表示数据。简洁和清晰的层次结构使得 JSON 成为理想的数据交换语..."
+        android:textSize="@dimen/size16"
+        android:textColor="@color/black"/>
+    <android.support.v7.widget.RecyclerView
+        android:id="@+id/recycler_images"
+        android:layout_width="match_parent"
+        android:layout_height="wrap_content"
+        android:layout_marginTop="@dimen/interval8"/>
+    <TextView
+        android:layout_width="match_parent"
+        android:layout_height="wrap_content"
+        android:layout_marginTop="@dimen/interval8"
+        android:text="@string/terraceReply"
+        android:textSize="@dimen/size16"
+        android:textColor="@color/hint_text_color"/>
+    <TextView
+        android:id="@+id/text_reply"
+        android:layout_width="match_parent"
+        android:layout_height="wrap_content"
+        android:layout_marginTop="@dimen/interval8"
+        android:text="@string/terraceReply"
+        android:textSize="@dimen/size16"
+        android:textColor="@color/black"/>
+</LinearLayout>

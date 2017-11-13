@@ -11,19 +11,37 @@
         android:layout_height="wrap_content"
         android:orientation="vertical">
 
-        <CheckBox
-            android:id="@+id/checkbox"
-            android:layout_width="wrap_content"
-            android:layout_height="wrap_content"
-            android:layout_gravity="center_horizontal"
+        <RadioGroup
             android:layout_marginLeft="8dp"
             android:layout_marginRight="8dp"
             android:layout_marginTop="15dp"
-            android:button="@null"
-            android:drawableLeft="@drawable/radio_selecter2"
-            android:text="  是否由惠递配送"
-            android:textColor="@color/text_color"
-            android:visibility="gone" />
+            android:layout_width="match_parent"
+            android:layout_height="wrap_content">
+            <RadioButton
+                android:checked="true"
+                android:id="@+id/huidi"
+                android:layout_width="wrap_content"
+                android:layout_height="wrap_content"
+                android:layout_gravity="center_horizontal"
+
+                android:button="@null"
+                android:drawableLeft="@drawable/radio_selecter2"
+                android:text="  惠递配送"
+                android:textColor="@color/text_color"
+                android:visibility="gone" />
+            <RadioButton
+                android:layout_marginTop="8dp"
+                android:id="@+id/shop"
+                android:layout_width="wrap_content"
+                android:layout_height="wrap_content"
+                android:layout_gravity="center_horizontal"
+
+                android:button="@null"
+                android:drawableLeft="@drawable/radio_selecter2"
+                android:text="  商家配送"
+                android:textColor="@color/text_color"
+                android:visibility="gone" />
+        </RadioGroup>
 
         <EditText
             android:id="@+id/cause_edit"

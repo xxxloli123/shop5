@@ -1,0 +1,64 @@
+<?xml version="1.0" encoding="utf-8"?>
+<LinearLayout xmlns:android="http://schemas.android.com/apk/res/android"
+    xmlns:app="http://schemas.android.com/apk/res-auto"
+    xmlns:tools="http://schemas.android.com/tools"
+    android:orientation="vertical"
+    android:layout_width="match_parent"
+    android:layout_height="match_parent"
+    >
+
+
+    <TextView
+        android:layout_width="match_parent"
+        android:layout_height="48dp"
+        android:gravity="center_vertical"
+        android:paddingLeft="16dp"
+        android:text="选择一个已配对的打印设备"
+        android:textColor="@color/text_color"
+        android:textSize="14sp" />
+
+    <ListView
+        android:id="@+id/lv_paired_devices"
+        android:layout_width="match_parent"
+        android:layout_height="0dp"
+        android:layout_weight="1"
+        android:choiceMode="singleChoice"
+        android:divider="@android:drawable/divider_horizontal_bright" />
+
+    <LinearLayout
+        android:layout_marginBottom="15dp"
+        android:layout_width="match_parent"
+        android:layout_height="50dp"
+        android:orientation="horizontal">
+        <Button
+            android:background="@drawable/rounded_corners_blue"
+            android:textColor="@color/white"
+            android:id="@+id/btn_goto_setting"
+            android:layout_width="0dp"
+            android:layout_weight="1"
+            android:layout_marginRight="@dimen/loadDialogSize"
+            android:layout_height="match_parent"
+            android:text="还未配对打印机，去设置" />
+
+        <Button
+            android:textColor="@color/white"
+            android:id="@+id/btn_test_conntect"
+            android:layout_width="0dp"
+            android:layout_weight="1"
+            android:layout_height="match_parent"
+            android:layout_marginRight="@dimen/loadDialogSize"
+
+            android:text="测试打印机连接" />
+
+        <Button
+            android:id="@+id/btn_print"
+            android:layout_width="0dp"
+            android:layout_weight="1"
+            android:layout_height="match_parent"
+            android:layout_marginRight="@dimen/loadDialogSize"
+            android:text="打印"
+            android:textColor="@color/white"
+            />
+    </LinearLayout>
+
+</LinearLayout>

@@ -1,13 +1,19 @@
 package com.example.xxxloli.zshmerchant.Activity;
 
 import android.app.Activity;
+import android.content.ContentUris;
 import android.content.Intent;
+import android.database.Cursor;
 import android.graphics.Bitmap;
 import android.graphics.BitmapFactory;
 import android.graphics.drawable.BitmapDrawable;
 import android.net.Uri;
+import android.os.Build;
 import android.os.Bundle;
+import android.os.Environment;
+import android.provider.DocumentsContract;
 import android.provider.MediaStore;
+import android.support.v4.content.FileProvider;
 import android.support.v7.app.AppCompatActivity;
 import android.util.Log;
 import android.view.Gravity;
@@ -23,8 +29,14 @@ import android.widget.TextView;
 import android.widget.Toast;
 
 import com.example.xxxloli.zshmerchant.R;
+import com.example.xxxloli.zshmerchant.greendao.DBManagerShop;
+import com.example.xxxloli.zshmerchant.greendao.DBManagerUser;
+import com.example.xxxloli.zshmerchant.greendao.Shop;
+import com.example.xxxloli.zshmerchant.greendao.User;
 import com.example.xxxloli.zshmerchant.util.BitmapCompressUtils;
+import com.example.xxxloli.zshmerchant.util.ToastUtil;
 import com.interfaceconfig.Config;
+import com.squareup.picasso.Picasso;
 
 import org.json.JSONException;
 import org.json.JSONObject;
@@ -69,12 +81,18 @@ public class QualificationAuthenticationActivity extends AppCompatActivity {
     TextView sureBt;
 
     private File file;
+    private DBManagerUser dbManagerUser;
+    private User user;
+    private String mImagePath = Environment.getExternalStorageDirectory()+"/meta/";
+    private String imagePath;
 
     @Override
     protected void onCreate(Bundle savedInstanceState) {
         super.onCreate(savedInstanceState);
         setContentView(R.layout.activity_qualification_authentication);
         ButterKnife.bind(this);
+        dbManagerUser=DBManagerUser.getInstance(this);
+        user = dbManagerUser.queryById((long) 2333).get(0);
     }
 
     @OnClick({R.id.back_rl, R.id.upload_health, R.id.sure_bt})
@@ -84,7 +102,6 @@ public class QualificationAuthenticationActivity extends AppCompatActivity {
                 finish();
                 break;
             case R.id.upload_health:
-                file= new File(getExternalCacheDir(), UUID.randomUUID().toString() + ".png");
                 popwindowsshow();
                 break;
             case R.id.sure_bt:
@@ -113,7 +130,7 @@ public class QualificationAuthenticationActivity extends AppCompatActivity {
                 try {
                     JSONObject userStr = new JSONObject();
     //                userStr.put("id", info.getId());
-                    userStr.put("id", "402880ea5ef0b3a4015ef0b48df80001");
+                    userStr.put("id", user.getId());
                     userStr.put("shopBusinessNumber", qualificationNumber.getText().toString().trim());
                     Map<String, Object> params = new HashMap<>();
                     params.put("userStr", userStr);
@@ -204,16 +221,29 @@ public class QualificationAuthenticationActivity extends AppCompatActivity {
                         Toast.makeText(this, "图片文件读取出错", Toast.LENGTH_LONG).show();
                         return;
                     }
-                    Bitmap img;
-                    try {
-                        img= BitmapFactory.decodeStream(getContentResolver().openInputStream(uri));
-                        img= BitmapCompressUtils.imageZoom(img,800);
-                        img.compress(Bitmap.CompressFormat.PNG, 100, new FileOutputStream(file));
-                        healthCard.setImageBitmap(img);
-                    } catch (FileNotFoundException e) {
-                        e.printStackTrace();
+                    if (Build.VERSION.SDK_INT >= Build.VERSION_CODES.KITKAT) {
+                        imagePath = null;
+                        if (DocumentsContract.isDocumentUri(this, uri)) {
+                            //如果是document类型的uri,则通过document id处理
+                            String docId = DocumentsContract.getDocumentId(uri);
+                            if ("com.android.providers.media.documents".equals(uri.getAuthority())) {
+                                String id = docId.split(":")[1];//解析出数字格式的id
+                                String selection = MediaStore.Images.Media._ID + "=" + id;
+                                imagePath = getImagePath(MediaStore.Images.Media.EXTERNAL_CONTENT_URI, selection);
+                            } else if ("com.android.downloads.documents".equals(uri.getAuthority())) {
+                                Uri contentUri = ContentUris.withAppendedId(Uri.parse("content://downloads/public_downloads"), Long.valueOf(docId));
+                                imagePath = getImagePath(contentUri, null);
+                            }
+                        } else if ("content".equalsIgnoreCase(uri.getScheme())) {
+                            //如果是content类型的Uri，则使用普通方式处理
+                            imagePath = getImagePath(uri, null);
+                        } else if ("file".equalsIgnoreCase(uri.getScheme())) {
+                            //如果是file类型的Uri,直接获取图片路径即可
+                            imagePath = uri.getPath();
+                        }
+                        Picasso.with(this).load(uri).into(healthCard);
+                        file=new File(imagePath);
                     }
-
                     break;
                 case 1:
                     Bitmap bitmap = BitmapFactory.decodeFile(file.getAbsolutePath());
@@ -224,12 +254,21 @@ public class QualificationAuthenticationActivity extends AppCompatActivity {
         }
     }
 
+    private String getImagePath(Uri uri, String selection) {
+        String path = null;
+        //通过Uri和selection老获取真实的图片路径
+        Cursor cursor = getContentResolver().query(uri, null, selection, null, null);
+        if (cursor != null) {
+            if (cursor.moveToFirst()) {
+                path = cursor.getString(cursor.getColumnIndex(MediaStore.Images.Media.DATA));
+            }
+            cursor.close();
+        }
+        return path;
+    }
+
     /**
      * 获取指定文件大小
-     *
-     * @param
-     * @return
-     * @throws Exception
      */
     public static float getFileSize(File file) throws Exception {
         float size = 0;
@@ -246,11 +285,7 @@ public class QualificationAuthenticationActivity extends AppCompatActivity {
 
     /**
      * 按照图片尺寸压缩：
-     *
-     * @param srcPath
-     * @param desPath
      */
-
     public void compressPicture(File srcPath, File desPath) {
         FileOutputStream fos = null;
         BitmapFactory.Options op = new BitmapFactory.Options();
@@ -263,13 +298,10 @@ public class QualificationAuthenticationActivity extends AppCompatActivity {
         // 缩放图片的尺寸
         float w = op.outWidth;
         float h = op.outHeight;
-        float hh = 200f;//
-        float ww = 200f;//
         // 最长宽度或高度1024
         float be = 1.0f;
         try {
             be = getFileSize(srcPath) / 1000 / 1000 / 2f;
-//            int be1= (int) (getFileSize(file) / 1024);
 //
             Log.e("大小", "丢了个雷姆" + be);
 //            return;
@@ -278,15 +310,8 @@ public class QualificationAuthenticationActivity extends AppCompatActivity {
             e.printStackTrace();
             return;
         }
-//        if (w > h || w > ww) {
-//            be = (float) (w / ww);
-//        } else if (w < h || h > hh) {
-//            be = (float) (h / hh);
-//        }
-//        if (h>hh  && w > ww) be = (float) (w / ww);
         if (be <= 1) {
             return;
-
         }
         op.inSampleSize = (int) be;// 设置缩放比例,这个数字越大,图片大小越小.
         // 重新读入图片，注意此时已经把options.inJustDecodeBounds 设回false了
@@ -334,17 +359,26 @@ public class QualificationAuthenticationActivity extends AppCompatActivity {
         bt1.setOnClickListener(new View.OnClickListener() {
             public void onClick(View v) {//拍照
                 Intent it = new Intent(MediaStore.ACTION_IMAGE_CAPTURE);
-                it.putExtra(MediaStore.EXTRA_OUTPUT, Uri.fromFile(file));
-                startActivityForResult(it, 1);
+                if (it.resolveActivity(getPackageManager()) != null) {
+                    File path = new File(mImagePath);
+                    if (!path.exists()) {
+                        path.mkdir();
+                    }
+                    file = new File(mImagePath, UUID.randomUUID().toString()+".jpg");
+                    Uri photoUri = FileProvider.getUriForFile(QualificationAuthenticationActivity.this,
+                            "com.example.xxxloli.zshmerchant" + ".provider", file);
+                    it.addFlags(Intent.FLAG_GRANT_READ_URI_PERMISSION);
+                    it.putExtra(MediaStore.EXTRA_OUTPUT, photoUri);
+                    startActivityForResult(it, 1);
+                }
                 pop.dismiss();
                 popwindows.clearAnimation();
             }
         });
         bt2.setOnClickListener(new View.OnClickListener() {
             public void onClick(View v) {//从相册中选择
-                Intent local = new Intent();
-                local.setType("image/*");
-                local.setAction(Intent.ACTION_GET_CONTENT);
+                Intent local =new  Intent(Intent.ACTION_PICK, MediaStore.Images.Media.EXTERNAL_CONTENT_URI);
+                local.setDataAndType(MediaStore.Images.Media.EXTERNAL_CONTENT_URI, "image/*");
                 startActivityForResult(local, 2);
                 pop.dismiss();
                 popwindows.clearAnimation();

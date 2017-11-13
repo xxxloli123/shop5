@@ -91,16 +91,16 @@
 
         </LinearLayout>
 
-        <Button
-            android:textSize="12sp"
-            android:textColor="@color/white1"
-            android:text="重置"
-            android:layout_marginRight="10dp"
-            android:layout_centerVertical="true"
-            android:layout_alignParentRight="true"
-            android:background="@drawable/rounded_corners_blue"
-            android:layout_width="35dp"
-            android:layout_height="20dp" />
+        <!--<Button-->
+            <!--android:textSize="12sp"-->
+            <!--android:textColor="@color/white1"-->
+            <!--android:text="重置"-->
+            <!--android:layout_marginRight="10dp"-->
+            <!--android:layout_centerVertical="true"-->
+            <!--android:layout_alignParentRight="true"-->
+            <!--android:background="@drawable/rounded_corners_blue"-->
+            <!--android:layout_width="35dp"-->
+            <!--android:layout_height="20dp" />-->
 
     </RelativeLayout>
 
@@ -132,7 +132,7 @@
                 android:layout_height="wrap_content"
                 android:layout_gravity="center_horizontal"
                 android:layout_marginTop="5dp"
-                android:text="80.00"
+                android:text=""
                 android:textColor="@color/text_color"
                 android:textSize="30sp" />
 
@@ -167,7 +167,7 @@
                 android:layout_gravity="center_horizontal"
                 android:textSize="30sp"
                 android:textColor="@color/text_color"
-                android:text="80.00"
+                android:text=""
                 android:layout_width="wrap_content"
                 android:layout_height="wrap_content" />
 
@@ -194,7 +194,7 @@
             <TextView
                 android:layout_marginTop="15dp"
                 android:layout_gravity="center_horizontal"
-                android:text="订单总数"
+                android:text="订单总额"
                 android:textColor="@color/text_color"
                 android:textSize="14sp"
                 android:layout_width="wrap_content"
@@ -207,7 +207,7 @@
                 android:layout_gravity="center_horizontal"
                 android:textSize="30sp"
                 android:textColor="@color/text_color"
-                android:text="80"
+                android:text=""
                 android:layout_width="wrap_content"
                 android:layout_height="wrap_content" />
 
@@ -237,14 +237,14 @@
 
             <TextView
                 android:id="@+id/valid_number"
+                android:layout_width="wrap_content"
+                android:layout_height="wrap_content"
+                android:layout_gravity="center_horizontal"
                 android:layout_marginBottom="15dp"
                 android:layout_marginTop="5dp"
-                android:layout_gravity="center_horizontal"
-                android:textSize="30sp"
+                android:text=""
                 android:textColor="@color/text_color"
-                android:text="80"
-                android:layout_width="wrap_content"
-                android:layout_height="wrap_content" />
+                android:textSize="30sp" />
 
         </LinearLayout>
 

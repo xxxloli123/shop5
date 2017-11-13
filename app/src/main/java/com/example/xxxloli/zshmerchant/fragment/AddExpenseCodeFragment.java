@@ -14,6 +14,8 @@ import android.widget.Toast;
 import com.example.xxxloli.zshmerchant.R;
 import com.example.xxxloli.zshmerchant.adapter.CodeAdapter;
 import com.example.xxxloli.zshmerchant.adapter.TableAdapter;
+import com.example.xxxloli.zshmerchant.greendao.DBManagerShop;
+import com.example.xxxloli.zshmerchant.greendao.Shop;
 import com.example.xxxloli.zshmerchant.objectmodel.ExpenseCode;
 import com.example.xxxloli.zshmerchant.objectmodel.Table;
 import com.google.gson.Gson;
@@ -42,9 +44,10 @@ public class AddExpenseCodeFragment extends BaseFragment {
     @BindView(R.id.code_show)
     GridView codeShow;
 
-
     private ArrayList<ExpenseCode> expenseCodes;
     private CodeAdapter codeAdapter;
+    private DBManagerShop dbManagerShop;
+    private Shop shop;
 
 
     @Override
@@ -91,14 +94,15 @@ public class AddExpenseCodeFragment extends BaseFragment {
         // TODO: inflate a fragment view
         View rootView = super.onCreateView(inflater, container, savedInstanceState);
         unbinder = ButterKnife.bind(this, rootView);
+        dbManagerShop = DBManagerShop.getInstance(getContext());
+        shop = dbManagerShop.queryById((long) 2333).get(0);
         initView();
         return rootView;
     }
 
     private void initView() {
-
         Map<String, Object> params = new HashMap<>();
-        params.put("shopId", "402880e75f000ab6015f0043a1fc0004");
+        params.put("shopId", shop.getId());
         newCall(Config.Url.getUrl(Config.GET_ExpenseCode), params);
         codeShow.setOnItemClickListener(new AdapterView.OnItemClickListener() {
             @Override
@@ -131,10 +135,10 @@ public class AddExpenseCodeFragment extends BaseFragment {
                 JSONObject shoptableStr = new JSONObject();
                 try {
                     //[shopName店名, shopId店铺id, shopkeeperId店主id, shopkeeperName店主名称, consumeCode 点餐码]
-                    shoptableStr.put("shopName", "asdhfkjhasd");
-                    shoptableStr.put("shopId", "402880e75f000ab6015f0043a1fc0004");
-                    shoptableStr.put("shopkeeperId", "402880e75f000ab6015f0043a1210002");
-                    shoptableStr.put("shopkeeperName", "梁非凡");
+                    shoptableStr.put("shopName", shop.getShopName());
+                    shoptableStr.put("shopId", shop.getId());
+                    shoptableStr.put("shopkeeperId", shop.getShopkeeperId());
+                    shoptableStr.put("shopkeeperName", shop.getShopkeeperName());
                     shoptableStr.put("consumeCode", number.getText().toString());
 
                     params.put("shopconsumecodeStr", shoptableStr);

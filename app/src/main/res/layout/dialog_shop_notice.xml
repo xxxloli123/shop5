@@ -11,6 +11,7 @@
         android:layout_height="wrap_content">
 
         <EditText
+            android:maxLength="150"
             android:inputType="textMultiLine"
             android:singleLine="true"
             android:layout_marginTop="25dp"

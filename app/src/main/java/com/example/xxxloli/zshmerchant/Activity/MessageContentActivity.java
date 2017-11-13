@@ -8,6 +8,8 @@ import android.widget.TextView;
 import android.widget.Toast;
 
 import com.example.xxxloli.zshmerchant.R;
+import com.example.xxxloli.zshmerchant.fragment.FragMessageList;
+import com.example.xxxloli.zshmerchant.objectmodel.Message;
 
 import butterknife.BindView;
 import butterknife.ButterKnife;
@@ -23,32 +25,32 @@ public class MessageContentActivity extends AppCompatActivity {
     TextView titleText;
     @BindView(R.id.content_text)
     TextView contentText;
+    @BindView(R.id.time_TV)
+    TextView timeTV;
 
+    private Message message;
 
     @Override
     protected void onCreate(Bundle savedInstanceState) {
         super.onCreate(savedInstanceState);
         setContentView(R.layout.activity_message_content);
         ButterKnife.bind(this);
-        initView();
+        Intent intent = getIntent();
+        if (intent.getSerializableExtra(FragMessageList.READ_Message) != null) {
+            message = (Message) intent.getSerializableExtra(FragMessageList.READ_Message);
+            initView();
+        } else {
+            Toast.makeText(this, "数据读取错误", Toast.LENGTH_SHORT).show();
+            finish();
+        }
     }
 
     private void initView() {
-        Intent intent = getIntent();
-        String title= intent.getStringExtra("title");
-        String content= intent.getStringExtra("content");
-        if (isEmpty(title)) {
-            Toast.makeText(this, "参数错误", Toast.LENGTH_SHORT).show();
-
-        }
-        if (isEmpty(content)) {
-            Toast.makeText(this, "参数错误2", Toast.LENGTH_SHORT).show();
-            return;
-        }
-        titleText.setText(content);
-        contentText.setText(title);
+        typeText.setText(message.getType_value());
+        titleText.setText(message.getTitle());
+        contentText.setText("   "+message.getContent());
+        timeTV.setText(message.getCreateDate());
     }
-
 
     @OnClick(R.id.back_rl)
     public void onViewClicked() {

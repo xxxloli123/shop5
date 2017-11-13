@@ -12,6 +12,7 @@
         android:orientation="vertical">
 
         <EditText
+            android:maxLength="11"
             android:id="@+id/edit"
             android:layout_width="match_parent"
             android:layout_height="30dp"

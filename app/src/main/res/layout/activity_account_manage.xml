@@ -48,6 +48,7 @@
         android:layout_height="wrap_content">
 
         <com.example.xxxloli.zshmerchant.view.MyListView
+            android:divider="@null"
             android:id="@+id/account_list"
             android:paddingRight="10dp"
             android:paddingLeft="10dp"

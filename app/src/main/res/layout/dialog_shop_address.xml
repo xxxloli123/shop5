@@ -22,7 +22,6 @@
             android:gravity="center_vertical"
             android:hint=""
             android:inputType="text"
-            android:maxLength="5"
             android:maxLines="1"
             android:nextFocusForward="@+id/phone_edit"
             android:textColor="@color/text_color"

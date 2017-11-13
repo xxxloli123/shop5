@@ -188,18 +188,17 @@ public class ResetPasswordActivity extends AppCompatActivity implements View.OnC
                     .post(requestBody)
                     .build();
             OkHttpClient okhttp = new OkHttpClient();
-            okhttp.newCall(request).enqueue(new SimpleCallback() {
+            okhttp.newCall(request).enqueue(new SimpleCallback(this) {
                 @Override
                 public void onSuccess(String tag, JSONObject json) throws JSONException {
                     Toast.makeText(ResetPasswordActivity.this, json.toString(), Toast.LENGTH_SHORT).show();
-                    if (json.getInt("statusCode")==200) finish();
+                    if (json.getInt("statusCode") == 200) finish();
                 }
             });
         } catch (JSONException e) {
             Toast.makeText(this, "解析数据失败", Toast.LENGTH_SHORT).show();
         }
     }
-
 
     private boolean isEmpty(CharSequence str) {
         return TextUtils.isEmpty(str);

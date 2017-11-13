@@ -30,13 +30,17 @@ public class MessageListAdapter extends BaseAdapter<Message> {
         this.enable = enable;
     }
 
-
     @Override
     protected void setData(final View view,  Message message, int position) {
         ViewHolder holder = (ViewHolder) view.getTag();
-        holder.title.setText(message.getContent());
+        holder.title.setText(message.getTitle());
+        if (message.getType().equals("PlatformNotice")){
+            holder.message.setBackgroundResource(R.drawable.rounded_corners_orange);
+            holder.message.setText("平台");
+        }
+        holder.time.setText(message.getCreateDate());
+        holder.content.setText(message.getContent());
     }
-
 
     @Override
     protected VH newViewHolder(View v) {
@@ -51,7 +55,7 @@ public class MessageListAdapter extends BaseAdapter<Message> {
     public static class ViewHolder extends VH {
 
         @BindView(R.id.message)
-        TextView message;
+        public TextView message;
         @BindView(R.id.title)
         TextView title;
         @BindView(R.id.time)

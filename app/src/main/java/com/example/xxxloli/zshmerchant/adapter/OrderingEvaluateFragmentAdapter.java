@@ -30,11 +30,11 @@ public class OrderingEvaluateFragmentAdapter extends FragmentPagerAdapter {
         switch (position) {
             case 0:
                 if (noReplyEvaluateFragment == null)
-                    noReplyEvaluateFragment = new NoReplyEvaluateFragment("rob", null);
+                    noReplyEvaluateFragment = new NoReplyEvaluateFragment("NotReply");
                 return noReplyEvaluateFragment;
             case 1:
                 if (allEvaluateFragment == null)
-                    allEvaluateFragment = new AllEvaluateFragment(null, "ReceivedOrder");
+                    allEvaluateFragment = new AllEvaluateFragment( "All");
                 return allEvaluateFragment;
 
             default:

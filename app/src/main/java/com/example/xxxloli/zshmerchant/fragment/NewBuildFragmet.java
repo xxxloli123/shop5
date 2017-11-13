@@ -7,7 +7,11 @@ import android.view.View;
 import android.view.ViewGroup;
 import android.widget.Button;
 
+import com.example.xxxloli.zshmerchant.Activity.CWHYSYHJActivity;
+import com.example.xxxloli.zshmerchant.Activity.FXGZSYHQActivity;
 import com.example.xxxloli.zshmerchant.Activity.MJActivity;
+import com.example.xxxloli.zshmerchant.Activity.MMPSFHDActivity;
+import com.example.xxxloli.zshmerchant.Activity.MZActivity;
 import com.example.xxxloli.zshmerchant.Activity.OrderingEvaluateActivity;
 import com.example.xxxloli.zshmerchant.R;
 import com.sgrape.BaseFragment;
@@ -73,13 +77,16 @@ public class NewBuildFragmet extends BaseFragment {
                 startActivity(new Intent(getActivity(), MJActivity.class));
                 break;
             case R.id.CWHY:
-                startActivity(new Intent(getActivity(), MJActivity.class));
+                startActivity(new Intent(getActivity(), CWHYSYHJActivity.class));
                 break;
             case R.id.FXGZ:
+                startActivity(new Intent(getActivity(), FXGZSYHQActivity.class));
                 break;
             case R.id.MZ:
+                startActivity(new Intent(getActivity(), MZActivity.class));
                 break;
             case R.id.MMPSF:
+                startActivity(new Intent(getActivity(), MMPSFHDActivity.class));
                 break;
         }
     }

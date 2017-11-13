@@ -24,22 +24,21 @@ public class NewMessageFragmentAdapter extends FragmentPagerAdapter {
         this.list = list;
     }
 
-
-
     @Override
     public Fragment getItem(int position) {
         switch (position) {
+//            type==全部 all 公告 消息 PlatformNotice(平台公告),ShopNews(商家消息);
             case 0:
                 if (allMessageFragment == null)
-                    allMessageFragment = new AllMessageFragment("rob", null);
+                    allMessageFragment = new AllMessageFragment("all");
                 return allMessageFragment;
             case 1:
                 if (platformMessageFragment == null)
-                    platformMessageFragment = new PlatformMessageFragment(null, "ReceivedOrder");
+                    platformMessageFragment = new PlatformMessageFragment("PlatformNotice");
                 return platformMessageFragment;
             case 2:
                 if (meMessageFragment == null)
-                    meMessageFragment = new MeMessageFragment(null, "UnPayed");
+                    meMessageFragment = new MeMessageFragment("ShopNews");
                 return meMessageFragment;
             default:
                 return null;

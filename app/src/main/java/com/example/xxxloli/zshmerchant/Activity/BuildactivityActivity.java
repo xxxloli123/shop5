@@ -12,6 +12,7 @@ import android.widget.RelativeLayout;
 import com.example.xxxloli.zshmerchant.R;
 import com.example.xxxloli.zshmerchant.adapter.OrderingEvaluateFragmentAdapter;
 import com.example.xxxloli.zshmerchant.fragment.AllEvaluateFragment;
+import com.example.xxxloli.zshmerchant.fragment.AlreadyBuildFragmet;
 import com.example.xxxloli.zshmerchant.fragment.NewBuildFragmet;
 import com.example.xxxloli.zshmerchant.fragment.NoReplyEvaluateFragment;
 import com.example.xxxloli.zshmerchant.view.PagerSlidingTabStrip;
@@ -44,9 +45,8 @@ public class BuildactivityActivity extends AppCompatActivity {
      */
     private void initPagers() {
         ArrayList<String> list = new ArrayList<>();
-        list.add("未回复");
-        list.add("全部评价");
-
+        list.add("新建");
+        list.add("已创建");
         showViewpager.setAdapter(new Adapter(this.getSupportFragmentManager(), list));
         commodityTab.setViewPager(showViewpager);
         showViewpager.setCurrentItem(0);
@@ -60,14 +60,12 @@ public class BuildactivityActivity extends AppCompatActivity {
 
     public class Adapter extends FragmentPagerAdapter {
         private ArrayList<String> list;
-        private Fragment newBuildFragmet, allEvaluateFragment;
+        private Fragment newBuildFragmet, alreadyBuildFragmet;
 
         public Adapter(FragmentManager fm, ArrayList<String> list) {
             super(fm);
             this.list = list;
         }
-
-
 
         @Override
         public Fragment getItem(int position) {
@@ -77,9 +75,9 @@ public class BuildactivityActivity extends AppCompatActivity {
                         newBuildFragmet = new NewBuildFragmet();
                     return newBuildFragmet;
                 case 1:
-                    if (allEvaluateFragment == null)
-                        allEvaluateFragment = new AllEvaluateFragment(null, "ReceivedOrder");
-                    return allEvaluateFragment;
+                    if (alreadyBuildFragmet == null)
+                        alreadyBuildFragmet = new AlreadyBuildFragmet();
+                    return alreadyBuildFragmet;
 
                 default:
                     return null;

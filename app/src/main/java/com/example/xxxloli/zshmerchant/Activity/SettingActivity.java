@@ -45,10 +45,12 @@ public class SettingActivity extends AppCompatActivity {
                 startActivity(new Intent(this, MyAccountActivity.class));
                 break;
             case R.id.notificationLL:
+                startActivity(new Intent(this, NewMessageActivity.class));
                 break;
             case R.id.helpLL:
                 break;
             case R.id.printerLL:
+                startActivity(new Intent(this, SearchBluetoothActivity.class));
                 break;
             case R.id.complainLL:
                 startActivity(new Intent(this, ComplainActivity.class));

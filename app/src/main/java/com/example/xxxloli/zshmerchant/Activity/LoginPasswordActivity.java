@@ -17,6 +17,11 @@ import android.widget.Toast;
 
 import com.example.xxxloli.zshmerchant.BaseActivity;
 import com.example.xxxloli.zshmerchant.R;
+import com.example.xxxloli.zshmerchant.fragment.OrderHandleFragment;
+import com.example.xxxloli.zshmerchant.greendao.Account;
+import com.example.xxxloli.zshmerchant.greendao.DBManagerAccount;
+import com.example.xxxloli.zshmerchant.greendao.DBManagerShop;
+import com.example.xxxloli.zshmerchant.greendao.Shop;
 import com.example.xxxloli.zshmerchant.objectmodel.Info;
 import com.example.xxxloli.zshmerchant.util.CacheActivity;
 import com.example.xxxloli.zshmerchant.util.SimpleCallback;
@@ -41,7 +46,10 @@ public class LoginPasswordActivity extends BaseActivity implements View.OnClickL
     private RelativeLayout go_back, delete;
     private EditText password, pwd;
     private Button ensure;
-    private Info info;
+    private DBManagerAccount dbManagerAccount;
+    private Account account;
+    private Shop shop;
+    private DBManagerShop dbManagerShop;
 
     @Override
     protected void onCreate(Bundle savedInstanceState) {
@@ -49,6 +57,9 @@ public class LoginPasswordActivity extends BaseActivity implements View.OnClickL
         if (!CacheActivity.activityList.contains(this)) {
             CacheActivity.addActivity(this);
         }
+        dbManagerAccount = DBManagerAccount.getInstance(this);
+        dbManagerShop = DBManagerShop.getInstance(this);
+        shop = dbManagerShop.queryById((long) 2333).get(0);
         setContentView(R.layout.activity_login_password);
         initView();
     }
@@ -118,12 +129,6 @@ public class LoginPasswordActivity extends BaseActivity implements View.OnClickL
      */
     private void delgeteDialog() {
 
-        if (info == null) {
-            Intent intent = new Intent(this, LoginActivity.class);
-            intent.addFlags(Intent.FLAG_ACTIVITY_SINGLE_TOP);
-            startActivity(intent);
-            return;
-        }
         LayoutInflater inflater = LayoutInflater.from(this);
         LinearLayout mDialog = (LinearLayout) inflater.inflate(R.layout.dialog_revise_phone, null);
         final Dialog dialog = new AlertDialog.Builder(this).create();
@@ -150,16 +155,17 @@ public class LoginPasswordActivity extends BaseActivity implements View.OnClickL
 
     private void modify() {
         String pass = pwd.getText().toString().trim();
-        String pass1 = password.getText().toString().trim();
+        final String pass1 = password.getText().toString().trim();
         if (!pass1.matches("^[0-9a-zA-Z_\\*\\.\\?\\-\\+]{6,20}$")) {
             Toast.makeText(this, "密码格式不正确,请重新输入", Toast.LENGTH_SHORT).show();
             return;
         }
-        //userStr：包含id,phone,password ;oldPassword原密码
+//        用户登录后修改密码：userStr：包含id,phone,password ;oldPassword原密码
+//        参数：[userStr, oldPassword]
         try {
             JSONObject userJson = new JSONObject();
-            userJson.put("id", info.getId());
-            userJson.put("phone", info.getPhone());
+            userJson.put("id", shop.getShopkeeperId());
+            userJson.put("phone", shop.getShopkeeperPhone());
             userJson.put("password", MD5.md5Pwd(pass1));
             userJson.put("oldPassword", MD5.md5Pwd(pass));
             RequestBody requestBody = new MultipartBody.Builder()
@@ -169,12 +175,15 @@ public class LoginPasswordActivity extends BaseActivity implements View.OnClickL
                     .build();
             Request request = new Request
                     .Builder().post(requestBody)
-                    .url(Config.Url.getUrl(Config.SHOP_TYPE))
+                    .url(Config.Url.getUrl(Config.Password))
                     .build();
             new OkHttpClient().newCall(request).enqueue(new SimpleCallback(this) {
                 @Override
                 public void onSuccess(String tag, JSONObject json) throws JSONException {
                     Toast.makeText(LoginPasswordActivity.this, json.getString("message"), Toast.LENGTH_SHORT).show();
+                    account=dbManagerAccount.queryById((long) 2333).get(0);
+                    account.setPwd(pass1);
+                    dbManagerAccount.updateUser(account);
                     finish();
                 }
             });

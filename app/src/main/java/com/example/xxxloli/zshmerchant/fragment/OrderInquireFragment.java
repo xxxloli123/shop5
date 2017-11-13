@@ -54,6 +54,14 @@ public class OrderInquireFragment extends BaseFragment {
         @Override
         public void onClick(View v) {
             button((Button) v);
+            if (v.equals(lineDownExpense)){
+                lineDownExpense.setBackgroundColor(getResources().getColor(R.color.white1));
+                lineUpExpense.setBackgroundColor(getResources().getColor(R.color.background));
+            }
+            else {
+                lineUpExpense.setBackgroundColor(getResources().getColor(R.color.white1));
+                lineDownExpense.setBackgroundColor(getResources().getColor(R.color.background));
+            }
         }
     };
 
@@ -70,7 +78,6 @@ public class OrderInquireFragment extends BaseFragment {
         super.onDestroyView();
         unbinder.unbind();
     }
-
 
     /**
      * 初始化控件
@@ -119,7 +126,6 @@ public class OrderInquireFragment extends BaseFragment {
             changeFragment(lineDownExpenseFragment);
         }
     }
-
 
     /**
      * 添加管理fragment 并返回

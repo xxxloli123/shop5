@@ -1,30 +1,26 @@
 package com.example.xxxloli.zshmerchant.Activity;
 
-import android.content.Context;
 import android.content.Intent;
 import android.os.Bundle;
-import android.support.v4.view.PagerAdapter;
-import android.support.v4.view.ViewPager;
-import android.support.v7.app.AppCompatActivity;
-import android.view.LayoutInflater;
+import android.support.v7.widget.LinearLayoutManager;
+import android.support.v7.widget.RecyclerView;
+import android.util.Log;
 import android.view.View;
-import android.view.ViewGroup;
 import android.widget.AdapterView;
 import android.widget.Button;
 import android.widget.ListView;
 import android.widget.RelativeLayout;
 import android.widget.Toast;
 
-import com.danxx.tabstrip.FlymeTabStrip;
 import com.example.xxxloli.zshmerchant.R;
+import com.example.xxxloli.zshmerchant.adapter.Classify2Adapter;
 import com.example.xxxloli.zshmerchant.adapter.ClassifyAdapter;
-import com.example.xxxloli.zshmerchant.adapter.ClassifyExamineAdapter;
 import com.example.xxxloli.zshmerchant.adapter.CommodityAdapter;
+import com.example.xxxloli.zshmerchant.greendao.DBManagerShop;
+import com.example.xxxloli.zshmerchant.greendao.Shop;
 import com.example.xxxloli.zshmerchant.objectmodel.Classify;
 import com.example.xxxloli.zshmerchant.objectmodel.Commodity;
-import com.example.xxxloli.zshmerchant.objectmodel.Tab;
-import com.example.xxxloli.zshmerchant.objectmodel.Type;
-import com.example.xxxloli.zshmerchant.util.SimpleCallback;
+import com.example.xxxloli.zshmerchant.util.OnItemClickListener;
 import com.example.xxxloli.zshmerchant.view.MyListView;
 import com.google.gson.Gson;
 import com.interfaceconfig.Config;
@@ -34,6 +30,7 @@ import org.json.JSONArray;
 import org.json.JSONException;
 import org.json.JSONObject;
 
+import java.io.Serializable;
 import java.util.ArrayList;
 import java.util.HashMap;
 import java.util.List;
@@ -42,12 +39,8 @@ import java.util.Map;
 import butterknife.BindView;
 import butterknife.ButterKnife;
 import butterknife.OnClick;
-import okhttp3.MultipartBody;
-import okhttp3.OkHttpClient;
-import okhttp3.Request;
-import okhttp3.RequestBody;
 
-public class CommodityActivity extends BaseActivity implements CommodityAdapter.Callback{
+public class CommodityActivity extends BaseActivity implements CommodityAdapter.Callback,Classify2Adapter.Callback {
 
     @BindView(R.id.back_rl)
     RelativeLayout backRl;
@@ -55,29 +48,52 @@ public class CommodityActivity extends BaseActivity implements CommodityAdapter.
     MyListView classify;
     @BindView(R.id.edit_classify)
     Button editClassify;
-    @BindView(R.id.commodityTab)
-    FlymeTabStrip commodityTab;
+
     @BindView(R.id.edit_commodity_2)
     Button editCommodityTab;
-    @BindView(R.id.show_viewpager)
-    ViewPager showViewpager;
     @BindView(R.id.add_bt)
     Button addBt;
+    @BindView(R.id.classify_2_show)
+    RecyclerView classify2Show;
+    @BindView(R.id.commodity_show)
+    ListView commodityShow;
 
-    private ArrayList<Classify> classifies ,classifies2;
-    private ArrayList<Tab> tabs = new ArrayList<>();
-    private ArrayList<Commodity> commodities ;
-    private List<View> viewList;
-    private ViewPagerAdapter viewPagerAdapter;
+    private ArrayList<Classify> classifies, classifies2;
+    private ArrayList<Commodity> commodities;
+    private DBManagerShop dbManagerShop;
+    private Shop shop;
+    private CommodityAdapter commodityAdapter;
+    private Classify2Adapter classify2Adapter;
     private ClassifyAdapter classifyAdapter;
-
+    private Classify classifyE;
+    public static final String EDIT_Commodity = "commodity";
 
     @Override
     protected void onCreate(Bundle savedInstanceState) {
         super.onCreate(savedInstanceState);
-        setContentView(R.layout.activity_commodity);
+//        setContentView(R.layout.activity_commodity);
         ButterKnife.bind(this);
+        dbManagerShop = DBManagerShop.getInstance(this);
+        shop = dbManagerShop.queryById((long) 2333).get(0);
         initView();
+        listener();
+    }
+
+    private void listener() {
+        classify.setOnItemClickListener(new AdapterView.OnItemClickListener() {
+            @Override
+            public void onItemClick(AdapterView<?> parent, View view, int position, long id) {
+                classifyAdapter.changeSelected(position);
+                initClassify2(classifies.get(position).getId());
+                classifyE=classifies.get(position);
+            }
+        });
+    }
+
+    @Override
+    protected void onRestart() {
+        initView();
+        super.onRestart();
     }
 
     @Override
@@ -87,13 +103,18 @@ public class CommodityActivity extends BaseActivity implements CommodityAdapter.
 
     private void initView() {
         Map<String, Object> params = new HashMap<>();
-        params.put("shopId", "402880e65ed0bda0015ed0c876e00007");
+        params.put("shopId", shop.getId());
         newCall(Config.Url.getUrl(Config.GET_Classify_1), params);
     }
 
     private void initClassify2(String fatherId) {
+        if (fatherId.equals("")){
+            commodities=new ArrayList<>();
+            commodityAdapter.refresh(commodities);
+            return;
+        }
         Map<String, Object> params = new HashMap<>();
-        params.put("shopId", "402880e65ed0bda0015ed0c876e00007");
+        params.put("shopId", shop.getId());
         params.put("fatherId", fatherId);
         newCall(Config.Url.getUrl(Config.GET_Classify_2), params);
     }
@@ -105,139 +126,153 @@ public class CommodityActivity extends BaseActivity implements CommodityAdapter.
                 finish();
                 break;
             case R.id.edit_classify:
+                startActivity(new Intent(this, CommodityClassify_1_Activity.class));
                 break;
             case R.id.edit_commodity_2:
+                if (classifyE==null){
+                    Toast.makeText(this, "请添加一级分类", Toast.LENGTH_SHORT).show();
+                    return;
+                }
+                Intent intent = new Intent(this, CommodityClassify_2_Activity.class);
+                intent.putExtra("fatherId", classifyE.getId());
+                startActivity(intent);
                 break;
         }
     }
 
     @OnClick(R.id.add_bt)
     public void onViewClicked() {
-        startActivity(new Intent(CommodityActivity.this,AppCompatActivity .class));
+        startActivity(new Intent(this, AddCommodityActivity.class));
     }
 
     @Override
     public void onSuccess(Object tag, JSONObject json) throws JSONException {
-        Toast.makeText(this, json.getString("message"), Toast.LENGTH_SHORT).show();
         switch (tag.toString()) {
-        case Config.GET_Classify_1:
-            JSONArray arr = json.getJSONArray("listclass");
-            if (arr.length() == 0) return;
-            classifies = new ArrayList<>();
-            Gson gson = new Gson();
-            for (int i = 0; i < arr.length(); i++) {
-                classifies.add(gson.fromJson(arr.getString(arr.length()-i-1), Classify.class));
-            }
-            initClassify2(classifies.get(0).getFatherId());
-
-            classify.setOnItemClickListener(new AdapterView.OnItemClickListener() {
-                @Override
-                public void onItemClick(AdapterView<?> adapterView, View view, int i, long l) {
-                    classifyAdapter.changeSelected(i);
-                    initClassify2(classifies.get(i).getFatherId());
+            case Config.GET_Classify_1:
+                JSONArray arr = json.getJSONArray("listclass");
+                if (arr.length() == 0)return;
+                classifies = new ArrayList<>();
+                Gson gson = new Gson();
+                for (int i = 0; i < arr.length(); i++) {
+                    classifies.add(gson.fromJson(arr.getString(i), Classify.class));
                 }
-            });
-            break;
+                classifyE=classifies.get(0);
+                initClassify2(classifyE.getId());
+                classifyAdapter = new ClassifyAdapter(CommodityActivity.this, classifies);
+                classify.setAdapter(classifyAdapter);
+                break;
             case Config.GET_Classify_2:
                 JSONArray arr2 = json.getJSONArray("listclass");
-                if (arr2.length() == 0) return;
                 classifies2 = new ArrayList<>();
+                if (arr2.length() == 0){
+                    if (classify2Adapter!=null){
+                        classify2Adapter.refresh(classifies2);
+                        commodities=new ArrayList<>();
+                        commodityAdapter.refresh(commodities);
+                    }
+                    return;
+                }
                 Gson gson2 = new Gson();
                 for (int i = 0; i < arr2.length(); i++) {
-                    classifies2.add(gson2.fromJson(arr2.getString(arr2.length()-i-1), Classify.class));
+                    classifies2.add(gson2.fromJson(arr2.getString(i), Classify.class));
                 }
-                changeTab(classifies2.size());
-//                    startActivity(new Intent(ShopInfoActivity.this, LoginActivity.class));
+                if (classify2Adapter!=null){
+                    classify2Adapter.refresh(classifies2);
+                }
+                initCommodity(classifies2.get(0).getId());
+                LinearLayoutManager linearLayoutManager = new LinearLayoutManager(this);
+                linearLayoutManager.setOrientation(LinearLayoutManager.HORIZONTAL);
+                classify2Show.setLayoutManager(linearLayoutManager);
+                classify2Adapter=new Classify2Adapter(this,classifies2,this);
+                classify2Show.setAdapter(classify2Adapter);
+                break;
+            case Config.GET_Commodity:
+                JSONArray arr3 = json.getJSONObject("productsInfo").getJSONArray("aaData");
+                commodities = new ArrayList<>();
+                if (arr3.length() == 0) {
+                    if (commodityAdapter!=null){
+                        commodityAdapter.refresh(commodities);
+                    }
+                    return;
+                }
+                Gson gson3 = new Gson();
+                Log.e("commodities","丢了个雷姆"+json);
+                for (int i = 0; i < arr3.length(); i++) {
+                    commodities.add(gson3.fromJson(arr3.getString(arr3.length() - i - 1), Commodity.class));
+                }
+                if (commodityAdapter!=null){
+                    commodityAdapter.refresh(commodities);
+                    return;
+                }
+                commodityAdapter=new CommodityAdapter(this,commodities,this);
+                commodityShow.setAdapter(commodityAdapter);
+                break;
+            case Config.EDIT_CommodityStatus:
+                Toast.makeText(this, json.getString("message"), Toast.LENGTH_SHORT).show();
                 break;
         }
-    }
-
-    private void changeTab(int length) {
-        viewList = new ArrayList<>();
-        for (int i = 0; i < length; i++) {
-            View view = LayoutInflater.from(CommodityActivity.this).inflate(R.layout.viewpager_commodity, null);
-            viewList.add(view);
-        }
-        viewPagerAdapter = new ViewPagerAdapter();
-        showViewpager.setAdapter(viewPagerAdapter);
-        viewPagerAdapter.notifyDataSetChanged();
-        commodityTab.setViewPager(showViewpager);
     }
 
     @Override
     public void click(View v) {
-        switch (v.getId()){
+        switch (v.getId()) {
             case R.id.edit_bt:
-
+                Intent intent = new Intent(this, EditCommodityActivity.class);
+                intent.putExtra(EDIT_Commodity, (Serializable) commodities.get((Integer) v.getTag()));
+                startActivity(intent);
+                break;
+            case R.id.suspension_of_sale:
+                //                status 取值：：：{Wait_audit(未发布 ), Normal(已发布), Stop(已下架)};]
+                if (commodities.get((Integer) v.getTag()).getStatus().equals("Normal")){
+                    putawayORsoldOut((Integer) v.getTag(),"Stop");
+                }else putawayORsoldOut((Integer) v.getTag(),"Normal");
+                break;
+            case R.id.classify_name:
+                classify2Adapter.changeSelected((Integer) v.getTag());
+                initCommodity(classifies2.get((Integer) v.getTag()).getId());
                 break;
         }
     }
 
-    private class ViewPagerAdapter extends PagerAdapter {
-        @Override
-        public int getCount() {
-            return classifies2.size();
-        }
-
-        @Override
-        public Object instantiateItem(final ViewGroup container, int position) {
-            final View view = viewList.get(position);
-            final ListView show = view.findViewById(R.id.show_list);
-
-            RequestBody requestBody2 = new MultipartBody.Builder().setType(MultipartBody.FORM)
-                    .addFormDataPart("shopId", "402880e65ed0bda0015ed0c876e00007")
-                    .addFormDataPart("classId", classifies2.get(position).getId()).build();
-            Request request = new Request.Builder().url(Config.Url.getUrl(Config.GET_Commodity)).post(requestBody2).build();
-            new OkHttpClient().newCall(request).enqueue(new SimpleCallback(CommodityActivity.this) {
-                @Override
-                public void onSuccess(String tag, JSONObject json) throws JSONException {
-                    Toast.makeText(CommodityActivity.this, json.getString("message"), Toast.LENGTH_SHORT).show();
-                    JSONArray arr = json.getJSONArray("aaData");
-                    if (arr.length() == 0) return;
-                    commodities = new ArrayList<>();
-                    Gson gson = new Gson();
-                    for (int i = 0; i < arr.length(); i++) {
-                        commodities.add(gson.fromJson(arr.getString(arr.length() - i - 1), Commodity.class));
-                    }
-                    CommodityAdapter commodityAdapter = new CommodityAdapter(CommodityActivity.this, commodities,CommodityActivity.this);
-
-                    show.setAdapter(commodityAdapter);
-                    container.addView(view);
-                }
-            });
-            return view;
-        }
-
-        @Override
-        public void destroyItem(ViewGroup container, int position, Object object) {
-            container.removeView(viewList.get(position));
-        }
-
-        @Override
-        public boolean isViewFromObject(View arg0, Object arg1) {
-            return arg0 == arg1;
-        }
-
-        @Override
-        public CharSequence getPageTitle(int position) {
-//            return super.getPageTitle(position);
-            return classifies.get(position).getProductClassName();
+    //    getChildAt(position)方法获取到的是当前可见的第position项，获取的时候还需要做一个位置计算
+    public  void updataItem(int position){
+        int firstvisible = commodityShow.getFirstVisiblePosition();
+        int lastvisibale = commodityShow.getLastVisiblePosition();
+        if(position>=firstvisible&&position<=lastvisibale){
+            View view = commodityShow.getChildAt(position - firstvisible);
+            CommodityAdapter.ViewHolder viewHolder = (CommodityAdapter.ViewHolder) view.getTag();
+            if (commodities.get(position).getStatus().equals("Normal")){
+                viewHolder.backgroundLL.setBackgroundResource(R.color.hint1_text_color);
+                viewHolder.suspensionOfSale.setText("上架");
+            }else {
+                viewHolder.backgroundLL.setBackgroundResource(R.color.white);
+                viewHolder.suspensionOfSale.setText("停售");
+            }
+            //然后使用viewholder去更新需要更新的view。
         }
     }
 
-    /**
-     * 根据手机的分辨率从 dp 的单位 转成为 px(像素)
-     */
-    public static int dip2px(Context context, float dpValue) {
-        final float scale = context.getResources().getDisplayMetrics().density;
-        return (int) (dpValue * scale + 0.5f);
+    private void putawayORsoldOut(int p,String status) {
+//        更改商品状态::productStr[id商品ID；status 取值：：：{Wait_audit(未发布 ), Normal(已发布), Stop(已下架)};]
+//        参数：[productStr]
+        Map<String, Object> params1 = new HashMap<>();
+        JSONObject productStr = new JSONObject();
+        try {
+            productStr.put("id", commodities.get(p).getId());
+            productStr.put("status", status);
+            params1.put("productStr", productStr);
+            newCall(Config.Url.getUrl(Config.EDIT_CommodityStatus), params1);
+            updataItem(p);
+            commodities.get(p).setStatus(status);
+        } catch (JSONException e) {
+            e.printStackTrace();
+        }
     }
 
-    /**
-     * 根据手机的分辨率从 px(像素) 的单位 转成为 dp
-     */
-    public static int px2dip(Context context, float pxValue) {
-        final float scale = context.getResources().getDisplayMetrics().density;
-        return (int) (pxValue / scale + 0.5f);
+    private void initCommodity(String classId) {
+        Map<String, Object> params = new HashMap<>();
+        params.put("shopId", shop.getId());
+        params.put("classId", classId);
+        newCall(Config.Url.getUrl(Config.GET_Commodity), params);
     }
 }

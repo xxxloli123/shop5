@@ -2,6 +2,7 @@ package com.example.xxxloli.zshmerchant.Activity;
 
 import android.text.Editable;
 import android.text.TextWatcher;
+import android.util.Log;
 import android.view.View;
 import android.widget.Button;
 import android.widget.EditText;
@@ -10,8 +11,15 @@ import android.widget.TextView;
 import android.widget.Toast;
 
 import com.example.xxxloli.zshmerchant.R;
+import com.example.xxxloli.zshmerchant.greendao.Account;
+import com.example.xxxloli.zshmerchant.greendao.DBManagerAccount;
+import com.example.xxxloli.zshmerchant.greendao.DBManagerShop;
+import com.example.xxxloli.zshmerchant.greendao.DBManagerUser;
+import com.example.xxxloli.zshmerchant.greendao.Shop;
+import com.example.xxxloli.zshmerchant.greendao.User;
 import com.example.xxxloli.zshmerchant.util.Common;
 import com.example.xxxloli.zshmerchant.view.TimeButton;
+import com.google.gson.Gson;
 import com.interfaceconfig.Config;
 import com.sgrape.BaseActivity;
 import com.slowlife.lib.MD5;
@@ -47,8 +55,19 @@ public class ChangePhoneActivity extends BaseActivity {
     private String p;
     private String smsId;
 
+    private Shop shop;
+    private Account account;
+    private DBManagerUser dbManagerUser;
+    private DBManagerAccount dbManagerAccount;
+    private DBManagerShop dbManagerShop;
+
     @Override
     protected void init() {
+        dbManagerUser = DBManagerUser.getInstance(this);
+        dbManagerShop=DBManagerShop.getInstance(this);
+        dbManagerAccount = DBManagerAccount.getInstance(this);
+        shop = dbManagerShop.queryById((long) 2333).get(0);
+        account = dbManagerAccount.queryById((long) 2333).get(0);
     }
 
     @OnClick({R.id.back_rl, R.id.send_code_text, R.id.ensure_bt})
@@ -99,18 +118,18 @@ public class ChangePhoneActivity extends BaseActivity {
 //            password smsStr:id,code,phone
             Map<String, Object> params = new HashMap<>();
             JSONObject userJson = new JSONObject();
-//            userJson.put("id", info.getId());
+            userJson.put("id", shop.getShopkeeperId());
             userJson.put("phone", p);
             userJson.put("password", MD5.md5Pwd(pwd.getText().toString().trim()));
             JSONObject smsJson = new JSONObject();
             smsJson.put("id", smsId);
             smsJson.put("code", verificationCode.getText().toString().trim());
             smsJson.put("phone", p);
+
             params.put("userStr", userJson);
             params.put("smsStr", smsJson);
             params.put("oldphone", phone1);
-//            info.setPhone(p);
-//            newCall(Config.Url.getUrl(Config.SHOP_TYPE), params);
+            newCall(Config.Url.getUrl(Config.ChangePhone), params);
         } catch (JSONException e) {
             Toast.makeText(this, "解析数据失败", Toast.LENGTH_SHORT).show();
         }
@@ -163,12 +182,20 @@ public class ChangePhoneActivity extends BaseActivity {
                 smsId = sms.getString("id");
                 p = sms.getString("phone");
                 break;
-//            case Config.SHOP_TYPE:
-//                Toast.makeText(this, "修改成功", Toast.LENGTH_SHORT).show();
-////                ((MyApplication) getApplication()).setInfo(info);
-//                setResult(Activity.RESULT_OK);
-//                finish();
-//                break;
+            case Config.ChangePhone:
+                Toast.makeText(this, "修改成功", Toast.LENGTH_SHORT).show();
+//                ((MyApplication) getApplication()).setInfo(info);
+                Log.e("ChangePhone","丢了个雷姆"+json);
+                dbManagerUser.deleteById((long) 2333);
+                User user = new Gson().fromJson(json.getString("user"), User.class);
+                user.setWritId((long) 2333);
+                dbManagerUser.insertUser(user);
+                account.setPhone(p);
+                dbManagerAccount.updateUser(account);
+                shop.setShopkeeperPhone(p);
+                dbManagerShop.updateShop(shop);
+                finish();
+                break;
         }
     }
 }

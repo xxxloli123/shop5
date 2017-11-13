@@ -38,53 +38,6 @@
     </RelativeLayout>
 
     <LinearLayout
-        android:id="@+id/user_nameLL"
-        android:background="@color/white1"
-        android:orientation="horizontal"
-        android:layout_height="40dp"
-        android:layout_width="match_parent"
-        android:gravity="center_vertical"
-        android:layout_marginBottom="0.5dp"
-        android:clickable="true">
-
-        <TextView
-            android:textSize="14sp"
-            android:layout_height="wrap_content"
-            android:layout_width="wrap_content"
-            android:textColor="@color/text_color"
-            android:text="账户名"
-            android:padding="10dp"/>
-        <LinearLayout
-            android:orientation="horizontal"
-            android:layout_height="wrap_content"
-            android:layout_width="0dp"
-            android:layout_weight="1"
-            android:clickable="false"
-            android:gravity="center_vertical"
-            android:layout_marginRight="5dp"
-            android:layout_marginLeft="5dp">
-
-        </LinearLayout>
-
-        <TextView
-            android:layout_marginRight="3dp"
-            android:text="香蕉君"
-            android:textColor="@color/text_color"
-            android:textSize="14sp"
-            android:id="@+id/user_name"
-            android:layout_width="wrap_content"
-            android:layout_height="wrap_content" />
-
-
-        <ImageView
-            android:layout_height="10dp"
-            android:layout_width="6dp"
-            android:clickable="false"
-            android:layout_marginRight="15dp"
-            android:background="@drawable/right"/>
-    </LinearLayout>
-
-    <LinearLayout
         android:id="@+id/change_passwordLL"
         android:background="@color/white1"
         android:orientation="horizontal"
@@ -153,7 +106,7 @@
 
         <TextView
             android:layout_marginRight="3dp"
-            android:text="2333333333333"
+            android:text=""
             android:textColor="@color/text_color"
             android:textSize="14sp"
             android:id="@+id/phone"

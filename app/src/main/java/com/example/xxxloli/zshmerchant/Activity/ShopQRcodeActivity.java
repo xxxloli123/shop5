@@ -1,16 +1,20 @@
 package com.example.xxxloli.zshmerchant.Activity;
 
+import android.content.Context;
 import android.content.Intent;
 import android.graphics.Bitmap;
 import android.graphics.BitmapFactory;
+import android.media.MediaScannerConnection;
 import android.net.Uri;
 import android.os.AsyncTask;
 import android.os.Bundle;
 import android.os.Environment;
 import android.os.Handler;
 import android.os.Message;
+import android.provider.MediaStore;
 import android.support.v7.app.AppCompatActivity;
 import android.view.View;
+import android.webkit.MimeTypeMap;
 import android.widget.Button;
 import android.widget.ImageView;
 import android.widget.RelativeLayout;
@@ -23,14 +27,20 @@ import com.interfaceconfig.Config;
 import com.squareup.picasso.Picasso;
 
 import java.io.File;
+import java.io.FileNotFoundException;
 import java.io.FileOutputStream;
+import java.io.IOException;
 import java.io.InputStream;
 import java.net.HttpURLConnection;
+import java.net.MalformedURLException;
 import java.net.URL;
+import java.util.UUID;
 
 import butterknife.BindView;
 import butterknife.ButterKnife;
 import butterknife.OnClick;
+
+import static com.umeng.socialize.utils.DeviceConfig.context;
 
 public class ShopQRcodeActivity extends AppCompatActivity {
 
@@ -54,7 +64,7 @@ public class ShopQRcodeActivity extends AppCompatActivity {
         Intent intent=getIntent();
         if (intent.getStringExtra("QR_code")==null){
             Toast.makeText(this, "数据读取错误", Toast.LENGTH_SHORT).show();
-            return;
+            finish();
         }
         url=intent.getStringExtra("QR_code");
         Picasso.with(this).load(Config.Url.getUrl(Config.QRCODE)+intent.getStringExtra("QR_code")).into(QRCode);
@@ -74,17 +84,47 @@ public class ShopQRcodeActivity extends AppCompatActivity {
     public void saveQRcode() {
         //加入网络图片地址
         new Task().execute(Config.Url.getUrl(Config.QRCODE)+url);
-        SavaImage(bitmap, Environment.getExternalStorageDirectory().getPath()+"/掌生活","店铺二维码.png");
-        Toast.makeText(this, "图片保存到   "+Environment.getExternalStorageDirectory().getPath()+"/掌生活", Toast.LENGTH_LONG).show();
     }
+
     Handler handler=new Handler(){
         public void handleMessage(android.os.Message msg) {
             if(msg.what==0x123){
-                QRCode.setImageBitmap(bitmap);
+//                QRCode.setImageBitmap(bitmap);
+
+                // 其次把文件插入到系统图库
+               saveImageToGallery(ShopQRcodeActivity.this,bitmap);
+//                SavaImage(bitmap,Environment.getExternalStorageDirectory().getPath()+"/掌生活","店铺二维码.jpg");
+                Toast.makeText(ShopQRcodeActivity.this, "保存成功", Toast.LENGTH_LONG).show();
             }
         };
     };
 
+    public void saveImageToGallery(Context context, Bitmap bmp) {
+        // 首先保存图片
+
+        File file = new File(getExternalCacheDir(),  "店铺二维码");
+        try {
+            FileOutputStream fos = new FileOutputStream(file);
+            bmp.compress(Bitmap.CompressFormat.JPEG, 100, fos);
+            fos.flush();
+            fos.close();
+        } catch (FileNotFoundException e) {
+            e.printStackTrace();
+        } catch (IOException e) {
+            e.printStackTrace();
+        }
+
+        // 其次把文件插入到系统图库
+        try {
+            MediaStore.Images.Media.insertImage(context.getContentResolver(),
+                    file.getAbsolutePath(),  "店铺二维码", null);
+        } catch (FileNotFoundException e) {
+            e.printStackTrace();
+        }
+        // 最后通知图库更新
+//        context.sendBroadcast(new Intent(Intent.ACTION_MEDIA_SCANNER_SCAN_FILE, Uri.parse("file://" + path)));
+        context.sendBroadcast(new Intent(Intent.ACTION_MEDIA_SCANNER_SCAN_FILE, Uri.fromFile(new File(file.getPath()))));
+    }
 
     /**
      * 异步线程下载图片
@@ -148,8 +188,40 @@ public class ShopQRcodeActivity extends AppCompatActivity {
             bitmap.compress(Bitmap.CompressFormat.JPEG, 100,fileOutputStream);
             fileOutputStream.close();
             //保存图片后发送广播通知更新数据库
-            Uri uri = Uri.fromFile(file);
-            this.sendBroadcast(new Intent(Intent.ACTION_MEDIA_SCANNER_SCAN_FILE, uri));
+
+            this.sendBroadcast(new Intent(Intent.ACTION_MEDIA_SCANNER_SCAN_FILE,
+                    Uri.fromFile(new File(file.getParent()))));
+//            MediaScannerConnection msc=new MediaScannerConnection(context,new MediaScannerConnection.MediaScannerConnectionClient(){
+//                @Override
+//                public void onMediaScannerConnected() {
+//// TODO Auto-generated method stub
+//
+//                }
+//                @Override
+//                public void onScanCompleted(String path, Uri uri) {
+//// TODO Auto-generated method stub
+//
+//                }
+//            });
+//            msc.connect();
+//            try {
+//                Thread.sleep(1000);
+//            } catch (InterruptedException e) {
+//// TODO Auto-generated catch block
+//                e.printStackTrace();
+//            }
+//            URL url = null;
+//            try {
+//                url = file.toURL();
+//            } catch (MalformedURLException e) {
+//                e.printStackTrace();
+//            }
+//
+//            MimeTypeMap mtm=MimeTypeMap.getSingleton();
+//
+//            msc.scanFile(file.toString(), mtm.getMimeTypeFromExtension(mtm.getFileExtensionFromUrl(url.toString())));
+//             msc.scanFile(file.getAbsolutePath(), null);
+//            msc.disconnect();
         } catch (Exception e) {
             e.printStackTrace();
         }

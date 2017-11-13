@@ -9,7 +9,6 @@
 
     <!--头部-->
     <RelativeLayout
-        android:id="@+id/top_layout"
         android:layout_width="match_parent"
         android:layout_height="45dp"
         android:background="@color/blue">
@@ -71,7 +70,7 @@
 
         <TextView
             android:layout_marginRight="3dp"
-            android:text="香蕉君"
+            android:text=""
             android:textColor="@color/text_color"
             android:textSize="14sp"
             android:id="@+id/user_name"

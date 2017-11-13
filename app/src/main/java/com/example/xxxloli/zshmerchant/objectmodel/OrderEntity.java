@@ -1,27 +1,24 @@
 package com.example.xxxloli.zshmerchant.objectmodel;
 
-import com.util.ParcelableUtil;
-
 import java.util.ArrayList;
 import java.util.List;
 
 /**
- * Created by Administrator on 2017/9/15.
+ * Created by xxxloli on 2017/11/10.
  */
 
-public class OrderEntity extends ParcelableUtil<OrderEntity> {
-
+public class OrderEntity {
 
     /**
-     * id : 402880ea5f22ecfa015f22f524390002
-     * orderNumber : 201710161013318320858
-     * createDate : 2017-10-16 10:13:32
+     * id : 2c9ad8435f9676da015fa51258a001de
+     * orderNumber : 201711100436038726389
+     * createDate : 2017-11-10 16:36:04
      * createUserId : null
      * orderOfCompanyId : null
      * createUserName : null
      * createUserPhone : null
-     * type : Shopping
-     * type_value : 购物类
+     * type : Cater
+     * type_value : 餐饮订单
      * status : UnPayed
      * status_value : 待付款
      * receivables : null
@@ -36,13 +33,13 @@ public class OrderEntity extends ParcelableUtil<OrderEntity> {
      * transactionNumber : null
      * alipayBinding : null
      * weixinBingding : null
-     * comment : 31
+     * comment : null
      * tariffId : null
      * userPayFee : 0
-     * cost : 1
-     * deliveryFee : 200
+     * cost : 22
+     * deliveryFee : 0
      * packingprice : 0
-     * userActualFee : 201
+     * userActualFee : 0
      * payStatus : UnPayed
      * payStatus_value : 未付款
      * urgent : no
@@ -62,8 +59,8 @@ public class OrderEntity extends ParcelableUtil<OrderEntity> {
      * shopUserDistance : 0
      * deliveryStatesExplain : null
      * platformDeliveryFee : null
-     * lineOrder : NormalOrder
-     * lineOrder_value : 配送到家
+     * lineOrder : ShopConsumption
+     * lineOrder_value : 到店消费单
      * discountProportion : 100%
      * discountCost : 0
      * postmanId : null
@@ -83,21 +80,21 @@ public class OrderEntity extends ParcelableUtil<OrderEntity> {
      * startCity : 重庆市
      * startDistrict : 涪陵区
      * startStreet : 城区
-     * startHouseNumber : null
-     * startLng : 107.376253
-     * startLat : 29.700085
+     * startHouseNumber : 太极大道77号
+     * startLng : 107.376391
+     * startLat : 29.700001
      * receiverId : null
-     * receiverName : 2
-     * receiverPhone : 123
-     * endPro : 重庆市
-     * endCity : 重庆市
-     * endDistrict : 涪陵区
-     * endStreet : 城区
-     * endHouseNumber : 123
-     * endLng : 107.37788
-     * endLat : 29.70762
-     * shopId : 402880e65ed0bda0015ed0c876e00007
-     * shopName : 金刀客
+     * receiverName : null
+     * receiverPhone : null
+     * endPro : null
+     * endCity : null
+     * endDistrict : null
+     * endStreet : null
+     * endHouseNumber : null
+     * endLng : 0
+     * endLat : 0
+     * shopId : 2c9ad8435f75d383015f75d5b9690003
+     * shopName : 吊炸天
      * arriveDate : null
      * postmanDate : null
      * shopSendDate : null
@@ -108,9 +105,10 @@ public class OrderEntity extends ParcelableUtil<OrderEntity> {
      * merchantReplay : null
      * tradeImg : null
      * evaluate : no
-     * goods : [{"id":"402880ea5f22ecfa015f22f5243a0003","shopId":"402880e65ed0bda0015ed0c876e00007","shopName":"金刀客","goodsId":"402880ea5effdb5e015f002103530006","goodsName":"商品1-3-2","smallImg":"d9337e3d-c7b8-43a8-8129-130dce3865bb.jpg","goodsPrice":1,"goodsnum":1,"isStandard":"yes","productcategory":"商品1-3-2-2","standardName":"3"}]
-     * mealcode : null
-     * mealnumber : null
+     * goods : [{"id":"2c9ad8435f9676da015fa51258a001df","shopId":"2c9ad8435f75d383015f75d5b9690003","shopName":"吊炸天","goodsId":"2c9ad8435f9676fc015f9a2598bb0099","goodsName":"好吃点甄好曲奇巧克力豆味208g","smallImg":"78f8bd6b-f75f-4693-aeef-ebf0e2dee4b7.jpg","goodsPrice":22,"goodsnum":1,"isStandard":"no","productcategory":"","standardName":"","serving":"no"}]
+     * mealcode : 125
+     * mealnumber : 1
+     * tableNumber : 1
      * quick : no
      */
 
@@ -137,7 +135,7 @@ public class OrderEntity extends ParcelableUtil<OrderEntity> {
     private Object transactionNumber;
     private Object alipayBinding;
     private Object weixinBingding;
-    private String comment;
+    private Object comment;
     private Object tariffId;
     private int userPayFee;
     private int cost;
@@ -184,17 +182,17 @@ public class OrderEntity extends ParcelableUtil<OrderEntity> {
     private String startCity;
     private String startDistrict;
     private String startStreet;
-    private Object startHouseNumber;
+    private String startHouseNumber;
     private double startLng;
     private double startLat;
     private Object receiverId;
-    private String receiverName;
-    private String receiverPhone;
-    private String endPro;
-    private String endCity;
-    private String endDistrict;
-    private String endStreet;
-    private String endHouseNumber;
+    private Object receiverName;
+    private Object receiverPhone;
+    private Object endPro;
+    private Object endCity;
+    private Object endDistrict;
+    private Object endStreet;
+    private Object endHouseNumber;
     private double endLng;
     private double endLat;
     private String shopId;
@@ -209,8 +207,9 @@ public class OrderEntity extends ParcelableUtil<OrderEntity> {
     private Object merchantReplay;
     private Object tradeImg;
     private String evaluate;
-    private Object mealcode;
-    private Object mealnumber;
+    private String mealcode;
+    private String mealnumber;
+    private String tableNumber;
     private String quick;
     private ArrayList<BillCommodity> goods;
 
@@ -398,11 +397,11 @@ public class OrderEntity extends ParcelableUtil<OrderEntity> {
         this.weixinBingding = weixinBingding;
     }
 
-    public String getComment() {
+    public Object getComment() {
         return comment;
     }
 
-    public void setComment(String comment) {
+    public void setComment(Object comment) {
         this.comment = comment;
     }
 
@@ -774,11 +773,11 @@ public class OrderEntity extends ParcelableUtil<OrderEntity> {
         this.startStreet = startStreet;
     }
 
-    public Object getStartHouseNumber() {
+    public String getStartHouseNumber() {
         return startHouseNumber;
     }
 
-    public void setStartHouseNumber(Object startHouseNumber) {
+    public void setStartHouseNumber(String startHouseNumber) {
         this.startHouseNumber = startHouseNumber;
     }
 
@@ -806,59 +805,59 @@ public class OrderEntity extends ParcelableUtil<OrderEntity> {
         this.receiverId = receiverId;
     }
 
-    public String getReceiverName() {
+    public Object getReceiverName() {
         return receiverName;
     }
 
-    public void setReceiverName(String receiverName) {
+    public void setReceiverName(Object receiverName) {
         this.receiverName = receiverName;
     }
 
-    public String getReceiverPhone() {
+    public Object getReceiverPhone() {
         return receiverPhone;
     }
 
-    public void setReceiverPhone(String receiverPhone) {
+    public void setReceiverPhone(Object receiverPhone) {
         this.receiverPhone = receiverPhone;
     }
 
-    public String getEndPro() {
+    public Object getEndPro() {
         return endPro;
     }
 
-    public void setEndPro(String endPro) {
+    public void setEndPro(Object endPro) {
         this.endPro = endPro;
     }
 
-    public String getEndCity() {
+    public Object getEndCity() {
         return endCity;
     }
 
-    public void setEndCity(String endCity) {
+    public void setEndCity(Object endCity) {
         this.endCity = endCity;
     }
 
-    public String getEndDistrict() {
+    public Object getEndDistrict() {
         return endDistrict;
     }
 
-    public void setEndDistrict(String endDistrict) {
+    public void setEndDistrict(Object endDistrict) {
         this.endDistrict = endDistrict;
     }
 
-    public String getEndStreet() {
+    public Object getEndStreet() {
         return endStreet;
     }
 
-    public void setEndStreet(String endStreet) {
+    public void setEndStreet(Object endStreet) {
         this.endStreet = endStreet;
     }
 
-    public String getEndHouseNumber() {
+    public Object getEndHouseNumber() {
         return endHouseNumber;
     }
 
-    public void setEndHouseNumber(String endHouseNumber) {
+    public void setEndHouseNumber(Object endHouseNumber) {
         this.endHouseNumber = endHouseNumber;
     }
 
@@ -974,20 +973,28 @@ public class OrderEntity extends ParcelableUtil<OrderEntity> {
         this.evaluate = evaluate;
     }
 
-    public Object getMealcode() {
+    public String getMealcode() {
         return mealcode;
     }
 
-    public void setMealcode(Object mealcode) {
+    public void setMealcode(String mealcode) {
         this.mealcode = mealcode;
     }
 
-    public Object getMealnumber() {
+    public String getMealnumber() {
         return mealnumber;
     }
 
-    public void setMealnumber(Object mealnumber) {
+    public void setMealnumber(String mealnumber) {
         this.mealnumber = mealnumber;
+    }
+
+    public String getTableNumber() {
+        return tableNumber;
+    }
+
+    public void setTableNumber(String tableNumber) {
+        this.tableNumber = tableNumber;
     }
 
     public String getQuick() {

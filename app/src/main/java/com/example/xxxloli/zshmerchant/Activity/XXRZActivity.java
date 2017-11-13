@@ -9,6 +9,7 @@ import android.net.Uri;
 import android.os.Bundle;
 import android.os.Environment;
 import android.provider.MediaStore;
+import android.support.v4.content.FileProvider;
 import android.util.Log;
 import android.view.Gravity;
 import android.view.View;
@@ -22,7 +23,12 @@ import android.widget.RelativeLayout;
 import android.widget.TextView;
 import android.widget.Toast;
 
+import com.example.xxxloli.zshmerchant.BuildConfig;
 import com.example.xxxloli.zshmerchant.R;
+import com.example.xxxloli.zshmerchant.greendao.DBManagerShop;
+import com.example.xxxloli.zshmerchant.greendao.DBManagerUser;
+import com.example.xxxloli.zshmerchant.greendao.Shop;
+import com.example.xxxloli.zshmerchant.greendao.User;
 import com.example.xxxloli.zshmerchant.objectmodel.Info;
 import com.interfaceconfig.Config;
 import com.sgrape.BaseActivity;
@@ -78,16 +84,19 @@ public class XXRZActivity extends BaseActivity {
     @BindView(R.id.sure_bt)
     TextView sureBt;
 
-
-    private File clippingBefore, clippingLater;
+    private File camera, clipping;
     private static final int CROP_CODE = 3;
+    private DBManagerUser dbManagerUser;
+    private User user;
+    private String mImagePath = Environment.getExternalStorageDirectory()+"/meta/";
 
     @Override
     protected void onCreate(Bundle savedInstanceState) {
         super.onCreate(savedInstanceState);
 //        setContentView(R.layout.activity_xxrz);
         ButterKnife.bind(this);
-
+        dbManagerUser=DBManagerUser.getInstance(this);
+        user = dbManagerUser.queryById((long) 2333).get(0);
         initView();
     }
 
@@ -107,8 +116,8 @@ public class XXRZActivity extends BaseActivity {
                 finish();
                 break;
             case R.id.photo:
-                clippingBefore = new File(getExternalCacheDir(), UUID.randomUUID().toString() + ".png");
-                clippingLater = new File(getExternalCacheDir(), UUID.randomUUID().toString() + ".png");
+//                camera = new File(getExternalCacheDir(), UUID.randomUUID().toString() + ".png");
+                clipping = new File(getExternalCacheDir(), UUID.randomUUID().toString() + ".png");
                 popwindowsshow();
                 break;
             case R.id.qualification:
@@ -156,19 +165,19 @@ public class XXRZActivity extends BaseActivity {
             Toast.makeText(this, "请认证营业资格", Toast.LENGTH_SHORT).show();
         }
         try {
-            if (getFileSize(clippingLater) < 20) {
+            if (getFileSize(clipping) < 20) {
                 Toast.makeText(this, "请上传店铺照片 ", Toast.LENGTH_SHORT).show();
                 return;
             } else {
                 Map<String, Object> params = new HashMap<>();
                 JSONObject shopStr = new JSONObject();
                 try {
-                    shopStr.put("id", "402880ea5ef0b3a4015ef0b48e6f0003");
-                    shopStr.put("shopName", shopName.getText().toString().trim());
+                    shopStr.put("id", user.getShop_id());
+                    shopStr.put("shopName", shopName.getText().toString());
                     shopStr.put("houseNumber", address.getText().toString().trim());
 
                     params.put("shopStr", shopStr);
-                    params.put("userId", "402880ea5ef0b3a4015ef0b48df80001");
+                    params.put("userId", user.getId());
                     newCall(Config.Url.getUrl(Config.EDIT_SHOP_INFO), params);
                 } catch (JSONException e) {
                     e.printStackTrace();
@@ -185,8 +194,11 @@ public class XXRZActivity extends BaseActivity {
         switch (tag.toString()) {
             case Config.EDIT_SHOP_INFO:
                 Toast.makeText(this, json.getString("message"), Toast.LENGTH_SHORT).show();
-                if (json.getString("statusCode").equals("200"))
+                if (json.getString("statusCode").equals("200")){
+                    dbManagerUser.deleteById((long) 2333);
                     startActivity(new Intent(XXRZActivity.this, LoginActivity.class));
+                    finish();
+                }
                 break;
         }
     }
@@ -219,17 +231,27 @@ public class XXRZActivity extends BaseActivity {
         bt1.setOnClickListener(new View.OnClickListener() {
             public void onClick(View v) {//拍照
                 Intent it = new Intent(MediaStore.ACTION_IMAGE_CAPTURE);
-//                it.putExtra(MediaStore.EXTRA_OUTPUT, Uri.fromFile(clippingBefore));
-                startActivityForResult(it, 1);
+                if (it.resolveActivity(getPackageManager()) != null) {
+                    File path = new File(mImagePath);
+                    if (!path.exists()) {
+                        path.mkdir();
+                    }
+                    camera = new File(mImagePath, UUID.randomUUID().toString()+".jpg");
+                    Uri photoUri = FileProvider.getUriForFile(XXRZActivity.this,
+                            "com.example.xxxloli.zshmerchant" + ".provider", camera);
+
+                    it.addFlags(Intent.FLAG_GRANT_READ_URI_PERMISSION);
+                    it.putExtra(MediaStore.EXTRA_OUTPUT, photoUri);
+                    startActivityForResult(it, 1);
+                }
                 pop.dismiss();
                 popwindows.clearAnimation();
             }
         });
         bt2.setOnClickListener(new View.OnClickListener() {
             public void onClick(View v) {//从相册中选择
-                Intent local = new Intent();
-                local.setType("image/*");
-                local.setAction(Intent.ACTION_GET_CONTENT);
+                Intent local =new  Intent(Intent.ACTION_PICK, MediaStore.Images.Media.EXTERNAL_CONTENT_URI);
+                local.setDataAndType(MediaStore.Images.Media.EXTERNAL_CONTENT_URI, "image/*");
                 startActivityForResult(local, 2);
                 pop.dismiss();
                 popwindows.clearAnimation();
@@ -253,26 +275,27 @@ public class XXRZActivity extends BaseActivity {
         if (resultCode == Activity.RESULT_OK) {
             switch (requestCode) {
                 case 2:
-                    if (data == null) {
-                        Toast.makeText(this, "图片文件读取出错", Toast.LENGTH_LONG).show();
+                    Uri uri = data.getData();
+                    if (uri == null) {
+                        Toast.makeText(this, "选择图片文件读取出错", Toast.LENGTH_LONG).show();
                         return;
-                    } else {
-//                    //用户从图库选择图片后会返回所选图片的Uri
-                        Uri uri;
-//                    //获取到用户所选图片的Uri
-                        uri = data.getData();
-//                    //返回的Uri为content类型的Uri,不能进行复制等操作,需要转换为文件Uri
-                        uri = convertUri(uri);
-//                    startImageZoom(uri);
-                        startImageZoom(uri);
                     }
-                    break;
-                case 1:
-//                    //用户点击了取消
+                    startImageZoom(uri);
 //                    if (data == null) {
 //                        Toast.makeText(this, "图片文件读取出错", Toast.LENGTH_LONG).show();
 //                        return;
 //                    } else {
+////                    //用户从图库选择图片后会返回所选图片的Uri
+//                        Uri uri;
+////                    //获取到用户所选图片的Uri
+//                        uri = data.getData();
+////                    //返回的Uri为content类型的Uri,不能进行复制等操作,需要转换为文件Uri
+//                        uri = convertUri(uri);
+//                        startImageZoom(uri);
+//                    }
+                    break;
+                case 1:
+//                     else {
 //                        Bundle extras = data.getExtras();
 //                        if (extras != null) {
 //                            //获得拍的照片
@@ -284,38 +307,46 @@ public class XXRZActivity extends BaseActivity {
 //                            getPhoto.setImageBitmap(bm);
 //                        }
 //                    }
-                    Uri uri = data.getData();
-                    if (uri == null) {
-                        Toast.makeText(this, "图片文件读取出错", Toast.LENGTH_LONG).show();
-                        return;
-                    }
-                    Bitmap img;
-                    try {
-                        img = BitmapFactory.decodeStream(getContentResolver().openInputStream(uri));
-                        //启动图像裁剪
-                        startImageZoom(uri);
-                        getPhoto.setImageBitmap(img);
-                    } catch (FileNotFoundException e) {
-                        e.printStackTrace();
-                    }
-
+                    //用户点击了取消
+//                    if (data == null) {
+//                        Toast.makeText(this, "图片文件读取出错", Toast.LENGTH_LONG).show();
+//                        return;
+//                    }
+                    startImageZoom(FileProvider.getUriForFile(this, BuildConfig.APPLICATION_ID  +
+                            ".provider", camera));
                     break;
                 case CROP_CODE:
-                    if (data == null) {
-                        return;
-                    } else {
-                        Bundle extras = data.getExtras();
-                        if (extras != null) {
-                            //获取到裁剪后的图像
-//                        Bitmap bm = extras.getParcelable("data");
-                            String fils = clippingBefore.getAbsolutePath();
-                            Bitmap bitmap1 = BitmapFactory.decodeFile(fils);
-                            getPhoto.setImageBitmap(bitmap1);
-                            compressPicture(fils, clippingLater);
-                            hint.setVisibility(View.GONE);
+////                    if (data == null) {
+////                        return;
+////                    } else {
+//                    if (!clippingLater.exists()) {
+//                        Toast.makeText(this, "图片文件剪裁出错", Toast.LENGTH_LONG).show();
+//                        return;
+//                    }
+////                        Toast.makeText(this, "拍照后图片文件读取出错", Toast.LENGTH_LONG).show();
+////                        Bundle extras = data.getExtras();
+////                        if (extras != null) {
+//                            //获取到裁剪后的图像
+////                        Bitmap bm = extras.getParcelable("data");
+//                            String fils = clippingBefore.getAbsolutePath();
+//                            Bitmap bitmap1 = BitmapFactory.decodeFile(fils);
+//                            getPhoto.setImageBitmap(bitmap1);
+//                            compressPicture(fils, clippingLater);
+//                            hint.setVisibility(View.GONE);
+////                            submitImg();
+////                        }
+////                    }
+                    if (data != null) {
+                        try {
+                            String fils = clipping.getAbsolutePath();
+                            Bitmap bitmap = BitmapFactory.decodeFile(fils);
+                            compressPicture(fils,clipping.getAbsoluteFile());
+                            getPhoto.setImageBitmap(bitmap);
                             submitImg();
+                        } catch (Exception e) {
+                            e.printStackTrace();
                         }
-                    }
+                    }else Toast.makeText(this, "图片文件剪裁出错", Toast.LENGTH_LONG).show();
                     break;
                 case 666:
                     if (data.getBooleanExtra("smg", false)) getQualification.setText("待审核");
@@ -332,8 +363,8 @@ public class XXRZActivity extends BaseActivity {
         ByteArrayOutputStream baos = new ByteArrayOutputStream();
         JSONObject userStr = new JSONObject();
         try {
-            userStr.put("id", "402880ea5ef0b3a4015ef0b48df80001");
-            fis = new FileInputStream(clippingLater);
+            userStr.put("id",user.getId());
+            fis = new FileInputStream(clipping);
             int len;
             byte[] buf = new byte[512];
             while ((len = fis.read(buf)) > 0) {
@@ -347,7 +378,7 @@ public class XXRZActivity extends BaseActivity {
             RequestBody fileRequest1 = RequestBody.create(MediaType.parse("application/octet-stream"), fileData);
             RequestBody requestBody = new MultipartBody.Builder().setType(MultipartBody.FORM)
                     .addFormDataPart("userStr", userStr.toString())
-                    .addFormDataPart("pictures", clippingLater.getName(), fileRequest1).build();
+                    .addFormDataPart("pictures", clipping.getName(), fileRequest1).build();
             builder.method("POST", requestBody);
             new OkHttpClient().newCall(builder.build()).enqueue(new Callback() {
                 @Override
@@ -400,11 +431,7 @@ public class XXRZActivity extends BaseActivity {
 
     /**
      * 按照图片尺寸压缩：
-     *
-     * @param srcPath
-     * @param desPath
      */
-
     public static void compressPicture(String srcPath, File desPath) {
         FileOutputStream fos = null;
         BitmapFactory.Options op = new BitmapFactory.Options();
@@ -449,6 +476,9 @@ public class XXRZActivity extends BaseActivity {
     private void startImageZoom(Uri uri) {
         //构建隐式Intent来启动裁剪程序
         Intent intent = new Intent("com.android.camera.action.CROP");
+        //添加这一句表示对目标应用临时授权该Uri所代表的文件
+        intent.addFlags(Intent.FLAG_GRANT_READ_URI_PERMISSION);
+        intent.addFlags(Intent.FLAG_GRANT_WRITE_URI_PERMISSION);
         //设置数据uri和类型为图片类型
         intent.setDataAndType(uri, "image/*");
         //显示View为可裁剪的
@@ -460,16 +490,17 @@ public class XXRZActivity extends BaseActivity {
         intent.putExtra("outputX", 200);
         intent.putExtra("outputY", 200);
         //裁剪之后的数据是通过Intent返回
-        intent.putExtra(MediaStore.EXTRA_OUTPUT, Uri.fromFile(clippingBefore));
-        intent.putExtra("return-data", false);
+//        Uri clippingUri = FileProvider.getUriForFile(XXRZActivity.this,
+//                getPackageName() + ".provider",
+//                clipping);
+        intent.putExtra(MediaStore.EXTRA_OUTPUT, Uri.fromFile(clipping));
+        intent.putExtra("outputFormat", Bitmap.CompressFormat.JPEG.toString());
+        intent.putExtra("noFaceDetection", true);
         startActivityForResult(intent, CROP_CODE);
     }
 
     /**
      * 将content类型的Uri转化为文件类型的Uri
-     *
-     * @param uri
-     * @return
      */
     private Uri convertUri(Uri uri) {
         InputStream is;
@@ -492,10 +523,6 @@ public class XXRZActivity extends BaseActivity {
 
     /**
      * 将Bitmap写入SD卡中的一个文件中,并返回写入文件的Uri
-     *
-     * @param bm
-     * @param dirPath
-     * @return
      */
     private Uri saveBitmap(Bitmap bm, String dirPath) {
         //新建文件夹用于存放裁剪后的图片
@@ -526,6 +553,5 @@ public class XXRZActivity extends BaseActivity {
         }
 
     }
-
 
 }

@@ -14,6 +14,8 @@ import android.widget.Toast;
 import com.example.xxxloli.zshmerchant.R;
 import com.example.xxxloli.zshmerchant.adapter.ClassifyExamineAdapter;
 import com.example.xxxloli.zshmerchant.adapter.TableAdapter;
+import com.example.xxxloli.zshmerchant.greendao.DBManagerShop;
+import com.example.xxxloli.zshmerchant.greendao.Shop;
 import com.example.xxxloli.zshmerchant.objectmodel.Classify;
 import com.example.xxxloli.zshmerchant.objectmodel.Table;
 import com.example.xxxloli.zshmerchant.view.MyListView;
@@ -42,23 +44,25 @@ public class CommodityClassify_1_Activity extends BaseActivity implements Classi
     MyListView classifyShow;
     @BindView(R.id.add)
     TextView add;
-    @BindView(R.id.sure)
-    Button sure;
 
     private ArrayList<Classify> classifies;
     private ClassifyExamineAdapter classifyExamineAdapter;
+    private DBManagerShop dbManagerShop;
+    private Shop shop;
 
     @Override
     protected void onCreate(Bundle savedInstanceState) {
         super.onCreate(savedInstanceState);
 //        setContentView(R.layout.activity_commodity_classify_1_);
         ButterKnife.bind(this);
+        dbManagerShop = DBManagerShop.getInstance(this);
+        shop = dbManagerShop.queryById((long) 2333).get(0);
         initView();
     }
 
     private void initView() {
         Map<String, Object> params = new HashMap<>();
-        params.put("shopId", "402880e75f000ab6015f0043a1fc0004");
+        params.put("shopId", shop.getId());
         newCall(Config.Url.getUrl(Config.GET_Classify_1), params);
     }
 
@@ -67,15 +71,14 @@ public class CommodityClassify_1_Activity extends BaseActivity implements Classi
         return R.layout.activity_commodity_classify_1_;
     }
 
-    @OnClick({R.id.back_rl, R.id.add, R.id.sure})
+    @OnClick({R.id.back_rl, R.id.add})
     public void onViewClicked(View view) {
         switch (view.getId()) {
             case R.id.back_rl:
+                finish();
                 break;
             case R.id.add:
                 addOrEditClassify(false,0);
-                break;
-            case R.id.sure:
                 break;
         }
     }
@@ -83,7 +86,7 @@ public class CommodityClassify_1_Activity extends BaseActivity implements Classi
     private void addOrEditClassify(final boolean isEdit, final int p) {
         View view = LayoutInflater.from(this).inflate(R.layout.dialog_add_classify_1, null);
         final AlertDialog alertDialog = new AlertDialog.Builder(this, R.style.Theme_AppCompat_DayNight_Dialog).create();
-        Button sure = view.findViewById(R.id.sure_bt);
+        final Button sure = view.findViewById(R.id.sure_bt);
         Button cancel = view.findViewById(R.id.cancel_bt);
         final EditText classify_name = view.findViewById(R.id.classify_name);
         final EditText number_ET = view.findViewById(R.id.number_ET);
@@ -110,13 +113,10 @@ public class CommodityClassify_1_Activity extends BaseActivity implements Classi
 
 //                    productClassStr [ shopName 店名, shopId 店铺id, shopkeeperId 店主id, shopkeeperName 店主名称, sort 排序号,
 //                    productClassName 分类名称, fatherId 父级id,一级分类填写字符串“0”,id：修改时分类的id必填]
-                    productClassStr.put("shopName", "asdhfkjhasd");
-
-                    productClassStr.put("shopId", "402880e75f000ab6015f0043a1fc0004");
-
-                    productClassStr.put("shopkeeperId", "402880e75f000ab6015f0043a1210002");
-
-                    productClassStr.put("shopkeeperName", "梁非凡");
+                    productClassStr.put("shopName", shop.getShopName());
+                    productClassStr.put("shopId", shop.getId());
+                    productClassStr.put("shopkeeperId", shop.getShopkeeperId());
+                    productClassStr.put("shopkeeperName", shop.getShopkeeperName());
 
                     productClassStr.put("sort", number_ET.getText().toString());
                     productClassStr.put("productClassName", classify_name.getText().toString());
@@ -166,6 +166,7 @@ public class CommodityClassify_1_Activity extends BaseActivity implements Classi
                 break;
         }
     }
+
     @Override
     public void click(final View v) {
         switch (v.getId()){
@@ -184,7 +185,7 @@ public class CommodityClassify_1_Activity extends BaseActivity implements Classi
                         Map<String, Object> params = new HashMap<>();
 //                productClassId 分类ID， userId 用户id
                         params.put("productClassId", classifies.get((Integer) v.getTag()).getId());
-                        params.put("userId", "402880e75f000ab6015f0043a1210002");
+                        params.put("userId", shop.getShopkeeperId());
                         newCall(Config.Url.getUrl(Config.DELETE_Classify), params);
                         alertDialog.dismiss();
                     }

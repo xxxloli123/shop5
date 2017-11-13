@@ -1,6 +1,7 @@
 package com.example.xxxloli.zshmerchant.Activity;
 
 import android.app.AlertDialog;
+import android.content.Intent;
 import android.os.Bundle;
 import android.support.v7.app.AppCompatActivity;
 import android.text.Editable;
@@ -14,6 +15,10 @@ import android.widget.TextView;
 import android.widget.Toast;
 
 import com.example.xxxloli.zshmerchant.R;
+import com.example.xxxloli.zshmerchant.fragment.AlreadyBuildFragmet;
+import com.example.xxxloli.zshmerchant.greendao.DBManagerShop;
+import com.example.xxxloli.zshmerchant.greendao.Shop;
+import com.example.xxxloli.zshmerchant.objectmodel.Activites;
 import com.interfaceconfig.Config;
 import com.sgrape.BaseActivity;
 
@@ -45,13 +50,32 @@ public class MJActivity extends BaseActivity {
     Button saveBt;
 
     private int textNumer;
-    private String priority,explain;
+    private String priority,explain,id;
+    private DBManagerShop dbManagerShop;
+    private Shop shop;
 
     @Override
     protected void onCreate(Bundle savedInstanceState) {
         super.onCreate(savedInstanceState);
 //        setContentView(R.layout.activity_mj);
         ButterKnife.bind(this);
+        dbManagerShop = DBManagerShop.getInstance(this);
+        shop = dbManagerShop.queryById((long) 2333).get(0);
+        Intent intent = getIntent();
+        if (intent.getSerializableExtra(AlreadyBuildFragmet.EDIT_Activites) != null) {
+            Activites activites = (Activites) intent.getSerializableExtra(AlreadyBuildFragmet.EDIT_Activites);
+            id=activites.getId();
+            initView(activites);
+        }
+    }
+
+    private void initView(Activites activites) {
+        explain=activites.getActivityRemarks();
+        nameET.setText(activites.getActivityName());
+        priorityTV.setText(activites.getPriority() + "");
+        manET.setText(activites.getFullFee()+"");
+        minusET.setText(activites.getCutFee()+"");
+        saveBt.setText("修改");
     }
 
     @Override
@@ -78,32 +102,47 @@ public class MJActivity extends BaseActivity {
     }
 
     private void submit() {
-        if (isEmpty(priority)){
+        if (isEmpty(priorityTV.getText().toString())){
             Toast.makeText(MJActivity.this, "请填写优先级", Toast.LENGTH_SHORT).show();
             return;
         }
-        if (isEmpty(explain)){
+        if (isEmpty(explainTV.getText().toString())){
             Toast.makeText(MJActivity.this, "请填写活动说明", Toast.LENGTH_SHORT).show();
             return;
         }
-        if (isEmpty(nameET.getText())){
+        if (isEmpty(nameET.getText().toString())){
                 Toast.makeText(MJActivity.this, "请填写活动名称 ", Toast.LENGTH_SHORT).show();
                 return;
         }
+        if (isEmpty(manET.getText().toString())){
+            Toast.makeText(MJActivity.this, "请填写满多少 ", Toast.LENGTH_SHORT).show();
+            return;
+        }
+        if (isEmpty(minusET.getText().toString())){
+            Toast.makeText(this, "请填写减多少 ", Toast.LENGTH_SHORT).show();
+            return;
+        }
 //        "priority优先级 越大优先1-99", "shopId", "shopName",
-//		     * "activityName 活动名称", "activityRemarks活动备注说明"
+//		     * "activityName 活动名称", "activityRemarks 活动备注说明"
 //         * "type"{FullCut("满减活动"),Collection("成为会员送优惠券"),ShareFollow("分享关注送优惠券"),
+//        参数：[shopactivityStr, userId]
+//        满多少元 :fullFee 减多少元:cutFee
         Map<String, Object> params = new HashMap<>();
         JSONObject shopactivityStr = new JSONObject();
         try {
-            shopactivityStr.put("priority", priority);
-            shopactivityStr.put("shopId", "402880e75f000ab6015f0043a1fc0004");
-            shopactivityStr.put("shopName", "asdhfkjhasd");
-            shopactivityStr.put("activityName", "asdhfkjhasd");
+            if (id!=null)shopactivityStr.put("id", id);
+            shopactivityStr.put("priority", priorityTV.getText().toString());
+            shopactivityStr.put("shopId", shop.getId());
+            shopactivityStr.put("shopName", shop.getShopName());
+            shopactivityStr.put("activityName", nameET.getText().toString());
+            shopactivityStr.put("activityRemarks", explain);
+            shopactivityStr.put("type", "FullCut");
+            shopactivityStr.put("fullFee", manET.getText().toString());
+            shopactivityStr.put("cutFee", minusET.getText().toString());
 
-            params.put("shopStr", shopStr);
-            params.put("userId", "402880e75f000ab6015f0043a1210002");
-            newCall(Config.Url.getUrl(Config.EDIT_SHOP_INFO), params);
+            params.put("shopactivityStr", shopactivityStr);
+            params.put("userId", shop.getShopkeeperId());
+            newCall(Config.Url.getUrl(Config.ADD_EDIT_Activity), params);
         } catch (JSONException e) {
             e.printStackTrace();
         }
@@ -156,7 +195,7 @@ public class MJActivity extends BaseActivity {
         TextView save = view.findViewById(R.id.save);
         TextView hint = view.findViewById(R.id.hint_text);
         final EditText text = view.findViewById(R.id.edit);
-        if (!isEmpty(priorityTV.getText())) {
+        if (!isEmpty(priorityTV.getText())&&!priorityTV.getText().equals("设置优先级")) {
             text.setText(priorityTV.getText());
         }
         hint.setText("优先级只能为1到99的数字，数字越大越优先");
@@ -182,6 +221,10 @@ public class MJActivity extends BaseActivity {
 
     @Override
     public void onSuccess(Object tag, JSONObject json) throws JSONException {
-        if (json.getInt("statusCode") == 200) {}
+        Toast.makeText(this, json.getString("message"), Toast.LENGTH_SHORT).show();
+        if (json.getInt("statusCode") == 200) {
+            Toast.makeText(this, "创建活动成功", Toast.LENGTH_SHORT).show();
+            finish();
+        }
     }
 }

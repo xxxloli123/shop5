@@ -77,20 +77,6 @@
             android:text="管理"
             android:textColor="@drawable/select_textcolor"
             android:textSize="12sp" />
-
-        <RadioButton
-            android:id="@+id/shop"
-            style="@style/RadioStyleDef"
-            android:layout_width="wrap_content"
-            android:layout_height="wrap_content"
-            android:layout_weight="1"
-            android:button="@null"
-            android:drawablePadding="4dp"
-            android:drawableTop="@drawable/shop_selectes"
-            android:gravity="center"
-            android:text="代卖"
-            android:textColor="@drawable/select_textcolor"
-            android:textSize="12sp" />
     </RadioGroup>
 
 </RelativeLayout>

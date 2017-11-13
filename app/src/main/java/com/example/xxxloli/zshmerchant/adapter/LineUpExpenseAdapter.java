@@ -22,7 +22,6 @@ import butterknife.BindView;
 
 public class LineUpExpenseAdapter extends BaseAdapter<OrderEntity> {
 
-
     private Context context;
 
     public LineUpExpenseAdapter(Context context) {
@@ -36,7 +35,7 @@ public class LineUpExpenseAdapter extends BaseAdapter<OrderEntity> {
         holder.downOrderTime.setText(order.getCreateDate());
         holder.orderNumber.setText(order.getOrderNumber());
         holder.namePhone.setText(order.getCreateUserName() + "  " + order.getCreateUserPhone());
-        holder.address.setText(order.getEndHouseNumber());
+        holder.address.setText(order.getEndHouseNumber()+"");
         holder.distance.setText(order.getShopUserDistance() + "km");
 
         holder.packagingDispatchingRL.setVisibility(View.GONE);

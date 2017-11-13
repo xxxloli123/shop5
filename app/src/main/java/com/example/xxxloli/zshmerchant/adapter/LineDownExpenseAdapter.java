@@ -23,7 +23,6 @@ import butterknife.BindView;
 
 public class LineDownExpenseAdapter extends BaseAdapter<OrderEntity> {
 
-
     private Context context;
 
     public LineDownExpenseAdapter(Context context) {
@@ -88,10 +87,7 @@ public class LineDownExpenseAdapter extends BaseAdapter<OrderEntity> {
         Button printOrder;
         @BindView(R.id.unfoldRL)
         public RelativeLayout unfoldRL;
-        @BindView(R.id.quantity)
-        TextView quantity;
-        @BindView(R.id.total_prices)
-        TextView totalPrices;
+
         @BindView(R.id.actual_prices)
         TextView actualPrices;
         @BindView(R.id.indicate_img)

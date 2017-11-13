@@ -27,6 +27,7 @@
         </RelativeLayout>
 
         <TextView
+            android:id="@+id/title_text"
             android:layout_width="wrap_content"
             android:layout_height="wrap_content"
             android:layout_centerInParent="true"
@@ -75,17 +76,17 @@
 
     </ScrollView>
 
-    <Button
-        android:layout_marginTop="6dp"
-        android:layout_alignParentBottom="true"
-        android:textSize="15dp"
-        android:textColor="@color/white"
-        android:text="确定"
-        android:id="@+id/sure"
-        android:layout_marginLeft="20dp"
-        android:layout_marginRight="20dp"
-        android:background="@drawable/rounded_corners"
-        android:layout_width="match_parent"
-        android:layout_height="38dp" />
+    <!--<Button-->
+        <!--android:layout_marginTop="6dp"-->
+        <!--android:layout_alignParentBottom="true"-->
+        <!--android:textSize="15dp"-->
+        <!--android:textColor="@color/white"-->
+        <!--android:text="确定"-->
+        <!--android:id="@+id/sure"-->
+        <!--android:layout_marginLeft="20dp"-->
+        <!--android:layout_marginRight="20dp"-->
+        <!--android:background="@drawable/rounded_corners"-->
+        <!--android:layout_width="match_parent"-->
+        <!--android:layout_height="38dp" />-->
 
 </RelativeLayout>

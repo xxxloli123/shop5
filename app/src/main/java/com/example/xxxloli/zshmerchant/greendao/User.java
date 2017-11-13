@@ -12,7 +12,7 @@ import org.greenrobot.greendao.annotation.Generated;
 
 @Entity
 public class User {
-    @Id
+    @Id(autoincrement = true)
     private Long writId;
     
     private String id;

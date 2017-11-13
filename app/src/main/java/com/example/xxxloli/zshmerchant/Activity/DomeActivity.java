@@ -58,7 +58,6 @@ public class DomeActivity extends AppCompatActivity {
         };
     };
 
-
     /**
      * 异步线程下载图片
      *

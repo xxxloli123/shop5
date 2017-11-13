@@ -1,15 +1,25 @@
 package com.interfaceconfig;
 
 public interface Config {
-    String LOCAL_HOST = "http://192.168.0.109:8080/";
+    String LOCAL_HOST = "http://192.168.0.101:8080/";
     String HOST = "http://www.zsh7.com/";
     // 登录
     String LOGIN = "slowlife/appuser/userlogin";
-    // 注册
-
-    String REGISTER = "slowlife/appshop/shopregister";
+    // 用户登录后修改密码
+    String Password = "slowlife/appuser/updatepassword";
     // 验证码
     String SMS_CODE = "slowlife/share/getsmsmobile";
+    // 注册
+    String REGISTER = "slowlife/appshop/shopregister";
+
+    // 检测更新
+    String UPDATE = "slowlife/share/getnewestappversion?type=android_zsh_shop";
+
+    /**
+     * 重设密码
+     */
+    String ChangePhone = "slowlife/appuser/updatePhone";
+
     /**
      * 重设密码
      */
@@ -21,14 +31,100 @@ public interface Config {
     String QRCODE = "slowlife/img/twoDimensionCode/";
 
     /**
-     * 图片
+     * 商品图片
      */
-    String IMG = "slowlife/img/pictureLibrary/";
+    String IMG_Commodity = "slowlife/img/pictureLibrary/";
 
     /**
-     * 编辑规格
+     * 头像图片
+     */
+    String IMG_Hear = "slowlife/img/shop/";
+
+    /**
+     * 获取待打印订单
+     */
+    String GET_AutoOrder = "slowlife/appshop/getshopdayinorder";
+
+    /**
+     * 商家回复评价
+     */
+    String Reply_Evaluate = "slowlife/appshop/shopreplyevaluate";
+
+    /**
+     * 商家获取全部评价，获取未回复评价
+     */
+    String GET_Evaluate = "slowlife/appshop/shopgetevaluate";
+
+    /**
+     * app店铺 管理统计
+     */
+    String GET_Data = "slowlife/appshop/shopmanagecount";
+
+    /**
+     * 商家账单流水
+     */
+    String GET_Bills = "slowlife/appshop/getuseraccount";
+
+    /**
+     * 掌生活 支付宝账户绑定
+     */
+    String Bound_Alipay = "slowlife/apppay/bindingalipayzsh";
+
+    /**
+     * 掌生活 微信账户绑定
+     */
+    String Bound_Weixin = "slowlife/wxpay/bindingweixinzsh";
+
+    /**
+     * 查询商家消息
+     */
+    String GET_Message = "slowlife/appshop/shopquerynotices";
+
+    /**
+     * 修改商品基本属性
+     */
+    String EDIT_Commodity = "slowlife/appshop/modifyproduct";
+
+    /**
+     * 更改商品状态
+     */
+    String EDIT_CommodityStatus  = "slowlife/appshop/modifyproductstatus";
+
+    /**
+     * 删除商品
+     */
+    String DELETE_Commodity = "slowlife/appshop/delproduct";
+
+    /**
+     * 商家下架已上传的平台活动商品
+     */
+    String DELETE_ActivityCommodity = "slowlife/appshop/shopmodifybargaingoodsstatus";
+
+    /**
+     * 商家申请上传平台活动商品
+     */
+    String ADD_ActivityCommodity = "slowlife/appshop/shopaddbargaingoods";
+
+    /**
+     * 商家查询自己的活动商品
+     */
+    String GET_ActivityCommodity = "slowlife/appshop/shopquerybargaingoods";
+
+
+    /**
+     * 规格
      */
     String Specification = "slowlife/shop/invoking_add.html?productId=";
+
+    /**
+     * 更改商家自己 活动状态
+     */
+    String EDIT_Activity_Status= "slowlife/appshop/shopmodifyshopactivitystatus ";
+
+    /**
+     * 获取店铺所有自己 活动::
+     */
+    String GET_Activity= "slowlife/appshop/shopgetshopactivity ";
 
     /**
      * 添加、修改 商家自己 活动:
@@ -145,16 +241,15 @@ public interface Config {
      */
     String DELETE_Classify = "slowlife/appshop/delproductclass";
 
-    static class UrlFQ {
+    String platformException = "slowlife/appshop/shopopinion";
+    String getPlatformException = "slowlife/appshop/shopqueryopinion";
+    String getAllStaff = "slowlife/appshop/shopgetusermessage";
+    String addStaff = "slowlife/appshop/shopadduser";
+    String alterStaff = "slowlife/appshop/shopmodifyuserstatus";
+
+    static class Url {
         public static String getUrl(String url) {
             return HOST + url;
         }
     }
-
-    static class Url {
-        public static String getUrl(String url) {
-            return LOCAL_HOST + url;
-        }
-    }
-
 }

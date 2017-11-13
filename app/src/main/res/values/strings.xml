@@ -1,3 +1,29 @@
 <resources>
-    <string name="app_name">掌生活</string>
+    <string name="title">title</string>
+    <string name="app_name">掌升活(商家端)</string>
+    <string name="feedbackRecird">反馈记录</string>
+    <string name="txceptionType">txceptionType</string>
+    <string name="terraceFunctionException">平台功能异常</string>
+    <string name="functionException">FunctionException</string>
+    <string name="distributionIssue">配送问题</string>
+    <string name="distributionProblem">DistributionProblem</string>
+    <string name="productSuggest">产品建议</string>
+    <string name="productSuggestion">ProductSuggestion</string>
+    <string name="noFeedbackRecird">无反馈记录</string>
+    <string name="terraceReply">平台回复</string>
+    <string name="submit">提交</string>
+    <string name="inFeedback">请输入反馈内容,例:总是闪退</string>
+    <string name="personnelManage">人员管理</string>
+    <string name="chefPort">厨师端</string>
+    <string name="waiterPort">服务员端</string>
+    <string name="disable">停用</string>
+    <string name="enabled">启用</string>
+    <string name="delete">删除</string>
+    <string name="addPersonnel">添加人员</string>
+
+    <string name="inName">请输入姓名</string>
+    <string name="inPhone">请输入电话号</string>
+    <string name="inPassword">请输入密码</string>
+    <string name="confirm">确定</string>
+    <string name="cancel">取消</string>
 </resources>

@@ -2,8 +2,11 @@ package com.example.xxxloli.zshmerchant.Activity;
 
 import android.app.AlertDialog;
 import android.content.Context;
+import android.content.DialogInterface;
 import android.content.Intent;
+import android.location.LocationManager;
 import android.os.Bundle;
+import android.provider.Settings;
 import android.text.Editable;
 import android.text.TextUtils;
 import android.text.TextWatcher;
@@ -29,6 +32,10 @@ import com.example.xxxloli.zshmerchant.R;
 import com.example.xxxloli.zshmerchant.adapter.SelectAreaAdapter;
 import com.example.xxxloli.zshmerchant.adapter.ShopSecondTypeAdapter;
 import com.example.xxxloli.zshmerchant.adapter.ShopTypeAdapter;
+import com.example.xxxloli.zshmerchant.greendao.DBManagerShop;
+import com.example.xxxloli.zshmerchant.greendao.DBManagerUser;
+import com.example.xxxloli.zshmerchant.greendao.Shop;
+import com.example.xxxloli.zshmerchant.greendao.User;
 import com.example.xxxloli.zshmerchant.objectmodel.ShopType;
 import com.example.xxxloli.zshmerchant.objectmodel.Street;
 import com.example.xxxloli.zshmerchant.util.Common;
@@ -37,6 +44,7 @@ import com.example.xxxloli.zshmerchant.view.TimeButton;
 import com.google.gson.Gson;
 import com.interfaceconfig.Config;
 import com.sgrape.BaseActivity;
+import com.sgrape.dialog.LoadDialog;
 import com.slowlife.lib.MD5;
 
 import org.json.JSONArray;
@@ -82,7 +90,6 @@ public class OpenShopActivity extends BaseActivity implements
     @BindView(R.id.shop_typeRL)
     RelativeLayout shopTypeRL;
 
-
     private AMapLocationClient mlocationClient;
     // /声明mLocationOption对象
     private AMapLocationClientOption mLocationOption;
@@ -92,6 +99,10 @@ public class OpenShopActivity extends BaseActivity implements
     private ArrayList<Street> streets;
     private String smsId = "";
     private String classId,className,lng,lat,pro,city,district;
+    private DBManagerUser dbManagerUser;
+    private boolean smg=true;
+    private LoadDialog dialog;
+    private int GPS_REQUEST_CODE = 10;
 
     @Override
     protected void onCreate(Bundle savedInstanceState) {
@@ -99,10 +110,11 @@ public class OpenShopActivity extends BaseActivity implements
         ButterKnife.bind(this);
         loadData();
         initView();
-        getAreaDate();
+        getAmapLocation();
     }
 
     private void initView() {
+        dbManagerUser=DBManagerUser.getInstance(this);
         phoneEdit.addTextChangedListener(new TextWatcher() {
             @Override
             public void beforeTextChanged(CharSequence s, int start, int count, int after) {
@@ -149,9 +161,6 @@ public class OpenShopActivity extends BaseActivity implements
         return R.layout.activity_open_shop;
     }
 
-    private void getAreaDate() {
-        getAmapLocation();
-    }
 
     private void getAmapLocation() {
         mlocationClient = new AMapLocationClient(this);
@@ -170,8 +179,7 @@ public class OpenShopActivity extends BaseActivity implements
         // 注意设置合适的定位时间的间隔（最小间隔支持为1000ms），并且在合适时间调用stopLocation()方法来取消定位请求
         // 在定位结束后，在合适的生命周期调用onDestroy()方法
         // 在单次定位情况下，定位无论成功与否，都无需调用stopLocation()方法移除请求，定位sdk内部会移除
-        //启动定位
-        mlocationClient.startLocation();
+        openGPSSettings();
     }
 
     @OnClick({R.id.back_rl, R.id.verification_code, R.id.button, R.id.street, R.id.shop_type})
@@ -308,6 +316,8 @@ public class OpenShopActivity extends BaseActivity implements
             Toast.makeText(this, "请选择区域", Toast.LENGTH_SHORT).show();
             return;
         }
+        dialog = new LoadDialog(this);
+        dialog.show();
         Map<String, Object> params = new HashMap<>();
         JSONObject shopStr = new JSONObject();
         JSONObject smsStr = new JSONObject();
@@ -330,7 +340,10 @@ public class OpenShopActivity extends BaseActivity implements
             params.put("shopStr", shopStr);
             params.put("smsStr", smsStr);
             params.put("password", MD5.md5Pwd(pwd));
-            newCall(Config.Url.getUrl(Config.REGISTER), params);
+            if (smg) {
+                smg=false;
+                newCall(Config.Url.getUrl(Config.REGISTER), params);
+            }
         } catch (JSONException e) {
             Toast.makeText(this, "解析数据失败", Toast.LENGTH_SHORT).show();
             e.printStackTrace();
@@ -343,6 +356,54 @@ public class OpenShopActivity extends BaseActivity implements
         DisplayMetrics outMetrics = new DisplayMetrics();
         wm.getDefaultDisplay().getMetrics(outMetrics);
         return new int[]{outMetrics.widthPixels, outMetrics.heightPixels};
+    }
+
+    /**
+     * 检测GPS是否打开
+     */
+    private boolean checkGPSIsOpen() {
+        boolean isOpen;
+        LocationManager locationManager = (LocationManager) this
+                .getSystemService(Context.LOCATION_SERVICE);
+        isOpen = locationManager.isProviderEnabled(android.location.LocationManager.GPS_PROVIDER);
+        return isOpen;
+    }
+
+    /**
+     * 跳转GPS设置
+     */
+    private void openGPSSettings() {
+        if (checkGPSIsOpen()) {
+            //启动定位
+            mlocationClient.startLocation(); //自己写的定位方法
+        } else {
+            //没有打开则弹出对话框
+            new android.support.v7.app.AlertDialog.Builder(this)
+                    .setTitle("提示")
+                    .setMessage("为了更好的服务，请务必开启GPS功能")
+                    // 拒绝, 退出应用
+                    .setNegativeButton(R.string.cancel,
+                            new DialogInterface.OnClickListener() {
+                                @Override
+                                public void onClick(DialogInterface dialog, int which) {
+                                    finish();
+                                }
+                            })
+
+                    .setPositiveButton(R.string.confirm,
+                            new DialogInterface.OnClickListener() {
+                                @Override
+                                public void onClick(DialogInterface dialog, int which) {
+                                    //跳转GPS设置界面
+                                    Intent intent = new Intent(Settings.ACTION_LOCATION_SOURCE_SETTINGS);
+                                    startActivityForResult(intent, GPS_REQUEST_CODE);
+                                }
+                            })
+
+                    .setCancelable(false)
+                    .show();
+
+        }
     }
 
     @Override
@@ -394,15 +455,24 @@ public class OpenShopActivity extends BaseActivity implements
                 if (shopSecondTypeAdapter!=null)shopSecondTypeAdapter.refresh(secondType);
                 break;
             case Config.REGISTER:
-//                ((MyApplication) getApplication()).setInfo(new Gson().fromJson(
-//                        json.getString("user"), Info.class));
-
-                startActivity(new Intent(OpenShopActivity.this, XXRZActivity.class));
-                Toast.makeText(this, ""+json, Toast.LENGTH_SHORT).show();
                 Log.e("REGISTER","丢了个雷姆    "+json);
-//                finish();
+                    Toast.makeText(this, json.getString("message"), Toast.LENGTH_SHORT).show();
+                    User user = new Gson().fromJson(json.getString("user"), User.class);
+                    user.setWritId((long) 2333);
+                    dbManagerUser.insertUser(user);
+                dialog.dismiss();
+                startActivity(new Intent(OpenShopActivity.this, XXRZActivity.class));
+                    finish();
                 break;
         }
     }
 
+    @Override
+    protected void onActivityResult(int requestCode, int resultCode, Intent data) {
+        super.onActivityResult(requestCode, resultCode, data);
+        if (requestCode == GPS_REQUEST_CODE) {
+            //做需要做的事情，比如再次检测是否打开GPS了 或者定位
+            openGPSSettings();
+        }
+    }
 }

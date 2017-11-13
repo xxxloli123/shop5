@@ -39,7 +39,7 @@
     <com.example.xxxloli.zshmerchant.view.PagerSlidingTabStrip
         android:id="@+id/commodityTab"
         android:layout_width="match_parent"
-        android:layout_height="40dp"
+        android:layout_height="30dp"
         android:layout_gravity="center"
         android:textColor="@color/black"
         android:textSize="12sp"
@@ -53,6 +53,7 @@
         app:pstsUnderlineColor="@color/colorAccent"
         app:pstsUnderlineHeight="0dp"
         app:pstsTabBackground="?attr/selectableItemBackground"
+        android:background="@color/white"
         />
 
     <android.support.v4.view.ViewPager

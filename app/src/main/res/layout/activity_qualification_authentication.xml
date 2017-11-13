@@ -65,7 +65,6 @@
             android:drawableBottom="@drawable/line"
             android:gravity="center_vertical"
             android:hint=""
-            android:maxLength="5"
             android:maxLines="1"
             android:nextFocusForward="@+id/phone_edit"
             android:textColor="@color/text_color"
@@ -163,7 +162,7 @@
                         android:src="@drawable/z2"
                         android:id="@+id/health_card"
                         android:layout_width="match_parent"
-                        android:layout_height="wrap_content" />
+                        android:layout_height="85dp" />
 
                     <TextView
                         android:id="@+id/upload_health"
@@ -173,7 +172,6 @@
                         android:layout_marginBottom="8dp"
                         android:layout_marginTop="8dp"
                         android:background="@drawable/background_bgall"
-                        android:onClick="onClick"
                         android:paddingBottom="4dp"
                         android:paddingLeft="10dp"
                         android:paddingRight="10dp"
@@ -194,7 +192,7 @@
 
                     <ImageView
                         android:layout_width="match_parent"
-                        android:layout_height="wrap_content"
+                        android:layout_height="85dp"
                         android:src="@drawable/example_front" />
 
                     <TextView
@@ -226,6 +224,7 @@
         android:orientation="vertical">
 
         <TextView
+            android:id="@+id/sure_bt"
             android:layout_width="match_parent"
             android:layout_height="50dp"
             android:layout_alignParentBottom="true"

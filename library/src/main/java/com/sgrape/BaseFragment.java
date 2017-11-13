@@ -64,24 +64,17 @@ public abstract class BaseFragment extends Fragment implements Impl, View.OnClic
         callback = new OkHttpCallback(this);
         init();
         initListener();
+
         if (getUserVisibleHint() && firstLoad) {
+            Log.e("page","丢了个雷姆"+"  加载");
             loadData();
         }
         if (httpClient == null) httpClient = new OkHttpClient();
         return rootView;
     }
 
+
     protected void readInstanceState() {
-    }
-
-
-    @Override
-    public void setUserVisibleHint(boolean isVisibleToUser) {
-        super.setUserVisibleHint(isVisibleToUser);
-        if (isVisibleToUser && rootView != null && firstLoad) {
-            Log.d(getClass().getSimpleName(), "setUserVisibleHint");
-            loadData();
-        }
     }
 
     protected void init() {

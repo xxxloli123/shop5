@@ -10,7 +10,7 @@ import java.util.List;
 
 /**
  * Created by sgrape on 2017/5/24.
- * e-mail: sgrape1153@gmail.com
+ * e-mail: sgrape1153@gmail.
  */
 
 public class FragPagerAdapter extends FragmentPagerAdapter {

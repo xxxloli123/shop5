@@ -5,6 +5,7 @@ import android.view.LayoutInflater;
 import android.view.View;
 import android.view.ViewGroup;
 import android.widget.BaseAdapter;
+import android.widget.ListView;
 import android.widget.TextView;
 
 import com.example.xxxloli.zshmerchant.R;
@@ -57,9 +58,12 @@ public class UniversalClassifyAdapter extends BaseAdapter {
             holder = (ViewHolder) view.getTag();
         }
         holder.itemText.setText(universalClassifies.get(i).getGenericClassName());
+        //设置宽度和高度
+//        ListView.LayoutParams params = new ListView.LayoutParams(holder.itemText.getWidth(),holder.itemText.getHeight());
+//        view.setLayoutParams(params);
+        view.setMinimumHeight(holder.itemText.getHeight());
         return view;
     }
-
 
     static class ViewHolder {
         @BindView(R.id.item_text)

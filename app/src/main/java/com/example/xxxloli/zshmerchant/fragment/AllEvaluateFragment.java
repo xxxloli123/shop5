@@ -21,40 +21,12 @@ public class AllEvaluateFragment extends FragEvaluateList {
         super();
     }
 
-    public AllEvaluateFragment(String rob, String status){
-        super(rob,status);
+    public AllEvaluateFragment( String type){
+        super(type);
     }
 
     @Override
     protected void readInstanceState() {
-        if (adapter == null) adapter = new Adapter();
         super.readInstanceState();
-    }
-
-    class Adapter extends EvaluateListAdapter {
-
-        public Adapter() {
-            super(getContext());
-        }
-
-        @Override
-        protected void setData(View view, final Message message, final int position) {
-            super.setData(view, message, position);
-            ViewHolder holder = (ViewHolder) view.getTag();
-            holder.sure.setOnClickListener(new View.OnClickListener() {
-                @Override
-                public void onClick(View view) {
-                    Toast.makeText(getActivity(),"丢了个雷姆",Toast.LENGTH_SHORT).show();
-                }
-            });
-        }
-    }
-
-    @Override
-    public void onSuccess(Object tag, JSONObject json) throws JSONException {
-        super.onSuccess(tag, json);
-        Toast.makeText(getContext(), json.getString("message"), Toast.LENGTH_SHORT).show();
-        adapter.getData().remove(tag);
-        adapter.notifyDataSetChanged();
     }
 }

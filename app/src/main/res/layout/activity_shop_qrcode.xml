@@ -38,7 +38,7 @@
         android:id="@+id/shop_name"
         android:layout_marginTop="30dp"
         android:layout_gravity="center_horizontal"
-        android:text="霄张花甲"
+        android:text=""
         android:textColor="@color/text_color"
         android:layout_width="wrap_content"
         android:layout_height="wrap_content" />

@@ -32,8 +32,9 @@ public class OrderingSystemActivity extends AppCompatActivity {
     RadioButton addExpenseCode;
     @BindView(R.id.radio)
     RadioGroup radio;
-    @BindView(R.id.sure)
-    Button sure;
+    @BindView(R.id.save_bt)
+    Button saveBt;
+
 
     private RadioButton[] rButton;
     private Button selectButton;
@@ -102,7 +103,7 @@ public class OrderingSystemActivity extends AppCompatActivity {
         return index;
     }
 
-    @OnClick({R.id.back_rl, R.id.add_table_number, R.id.add_expense_code, R.id.sure})
+    @OnClick({R.id.back_rl, R.id.add_table_number, R.id.add_expense_code})
     public void onViewClicked(View view) {
         switch (view.getId()) {
             case R.id.back_rl:
@@ -111,8 +112,6 @@ public class OrderingSystemActivity extends AppCompatActivity {
             case R.id.add_table_number:
                 break;
             case R.id.add_expense_code:
-                break;
-            case R.id.sure:
                 break;
         }
     }
@@ -188,4 +187,8 @@ public class OrderingSystemActivity extends AppCompatActivity {
         transaction.commit();
     }
 
+    @OnClick(R.id.save_bt)
+    public void onViewClicked() {
+        finish();
+    }
 }
