@@ -51,7 +51,6 @@ public class FragMessageList extends BaseFragment implements SwipeRefreshLayout.
     @BindView(R.id.no_message)
     LinearLayout noMessage;
     Unbinder unbinder;
-    private String type;
     @BindView(R.id.listview)
     ListView listview;
 
@@ -63,6 +62,7 @@ public class FragMessageList extends BaseFragment implements SwipeRefreshLayout.
     protected boolean enable;
     private DBManagerShop dbManagerShop;
     private Shop shop;
+    private String type;
     public static final String READ_Message = "messages";
 
     public FragMessageList() {
@@ -91,7 +91,6 @@ public class FragMessageList extends BaseFragment implements SwipeRefreshLayout.
         } else {
             noMessage.setVisibility(View.VISIBLE);
         }
-        loadData();
     }
 
     @Override
@@ -205,9 +204,6 @@ public class FragMessageList extends BaseFragment implements SwipeRefreshLayout.
         return rootView;
     }
 
-    @OnClick(R.id.no_message)
-    public void onViewClicked() {
-    }
 
     class OnScrollListener implements AbsListView.OnScrollListener {
 

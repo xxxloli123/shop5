@@ -3,13 +3,10 @@ package com.example.xxxloli.zshmerchant.adapter;
 import android.support.v4.app.Fragment;
 import android.support.v4.app.FragmentManager;
 import android.support.v4.app.FragmentPagerAdapter;
+import android.util.AttributeSet;
 import android.view.ViewGroup;
 
 import com.example.xxxloli.zshmerchant.fragment.FragOrderList;
-import com.example.xxxloli.zshmerchant.fragment.GetShopExpenseOrderHandleFragment;
-import com.example.xxxloli.zshmerchant.fragment.HomeDeliveryOrderHandleFragment;
-import com.example.xxxloli.zshmerchant.fragment.NewOrderHandleFragment;
-import com.example.xxxloli.zshmerchant.fragment.ReserveOrderHandleFragment;
 
 import java.util.ArrayList;
 
@@ -20,7 +17,7 @@ import java.util.ArrayList;
 public class OrdersHandleFragmentAdapter extends FragmentPagerAdapter {
     private ArrayList<String> list;
     private Fragment newOrderHandleFragment, homeDeliveryOrderHandleFragment, reserveOrderHandleFragment
-            , getShopExpenseOrderHandleFragment;
+            , getShopExpenseOrderHandleFragment,UnPayed;
 
     public OrdersHandleFragmentAdapter(FragmentManager fm, ArrayList<String> list) {
         super(fm);
@@ -47,10 +44,20 @@ public class OrdersHandleFragmentAdapter extends FragmentPagerAdapter {
                 if (getShopExpenseOrderHandleFragment == null)
                     getShopExpenseOrderHandleFragment = new FragOrderList("ShopConsumption");
                 return getShopExpenseOrderHandleFragment;
+            case 4:
+                if (UnPayed == null)
+                    UnPayed = new FragOrderList("UnPayed");
+                return UnPayed;
             default:
                 return null;
         }
     }
+
+
+
+
+
+
 
     @Override
     public CharSequence getPageTitle(int position) {

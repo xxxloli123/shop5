@@ -40,6 +40,7 @@ import com.example.xxxloli.zshmerchant.objectmodel.ShopType;
 import com.example.xxxloli.zshmerchant.objectmodel.Street;
 import com.example.xxxloli.zshmerchant.util.Common;
 import com.example.xxxloli.zshmerchant.util.SimpleCallback;
+import com.example.xxxloli.zshmerchant.util.ToastUtil;
 import com.example.xxxloli.zshmerchant.view.TimeButton;
 import com.google.gson.Gson;
 import com.interfaceconfig.Config;
@@ -317,6 +318,7 @@ public class OpenShopActivity extends BaseActivity implements
             return;
         }
         dialog = new LoadDialog(this);
+        dialog.setCanceledOnTouchOutside(false);
         dialog.show();
         Map<String, Object> params = new HashMap<>();
         JSONObject shopStr = new JSONObject();
@@ -340,6 +342,7 @@ public class OpenShopActivity extends BaseActivity implements
             params.put("shopStr", shopStr);
             params.put("smsStr", smsStr);
             params.put("password", MD5.md5Pwd(pwd));
+            ToastUtil.showToast(this,name);
             if (smg) {
                 smg=false;
                 newCall(Config.Url.getUrl(Config.REGISTER), params);

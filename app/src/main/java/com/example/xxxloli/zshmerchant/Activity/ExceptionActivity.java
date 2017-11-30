@@ -83,7 +83,8 @@ public class ExceptionActivity extends AppCompatActivity {
 //                    DistributionProblem配送问题,ProductSuggestion(产品建议)];userId:反馈者id;userName:反馈者姓名;userPhone:
 //            反馈者电话};;pictures图片 参数：[opinionStr, pictures]
                 Request.Builder request = new Request.Builder().url(Config.Url.getUrl(Config.platformException));
-                StringBuilder jsonSb = new StringBuilder("{\"type\":\"" + getString(getIntent().getIntExtra(getString(R.string.txceptionType), R.string.functionException)));
+                StringBuilder jsonSb = new StringBuilder("{\"type\":\"" + getString(getIntent().
+                        getIntExtra(getString(R.string.txceptionType), R.string.functionException)));
                 jsonSb.append("\",\"title\":\"").append(getString(getIntent().getIntExtra(getString(R.string.title), R.string.terraceFunctionException))).
                         append("\",\"opinionContent\":\"").append(feedback.getText().toString().trim()).
                         append("\",\"userName\":\"").append(shop.getShopkeeperName()).

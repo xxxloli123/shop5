@@ -1,5 +1,6 @@
 package com.example.xxxloli.zshmerchant.Activity;
 
+import android.Manifest;
 import android.content.Intent;
 import android.os.Bundle;
 import android.support.v7.widget.LinearLayoutManager;
@@ -67,6 +68,7 @@ public class CommodityActivity extends BaseActivity implements CommodityAdapter.
     private ClassifyAdapter classifyAdapter;
     private Classify classifyE;
     public static final String EDIT_Commodity = "commodity";
+    private static String PERMISSIONS[] = new String[]{Manifest.permission.ACCESS_FINE_LOCATION,Manifest.permission.WRITE_EXTERNAL_STORAGE};
 
     @Override
     protected void onCreate(Bundle savedInstanceState) {
@@ -167,8 +169,10 @@ public class CommodityActivity extends BaseActivity implements CommodityAdapter.
                 if (arr2.length() == 0){
                     if (classify2Adapter!=null){
                         classify2Adapter.refresh(classifies2);
-                        commodities=new ArrayList<>();
-                        commodityAdapter.refresh(commodities);
+                        if (commodityAdapter!=null){
+                            commodities=new ArrayList<>();
+                            commodityAdapter.refresh(commodities);
+                        }
                     }
                     return;
                 }

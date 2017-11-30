@@ -129,7 +129,7 @@ public class OrderEntity {
     private Object payType_value;
     private Object payDate;
     private String redPackets;
-    private int redPacketsFee;
+    private double redPacketsFee;
     private Object redPacketsName;
     private Object redPacketsId;
     private Object transactionNumber;
@@ -137,34 +137,34 @@ public class OrderEntity {
     private Object weixinBingding;
     private Object comment;
     private Object tariffId;
-    private int userPayFee;
-    private int cost;
-    private int deliveryFee;
-    private int packingprice;
-    private int userActualFee;
+    private double userPayFee;
+    private double cost;
+    private double deliveryFee;
+    private double packingprice;
+    private double userActualFee;
     private String payStatus;
     private String payStatus_value;
     private String urgent;
-    private int urgentFee;
+    private double urgentFee;
     private String insured;
     private Object goodsTotal;
-    private int insuredFee;
-    private int weight;
-    private int postmanProfit;
-    private int compnayProfit;
-    private int platformProfit;
-    private int shopProfit;
+    private double insuredFee;
+    private double weight;
+    private double postmanProfit;
+    private double compnayProfit;
+    private double platformProfit;
+    private double shopProfit;
     private String platformDelivery;
     private Object platformDeliveryOrderId;
     private String shopOrder;
     private Object shopOrderId;
-    private int shopUserDistance;
+    private double shopUserDistance;
     private Object deliveryStatesExplain;
     private Object platformDeliveryFee;
     private String lineOrder;
     private String lineOrder_value;
     private String discountProportion;
-    private int discountCost;
+    private double discountCost;
     private Object postmanId;
     private Object postmanName;
     private Object postmanPhone;
@@ -349,7 +349,7 @@ public class OrderEntity {
         this.redPackets = redPackets;
     }
 
-    public int getRedPacketsFee() {
+    public double getRedPacketsFee() {
         return redPacketsFee;
     }
 
@@ -413,7 +413,7 @@ public class OrderEntity {
         this.tariffId = tariffId;
     }
 
-    public int getUserPayFee() {
+    public double getUserPayFee() {
         return userPayFee;
     }
 
@@ -421,15 +421,15 @@ public class OrderEntity {
         this.userPayFee = userPayFee;
     }
 
-    public int getCost() {
+    public double getCost() {
         return cost;
     }
 
-    public void setCost(int cost) {
+    public void setCost(double cost) {
         this.cost = cost;
     }
 
-    public int getDeliveryFee() {
+    public double getDeliveryFee() {
         return deliveryFee;
     }
 
@@ -437,7 +437,7 @@ public class OrderEntity {
         this.deliveryFee = deliveryFee;
     }
 
-    public int getPackingprice() {
+    public double getPackingprice() {
         return packingprice;
     }
 
@@ -445,7 +445,7 @@ public class OrderEntity {
         this.packingprice = packingprice;
     }
 
-    public int getUserActualFee() {
+    public double getUserActualFee() {
         return userActualFee;
     }
 
@@ -477,7 +477,7 @@ public class OrderEntity {
         this.urgent = urgent;
     }
 
-    public int getUrgentFee() {
+    public double getUrgentFee() {
         return urgentFee;
     }
 
@@ -501,7 +501,7 @@ public class OrderEntity {
         this.goodsTotal = goodsTotal;
     }
 
-    public int getInsuredFee() {
+    public double getInsuredFee() {
         return insuredFee;
     }
 
@@ -509,7 +509,7 @@ public class OrderEntity {
         this.insuredFee = insuredFee;
     }
 
-    public int getWeight() {
+    public double getWeight() {
         return weight;
     }
 
@@ -517,7 +517,7 @@ public class OrderEntity {
         this.weight = weight;
     }
 
-    public int getPostmanProfit() {
+    public double getPostmanProfit() {
         return postmanProfit;
     }
 
@@ -525,7 +525,7 @@ public class OrderEntity {
         this.postmanProfit = postmanProfit;
     }
 
-    public int getCompnayProfit() {
+    public double getCompnayProfit() {
         return compnayProfit;
     }
 
@@ -533,7 +533,7 @@ public class OrderEntity {
         this.compnayProfit = compnayProfit;
     }
 
-    public int getPlatformProfit() {
+    public double getPlatformProfit() {
         return platformProfit;
     }
 
@@ -541,7 +541,7 @@ public class OrderEntity {
         this.platformProfit = platformProfit;
     }
 
-    public int getShopProfit() {
+    public double getShopProfit() {
         return shopProfit;
     }
 
@@ -581,11 +581,11 @@ public class OrderEntity {
         this.shopOrderId = shopOrderId;
     }
 
-    public int getShopUserDistance() {
+    public double getShopUserDistance() {
         return shopUserDistance;
     }
 
-    public void setShopUserDistance(int shopUserDistance) {
+    public void setShopUserDistance(double shopUserDistance) {
         this.shopUserDistance = shopUserDistance;
     }
 
@@ -629,7 +629,7 @@ public class OrderEntity {
         this.discountProportion = discountProportion;
     }
 
-    public int getDiscountCost() {
+    public double getDiscountCost() {
         return discountCost;
     }
 

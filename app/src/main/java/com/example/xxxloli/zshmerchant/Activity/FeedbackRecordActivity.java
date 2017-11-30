@@ -46,7 +46,8 @@ public class FeedbackRecordActivity extends AppCompatActivity{
         tabs.setOnPagerTitleItemClickListener(new PagerSlidingTabStrip.OnPagerTitleItemClickListener() {
             @Override
             public void onSingleClickItem(int position) {
-                //((FeedbackRecordFragment)page.getAdapter().instantiateItem(page,position)).setUrl(exceptionType[position]);
+                //((FeedbackRecordFragment)page.getAdapter().instantiateItem(page,position))
+                // .setUrl(exceptionType[position]);
             }
 
             @Override
@@ -60,7 +61,7 @@ public class FeedbackRecordActivity extends AppCompatActivity{
 
             @Override
             public void onPageSelected(int position) {
-                ((FeedbackRecordFragment)page.getAdapter().instantiateItem(page,position)).setUrl(exceptionType[position]);
+//                ((FeedbackRecordFragment)page.getAdapter().instantiateItem(page,position)).setUrl(exceptionType[position]);
             }
 
             @Override

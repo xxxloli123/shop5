@@ -124,6 +124,8 @@ public class LineUpExpenseAdapter1 extends BaseAdapter implements View.OnClickLi
                 }
             }
         });
+        holder.printOrder.setOnClickListener(this);
+        holder.printOrder.setTag(i);
         return view;
     }
 

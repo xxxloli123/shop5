@@ -77,6 +77,8 @@ public abstract class BaseFragment extends Fragment implements Impl, View.OnClic
     protected void readInstanceState() {
     }
 
+
+
     protected void init() {
     }
 
@@ -134,8 +136,7 @@ public abstract class BaseFragment extends Fragment implements Impl, View.OnClic
         }
         MultipartBody.Builder requestBuilder = null;
         if (params != null) {
-            requestBuilder = new MultipartBody.Builder()
-                    .setType(MultipartBody.FORM);
+            requestBuilder = new MultipartBody.Builder().setType(MultipartBody.FORM);
             Set<String> keys = params.keySet();
             Iterator iterator = keys.iterator();
             while (iterator.hasNext()) {

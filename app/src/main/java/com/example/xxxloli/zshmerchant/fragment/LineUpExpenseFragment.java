@@ -58,7 +58,7 @@ import in.srain.cube.views.ptr.PtrHandler2;
  * Created by Administrator on 2017/9/22.
  */
 
-public class LineUpExpenseFragment extends BaseFragment implements LineUpExpenseAdapter1.Callback{
+public class  LineUpExpenseFragment extends BaseFragment implements LineUpExpenseAdapter1.Callback{
 
     @BindView(R.id.no_order)
     LinearLayout noOrder;
@@ -147,7 +147,7 @@ public class LineUpExpenseFragment extends BaseFragment implements LineUpExpense
                     @Override
                     public void run() {
                         page=0;
-                        loadData();
+                        baseDateInquire(date.getText().toString());
                     }
                 }, 1500);
             }
@@ -162,9 +162,8 @@ public class LineUpExpenseFragment extends BaseFragment implements LineUpExpense
 
     @Override
     public void click(View v) {
-        switch (v.getId()) {
-        case R.id.print_order:
             if (TextUtils.isEmpty(AppInfo.btAddress)) {
+
                 ToastUtil.showToast(getActivity(), "请设置打印机功能");
                 return;
             }
@@ -178,8 +177,6 @@ public class LineUpExpenseFragment extends BaseFragment implements LineUpExpense
                         .getPrintData(PrinterWriter58mm.TYPE_58);
                 PrintQueue.getQueue(getActivity()).add(printData);
             }
-            break;
-        }
     }
 
     @Override
@@ -197,8 +194,10 @@ public class LineUpExpenseFragment extends BaseFragment implements LineUpExpense
                     final JSONObject cache = arr.getJSONObject(i);
                     orders.add(orders.size(), gson.fromJson(cache.toString(), OrderEntity.class));
                 }
-                if (orders.isEmpty()) noOrder.setVisibility(View.VISIBLE);
-                else noOrder.setVisibility(View.GONE);
+                if (noOrder!=null){
+                    if (orders.isEmpty()&&noOrder!=null) noOrder.setVisibility(View.VISIBLE);
+                    else noOrder.setVisibility(View.GONE);
+                }
                 firstLoad = false;
                 if (lineUpExpenseAdapter1!=null){
                     lineUpExpenseAdapter1.refresh(orders);

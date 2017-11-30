@@ -25,7 +25,7 @@ public class BillCommodity {
     private String goodsId;
     private String goodsName;
     private String smallImg;
-    private int goodsPrice;
+    private double goodsPrice;
     private int goodsnum;
     private String isStandard;
     private String productcategory;
@@ -79,7 +79,7 @@ public class BillCommodity {
         this.smallImg = smallImg;
     }
 
-    public int getGoodsPrice() {
+    public double getGoodsPrice() {
         return goodsPrice;
     }
 

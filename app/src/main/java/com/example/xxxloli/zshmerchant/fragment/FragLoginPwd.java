@@ -27,6 +27,7 @@ import com.example.xxxloli.zshmerchant.greendao.DBManagerUser;
 import com.example.xxxloli.zshmerchant.greendao.Shop;
 import com.example.xxxloli.zshmerchant.greendao.User;
 import com.example.xxxloli.zshmerchant.util.Common;
+import com.example.xxxloli.zshmerchant.util.ToastUtil;
 import com.example.xxxloli.zshmerchant.view.ShSwitchView;
 import com.google.gson.Gson;
 import com.interfaceconfig.Config;
@@ -106,7 +107,6 @@ public class FragLoginPwd extends BaseFragment {
 
 /**
  *         //开启信鸽日志输出
-
  */
         XGPushConfig.enableDebug(getActivity(), true);
 
@@ -175,15 +175,13 @@ public class FragLoginPwd extends BaseFragment {
     public void onSuccess(Object tag, JSONObject json) throws JSONException {
         switch (tag.toString()) {
             case Config.LOGIN:
-                Toast.makeText(getContext(), json.getString("message"), Toast.LENGTH_SHORT).show();
+//                Toast.makeText(getContext(), json.getString("message"), Toast.LENGTH_SHORT).show();
                 if (json.getInt("statusCode") == 200) {
-                    Log.e("信息", "丢了个雷姆" + json.toString());
-//                    show.setText(json.toString());
                     if (dbManagerShop.queryById((long) 2333).size()!=0){
-                        dbManagerAccount.deleteById((long) 2333);
                         dbManagerShop.deleteById((long) 2333);
-                        dbManagerUser.deleteById((long) 2333);
                     }
+                    Log.e("LOGIN","丢了个雷姆"+json);
+                    if (!dbManagerUser.queryById((long) 2333).isEmpty())dbManagerUser.deleteById((long) 2333);
                     User user = new Gson().fromJson(json.getString("user"), User.class);
                     user.setWritId((long) 2333);
                     Shop shop = new Gson().fromJson(json.getString("shop"), Shop.class);
@@ -192,20 +190,28 @@ public class FragLoginPwd extends BaseFragment {
                     dbManagerShop.insertShop(shop);
 
                     Account account=new Account();
-
-                    if (dbManagerAccount.queryByPhone(phone).size()!=0) {
-                        Account account1=dbManagerAccount.queryByPhone(phone).get(0);
-                        dbManagerAccount.deleteById(account1.getWritId());
+                    if (!dbManagerAccount.queryById((long) 2333).isEmpty()) {
+                        account=dbManagerAccount.queryById((long) 2333).get(0);
+                        account.setWritId(null);
+                        dbManagerAccount.insertAccount(account);
+                        dbManagerAccount.deleteById((long) 2333);
                     }
+                    if (dbManagerAccount.queryByPhone(phone).isEmpty()) {
                         account.setHead(shop.getShopImage());
                         account.setName(shop.getShopName());
                         account.setPhone(phone);
                         account.setPwd(pwd);
                         account.setWritId((long) 2333);
                         dbManagerAccount.insertAccount(account);
+                    }else {
+                        account=dbManagerAccount.queryByPhone(phone).get(0);
+                        account.setWritId((long) 2333);
+                        account.setPwd(pwd);
+                        dbManagerAccount.updateUser(account);
+                    }
 
                     startActivity(new Intent(getContext(), MainActivity.class));
-//                    if (getActivity() != null) getActivity().finish();
+                    if (getActivity() != null) getActivity().finish();
                 }
                 break;
         }

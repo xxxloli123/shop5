@@ -149,7 +149,7 @@ public class MyBillActivity extends BaseActivity {
         map1.put("pageSize", "20");
         String month = (initMonth < 10) ? "0" + initMonth : initMonth + "";
         String day = (initDay < 10) ? "0" + initDay : initDay + "";
-        map1.put("time", initYear + "-" + month + "-" + initDay);
+        map1.put("time", initYear + "-" + month + "-" + day);
         newCall(Config.Url.getUrl(Config.GET_Bills), map1);
     }
 
@@ -160,7 +160,6 @@ public class MyBillActivity extends BaseActivity {
 
     @Override
     public void onSuccess(Object tag, JSONObject json) throws JSONException {
-        Toast.makeText(getContext(), json.getString("message"), Toast.LENGTH_SHORT).show();
         switch (tag.toString()) {
             case Config.Bound_Alipay:
                 Log.e("Bound_Alipay", "丢了个雷姆" + json);
@@ -180,7 +179,6 @@ public class MyBillActivity extends BaseActivity {
                 else noOrder.setVisibility(View.GONE);
                 if (checkBillAdapter != null) {
                     checkBillAdapter.refresh(checkBills);
-                    Toast.makeText(getContext(), "" + checkBillAdapter.getCount(), Toast.LENGTH_SHORT).show();
                     return;
                 }
                 checkBillAdapter = new CheckBillAdapter(this, checkBills);
@@ -203,7 +201,6 @@ public class MyBillActivity extends BaseActivity {
                 map.put("userId", shop.getShopkeeperId());
                 newCall(Config.Url.getUrl(Config.Bound_Alipay), map);
                 break;
-
         }
     }
 
@@ -224,7 +221,7 @@ public class MyBillActivity extends BaseActivity {
         }
         RequestBody requestBody = new MultipartBody.Builder()
                 .setType(MultipartBody.FORM)
-                .addFormDataPart("userId", "402880e75f000ab6015f0043a1210002")
+                .addFormDataPart("userId", shop.getShopkeeperId())
                 .build();
         Request request = new Request.Builder()
                 .post(requestBody)
@@ -379,8 +376,6 @@ public class MyBillActivity extends BaseActivity {
                 }
             }
         }
-
-        ;
     };
 
     private void alipay(final String orderInfo) {

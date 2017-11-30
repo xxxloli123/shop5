@@ -38,6 +38,7 @@ import com.example.xxxloli.zshmerchant.view.ShSwitchView;
 import com.google.gson.Gson;
 import com.interfaceconfig.Config;
 import com.sgrape.BaseFragment;
+import com.sgrape.http.OkHttpCallback;
 
 import org.json.JSONArray;
 import org.json.JSONException;
@@ -86,8 +87,9 @@ public class OrderHandleFragment extends BaseFragment {
         ArrayList<String> list = new ArrayList<>();
         list.add("新订单");
         list.add("配送到家");
-        list.add("预定单");
+        list.add("预约到店");
         list.add("到店消费");
+//        list.add("未付款");
 
         pager.setAdapter(new OrdersHandleFragmentAdapter(getActivity().getSupportFragmentManager(), list));
         tabs.setViewPager(pager);
@@ -180,12 +182,11 @@ public class OrderHandleFragment extends BaseFragment {
 //                message.what = 1;
 //                handler.sendMessage(message);
             }
-        },0,1000*3);
+        },0,1000*30);
     }
 
     @Override
     public void onClick(View v) {
-
     }
 
     @Override
@@ -193,6 +194,7 @@ public class OrderHandleFragment extends BaseFragment {
         switch (tag.toString()) {
             case Config.GET_AutoOrder:
             if (json.getInt("statusCode") == 200) {
+                ToastUtil.showToast(getActivity(),json.getString("message"));
                 JSONArray arr = json.getJSONArray("listorder");
                 if (arr.length() == 0) return;
                 if (TextUtils.isEmpty(AppInfo.btAddress)){
@@ -200,7 +202,7 @@ public class OrderHandleFragment extends BaseFragment {
                     return;
                 }
                 for (int i=0;i<arr.length();i++){
-                        if ( mAdapter.getState()== BluetoothAdapter.STATE_OFF ){//蓝牙被关闭时强制打开
+                        if (mAdapter.getState()== BluetoothAdapter.STATE_OFF ){//蓝牙被关闭时强制打开
                             mAdapter.enable();
                             ToastUtil.showToast(getActivity(),"蓝牙被关闭请打开...");
                         }else {

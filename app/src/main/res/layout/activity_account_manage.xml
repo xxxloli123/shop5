@@ -94,4 +94,16 @@
         android:text="退出当前账号"
         android:textColor="@color/text_color" />
 
+    <TextView
+        android:id="@+id/txttitle"
+        android:layout_width="wrap_content"
+        android:layout_height="wrap_content" />
+    <!--设置一个进度条,并且设置为水平方向-->
+    <ProgressBar
+        android:visibility="gone"
+        android:layout_width="match_parent"
+        android:layout_height="wrap_content"
+        android:id="@+id/pgbar"
+        style="?android:attr/progressBarStyleHorizontal"/>
+
 </LinearLayout>

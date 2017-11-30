@@ -25,6 +25,7 @@ import android.widget.Toast;
 import com.example.xxxloli.zshmerchant.MainActivity;
 import com.example.xxxloli.zshmerchant.R;
 import com.example.xxxloli.zshmerchant.greendao.DBManagerShop;
+import com.example.xxxloli.zshmerchant.greendao.DaoUtil;
 import com.example.xxxloli.zshmerchant.greendao.Shop;
 import com.interfaceconfig.Config;
 
@@ -49,8 +50,8 @@ public class FirstActivity extends AppCompatActivity {
     @BindView(R.id.login)
     Button login;
 
-    private DBManagerShop dbManagerShop;
-    private static String PERMISSIONS[] = new String[]{Manifest.permission.ACCESS_FINE_LOCATION,Manifest.permission.WRITE_EXTERNAL_STORAGE};
+    private static String PERMISSIONS[] = new String[]{Manifest.permission.ACCESS_FINE_LOCATION,
+            Manifest.permission.WRITE_EXTERNAL_STORAGE,Manifest.permission.CAMERA};
 
     @Override
     protected void onCreate(Bundle savedInstanceState) {
@@ -63,8 +64,9 @@ public class FirstActivity extends AppCompatActivity {
             else
                 setResult(PERMISSIONS.length);
         }
-            dbManagerShop = DBManagerShop.getInstance(this);
-            if (dbManagerShop.queryById((long) 2333).size()!=0) {
+        if (!DaoUtil.isSaveShop(this)&&DaoUtil.isSaveUser(this))
+            startActivity(new Intent(FirstActivity.this, XXRZActivity.class));
+            if (DaoUtil.isSaveShop(this)) {
                 startActivity(new Intent(FirstActivity.this, MainActivity.class));
                 finish();
             }else update(this,getVersionCode(this));

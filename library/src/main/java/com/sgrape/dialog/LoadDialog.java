@@ -31,7 +31,7 @@ public class LoadDialog extends Dialog {
         linearLayout.addView(prog);
         msg = new TextView(context);
 
-        linearLayout.addView(msg);
+//        linearLayout.addView(msg);
         linearLayout.setGravity(Gravity.CENTER);
         if (Build.VERSION.SDK_INT >= Build.VERSION_CODES.JELLY_BEAN) {
             linearLayout.setBackground(new DialogBg(20, Color.BLACK));

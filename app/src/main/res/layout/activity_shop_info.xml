@@ -6,7 +6,6 @@
 
     <!--头部-->
     <RelativeLayout
-        android:id="@+id/top_layout"
         android:layout_width="match_parent"
         android:layout_height="45dp"
         android:background="@color/blue">
@@ -352,7 +351,7 @@
                     android:layout_width="wrap_content"
                     android:layout_height="match_parent"
                     android:gravity="center_vertical"
-                    android:text="订餐电话"
+                    android:text="店铺电话"
                     android:textColor="@color/text_color"
                     android:textSize="14sp" />
 
@@ -392,7 +391,7 @@
                     android:layout_width="wrap_content"
                     android:layout_height="match_parent"
                     android:gravity="center_vertical"
-                    android:text="点餐服务"
+                    android:text="经营方式"
                     android:textColor="@color/text_color"
                     android:textSize="14sp" />
 
@@ -432,6 +431,40 @@
 
                 <ImageView
                     android:id="@+id/image"
+                    android:layout_height="10dp"
+                    android:layout_width="6dp"
+                    android:layout_alignParentRight="true"
+                    android:layout_centerVertical="true"
+                    android:layout_marginLeft="6dp"
+                    android:background="@drawable/right" />
+
+            </RelativeLayout>
+
+            <View
+                android:layout_width="match_parent"
+                android:layout_height="0.01dp"
+                android:layout_marginLeft="16dp"
+                android:layout_marginRight="16dp"
+                android:background="@color/line"></View>
+
+            <RelativeLayout
+                android:id="@+id/packaging_rl"
+                android:layout_width="match_parent"
+                android:layout_height="40dp"
+                android:layout_marginLeft="16dp"
+                android:layout_marginRight="16dp"
+                android:drawableBottom="@drawable/line"
+                android:orientation="horizontal">
+
+                <TextView
+                    android:layout_width="wrap_content"
+                    android:layout_height="match_parent"
+                    android:gravity="center_vertical"
+                    android:text="打包费"
+                    android:textColor="@color/text_color"
+                    android:textSize="14sp" />
+
+                <ImageView
                     android:layout_height="10dp"
                     android:layout_width="6dp"
                     android:layout_alignParentRight="true"

@@ -47,7 +47,7 @@ public class SearchBluetoothActivity extends BluetoothActivity implements Adapte
     private TextView tv_summary;
     private SearchBleAdapter searchBleAdapter;
     int PERMISSION_REQUEST_COARSE_LOCATION = 2;
-
+    private static final int REQUEST_ENABLE_BT = 2;
     @Override
     public void onCreate(@Nullable Bundle savedInstanceState) {
         super.onCreate(savedInstanceState);
@@ -69,6 +69,15 @@ public class SearchBluetoothActivity extends BluetoothActivity implements Adapte
         tv_summary.setOnClickListener(this);
     }
 
+    @Override
+    protected void onStart() {
+        super.onStart();
+        if (!bluetoothAdapter.isEnabled()) {
+            //打开蓝牙
+            Intent enableIntent = new Intent(BluetoothAdapter.ACTION_REQUEST_ENABLE);
+            startActivityForResult(enableIntent, REQUEST_ENABLE_BT);
+        }
+    }
 
     private void init() {
         if (!BtUtil.isOpen(bluetoothAdapter)) {

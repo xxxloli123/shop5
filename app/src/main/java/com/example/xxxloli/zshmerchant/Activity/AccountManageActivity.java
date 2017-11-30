@@ -3,19 +3,21 @@ package com.example.xxxloli.zshmerchant.Activity;
 import android.app.AlertDialog;
 import android.content.Intent;
 import android.os.Bundle;
-import android.support.v7.app.AppCompatActivity;
 import android.util.Log;
 import android.view.LayoutInflater;
 import android.view.View;
+import android.view.animation.AnimationSet;
 import android.widget.AdapterView;
 import android.widget.Button;
 import android.widget.LinearLayout;
+import android.widget.ProgressBar;
 import android.widget.RelativeLayout;
 import android.widget.TextView;
 import android.widget.Toast;
 
 import com.example.xxxloli.zshmerchant.R;
 import com.example.xxxloli.zshmerchant.adapter.AccountListAdapter;
+import com.example.xxxloli.zshmerchant.base.MyAsyncTask;
 import com.example.xxxloli.zshmerchant.fragment.OrderHandleFragment;
 import com.example.xxxloli.zshmerchant.greendao.Account;
 import com.example.xxxloli.zshmerchant.greendao.DBManagerAccount;
@@ -23,20 +25,15 @@ import com.example.xxxloli.zshmerchant.greendao.DBManagerShop;
 import com.example.xxxloli.zshmerchant.greendao.DBManagerUser;
 import com.example.xxxloli.zshmerchant.greendao.Shop;
 import com.example.xxxloli.zshmerchant.greendao.User;
-import com.example.xxxloli.zshmerchant.objectmodel.Info;
 import com.example.xxxloli.zshmerchant.view.MyListView;
 import com.google.gson.Gson;
 import com.interfaceconfig.Config;
 import com.sgrape.BaseActivity;
 import com.slowlife.lib.MD5;
-import com.tencent.android.tpush.XGIOperateCallback;
-import com.tencent.android.tpush.XGPushConfig;
-import com.tencent.android.tpush.XGPushManager;
 
 import org.json.JSONException;
 import org.json.JSONObject;
 
-import java.util.ArrayList;
 import java.util.HashMap;
 import java.util.List;
 import java.util.Map;
@@ -55,6 +52,10 @@ public class AccountManageActivity extends BaseActivity {
     LinearLayout addRegisterLL;
     @BindView(R.id.log_out)
     Button logOut;
+    @BindView(R.id.txttitle)
+    TextView txttitle;
+    @BindView(R.id.pgbar)
+    ProgressBar pgbar;
 
     private DBManagerAccount dbManagerAccount;
     private List<Account> accounts;
@@ -62,7 +63,7 @@ public class AccountManageActivity extends BaseActivity {
     private DBManagerUser dbManagerUser;
     private AccountListAdapter accountListAdapter;
     private String token;
-    private Account account,switchoverEd;
+    private Account account, switchoverEd;
 
     @Override
     protected void onCreate(Bundle savedInstanceState) {
@@ -70,9 +71,9 @@ public class AccountManageActivity extends BaseActivity {
 //        setContentView(R.layout.activity_account_manage);
         ButterKnife.bind(this);
         dbManagerAccount = DBManagerAccount.getInstance(this);
-        dbManagerShop=DBManagerShop.getInstance(this);
+        dbManagerShop = DBManagerShop.getInstance(this);
         dbManagerUser = DBManagerUser.getInstance(this);
-        accounts=dbManagerAccount.queryAccountList();
+        accounts = dbManagerAccount.queryAccountList();
         initView();
     }
 
@@ -82,24 +83,25 @@ public class AccountManageActivity extends BaseActivity {
     }
 
     private void initView() {
-        if (accounts==null)return;
-        accountListAdapter=new AccountListAdapter(this,accounts);
+        if (accounts == null) return;
+        accountListAdapter = new AccountListAdapter(this, accounts);
         accountList.setAdapter(accountListAdapter);
         accountList.setOnItemClickListener(new AdapterView.OnItemClickListener() {
             @Override
             public void onItemClick(AdapterView<?> parent, View view, int position, long id) {
-                if (accounts.get(position).getWritId()!=2333){
-                    switchoverEd=accounts.get(position);
-                    if (accounts.get(position).getPwd()==null){
-                        idAdd();
+                if (accounts.get(position).getWritId() != 2333) {
+                    if (accounts.get(position).getPwd() == null) {
+                        switchover();
+                        return;
                     }
-                    account=dbManagerAccount.queryById((long) 2333).get(0);
+                    switchoverEd = accounts.get(position);
+                    account = dbManagerAccount.queryById((long) 2333).get(0);
                     Map<String, Object> map = new HashMap<>();
                     JSONObject user = new JSONObject();
                     try {
 //            userStr：包含phone,password,type,phoneType(Android-安卓 Ios-IOS),token(推送唯一标示)
-                        user.put("phone", account.getPhone());
-                        user.put("password", MD5.md5Pwd(account.getPwd()));
+                        user.put("phone", accounts.get(position).getPhone());
+                        user.put("password", MD5.md5Pwd(accounts.get(position).getPwd()));
                         user.put("type", "Shopkeeper");
                         user.put("phoneType", "Android");
                         user.put("token", token);
@@ -114,11 +116,11 @@ public class AccountManageActivity extends BaseActivity {
         });
     }
 
-    private void idAdd() {
+    private void switchover() {
         View view = LayoutInflater.from(this).inflate(R.layout.dialog_revise_phone, null);
         final AlertDialog alertDialog = new AlertDialog.Builder(this, R.style.Theme_AppCompat_DayNight_Dialog).create();
         final Button sure = view.findViewById(R.id.sure_bt);
-        TextView title=view.findViewById(R.id.title);
+        TextView title = view.findViewById(R.id.title);
         title.setText("由于此账号是短信登录方式,要切换此账号必须重新登录\n确认切换吗?");
         Button cancel = view.findViewById(R.id.cancel_bt);
         cancel.setOnClickListener(new View.OnClickListener() {
@@ -148,7 +150,8 @@ public class AccountManageActivity extends BaseActivity {
                 break;
             case R.id.log_out:
                 isLogOut();
-
+//                MyAsyncTask myTask = new MyAsyncTask(txttitle,pgbar,this);
+//                myTask.execute(1000);
                 break;
         }
     }
@@ -189,6 +192,7 @@ public class AccountManageActivity extends BaseActivity {
         Toast.makeText(getContext(), json.getString("message"), Toast.LENGTH_SHORT).show();
         if (json.getInt("statusCode") == 200) {
             OrderHandleFragment.stopTimer();
+            Log.e("LOGIN","丢了个雷姆"+json);
             account.setWritId(null);
             dbManagerAccount.insertAccount(account);
             dbManagerAccount.deleteById((long) 2333);

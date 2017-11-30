@@ -31,21 +31,14 @@ import android.widget.Toast;
 
 import com.example.xxxloli.zshmerchant.BuildConfig;
 import com.example.xxxloli.zshmerchant.R;
-import com.example.xxxloli.zshmerchant.greendao.Account;
-import com.example.xxxloli.zshmerchant.greendao.DBManagerAccount;
 import com.example.xxxloli.zshmerchant.greendao.DBManagerShop;
 import com.example.xxxloli.zshmerchant.greendao.DBManagerUser;
 import com.example.xxxloli.zshmerchant.greendao.Shop;
 import com.example.xxxloli.zshmerchant.greendao.User;
-import com.google.gson.Gson;
 import com.interfaceconfig.Config;
 import com.sgrape.BaseActivity;
 import com.sgrape.dialog.LoadDialog;
-import com.slowlife.lib.MD5;
 import com.squareup.picasso.Picasso;
-import com.tencent.android.tpush.XGIOperateCallback;
-import com.tencent.android.tpush.XGPushConfig;
-import com.tencent.android.tpush.XGPushManager;
 
 import org.json.JSONException;
 import org.json.JSONObject;
@@ -61,7 +54,6 @@ import java.util.Map;
 import java.util.UUID;
 
 import butterknife.BindView;
-import butterknife.ButterKnife;
 import butterknife.OnClick;
 import de.hdodenhof.circleimageview.CircleImageView;
 import okhttp3.Call;
@@ -134,7 +126,7 @@ public class ShopInfoActivity extends BaseActivity {
     private User user;
     private Shop shop;
     private LoadDialog dialog;
-    private String mImagePath = Environment.getExternalStorageDirectory()+"/meta/";
+    private String mImagePath = Environment.getExternalStorageDirectory() + "/meta/";
 
     @Override
     protected void onCreate(Bundle savedInstanceState) {
@@ -159,11 +151,11 @@ public class ShopInfoActivity extends BaseActivity {
         getNumber.setText(shop.getShopNumber());
         getAddress.setText(shop.getHouseNumber());
         getNotice.setText(shop.getShopNotices());
-        String startHour= shop.getStartDate().substring(0,2);
-        String  startMinute= shop.getStartDate().substring(3,5);
-        String endHour= shop.getEndDate().substring(0,2);
-        String endMinute= shop.getEndDate().substring(3,5);
-        getTime.setText(startHour+":"+startMinute+"—"+endHour+":"+endMinute);
+        String startHour = shop.getStartDate().substring(0, 2);
+        String startMinute = shop.getStartDate().substring(3, 5);
+        String endHour = shop.getEndDate().substring(0, 2);
+        String endMinute = shop.getEndDate().substring(3, 5);
+        getTime.setText(startHour + ":" + startMinute + "—" + endHour + ":" + endMinute);
         getPhone.setText(shop.getTelePhone());
         getQualification.setText(user.getShopBusinessConfirm_value());
         getIdentity.setText(user.getIdConfirm_value());
@@ -266,7 +258,7 @@ public class ShopInfoActivity extends BaseActivity {
                     if (!path.exists()) {
                         path.mkdir();
                     }
-                    camera = new File(mImagePath, UUID.randomUUID().toString()+".jpg");
+                    camera = new File(mImagePath, UUID.randomUUID().toString() + ".jpg");
                     Uri photoUri = FileProvider.getUriForFile(ShopInfoActivity.this,
                             "com.example.xxxloli.zshmerchant" + ".provider", camera);
 
@@ -280,7 +272,7 @@ public class ShopInfoActivity extends BaseActivity {
         });
         bt2.setOnClickListener(new View.OnClickListener() {
             public void onClick(View v) {//从相册中选择
-                Intent local =new  Intent(Intent.ACTION_PICK, MediaStore.Images.Media.EXTERNAL_CONTENT_URI);
+                Intent local = new Intent(Intent.ACTION_PICK, MediaStore.Images.Media.EXTERNAL_CONTENT_URI);
                 local.setDataAndType(MediaStore.Images.Media.EXTERNAL_CONTENT_URI, "image/*");
                 startActivityForResult(local, 2);
                 pop.dismiss();
@@ -304,16 +296,16 @@ public class ShopInfoActivity extends BaseActivity {
         final CheckBox jsyyd = view.findViewById(R.id.jsyyd);
         final CheckBox ddxf = view.findViewById(R.id.ddxf);
         final CheckBox pinzhuo = view.findViewById(R.id.pin_zhuo);
-        if (shop.getBookingOrder()!=null){
-            if (shop.getBookingOrder().equals("yes"))jsyyd.setChecked(true);
+        if (shop.getBookingOrder() != null) {
+            if (shop.getBookingOrder().equals("yes")) jsyyd.setChecked(true);
             else jsyyd.setChecked(false);
         }
-        if (shop.getLineConsume()!=null){
-            if (shop.getLineConsume().equals("yes"))ddxf.setChecked(true);
+        if (shop.getLineConsume() != null) {
+            if (shop.getLineConsume().equals("yes")) ddxf.setChecked(true);
             else ddxf.setChecked(false);
         }
-        if (shop.getTogetherTable()!=null){
-            if (shop.getTogetherTable().equals("yes"))pinzhuo.setChecked(true);
+        if (shop.getTogetherTable() != null) {
+            if (shop.getTogetherTable().equals("yes")) pinzhuo.setChecked(true);
             else pinzhuo.setChecked(false);
         }
         sure.setOnClickListener(new View.OnClickListener() {
@@ -367,7 +359,7 @@ public class ShopInfoActivity extends BaseActivity {
         save.setOnClickListener(new View.OnClickListener() {
             @Override
             public void onClick(View view) {
-                if (isEmpty(text.getText().toString().trim())){
+                if (isEmpty(text.getText().toString().trim())) {
                     Toast.makeText(ShopInfoActivity.this, "请填写内容", Toast.LENGTH_SHORT).show();
                 }
                 getPhone.setText(text.getText().toString());
@@ -558,7 +550,6 @@ public class ShopInfoActivity extends BaseActivity {
         } catch (JSONException e) {
             e.printStackTrace();
         }
-
     }
 
     @Override
@@ -604,7 +595,7 @@ public class ShopInfoActivity extends BaseActivity {
 //                        Toast.makeText(this, "图片文件读取出错", Toast.LENGTH_LONG).show();
 //                        return;
 //                    }
-                    startImageZoom(FileProvider.getUriForFile(this, BuildConfig.APPLICATION_ID  +
+                    startImageZoom(FileProvider.getUriForFile(this, BuildConfig.APPLICATION_ID +
                             ".provider", camera));
                     break;
                 case CROP_CODE:
@@ -631,12 +622,12 @@ public class ShopInfoActivity extends BaseActivity {
                     if (data != null) {
                         try {
                             String fils = clipping.getAbsolutePath();
-                            compressPicture(fils,clipping.getAbsoluteFile());
+                            compressPicture(fils, clipping.getAbsoluteFile());
                             submitImg();
                         } catch (Exception e) {
                             e.printStackTrace();
                         }
-                    }else Toast.makeText(this, "图片文件剪裁出错", Toast.LENGTH_LONG).show();
+                    } else Toast.makeText(this, "图片文件剪裁出错", Toast.LENGTH_LONG).show();
                     break;
             }
         }
@@ -721,8 +712,36 @@ public class ShopInfoActivity extends BaseActivity {
         Toast.makeText(this, json.getString("message"), Toast.LENGTH_SHORT).show();
         switch (tag.toString()) {
             case Config.EDIT_SHOP_INFO:
-                    dbManagerShop.updateShop(shop);
+                dbManagerShop.updateShop(shop);
                 break;
         }
+    }
+
+    @OnClick(R.id.packaging_rl)
+    public void onViewClicked() {
+        EditPackaging();
+    }
+
+    private void EditPackaging() {
+        View view = LayoutInflater.from(ShopInfoActivity.this).inflate(R.layout.dialog_ordering_phone, null);
+        final AlertDialog alertDialog = new AlertDialog.Builder(ShopInfoActivity.this, R.style.Theme_AppCompat_DayNight_Dialog).create();
+        TextView save = view.findViewById(R.id.save);
+        final EditText text = view.findViewById(R.id.edit);
+        text.setText(shop.getPackingprice()+"");
+        save.setOnClickListener(new View.OnClickListener() {
+            @Override
+            public void onClick(View view) {
+                if (isEmpty(text.getText().toString().trim())) {
+                    Toast.makeText(ShopInfoActivity.this, "请填写内容", Toast.LENGTH_SHORT).show();
+                    return;
+                }
+                submitInfo("packingprice", text.getText().toString());
+                synchronization();
+                shop.setPackingprice(text.getText().toString());
+                alertDialog.dismiss();
+            }
+        });
+        alertDialog.setView(view);
+        alertDialog.show();
     }
 }

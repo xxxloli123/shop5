@@ -1,7 +1,7 @@
 package com.interfaceconfig;
 
 public interface Config {
-    String LOCAL_HOST = "http://192.168.0.101:8080/";
+    String LOCAL_HOST = "http://192.168.0.110:8080/";
     String HOST = "http://www.zsh7.com/";
     // 登录
     String LOGIN = "slowlife/appuser/userlogin";
@@ -41,7 +41,7 @@ public interface Config {
     String IMG_Hear = "slowlife/img/shop/";
 
     /**
-     * 获取待打印订单
+     *
      */
     String GET_AutoOrder = "slowlife/appshop/getshopdayinorder";
 
@@ -150,6 +150,11 @@ public interface Config {
      * 商家接单 或拒单:
      */
     String Receive_Reject= "slowlife/appshop/shopreceivedorder ";
+
+    /**
+     描述：商家修改订单价格
+     */
+    String Edit_Price= "slowlife/appshop/shopmodifyordercost ";
 
     /**
      * 得到待处理订单:

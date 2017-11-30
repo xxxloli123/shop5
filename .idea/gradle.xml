@@ -9,12 +9,14 @@
           <set>
             <option value="$PROJECT_DIR$" />
             <option value="$PROJECT_DIR$/app" />
+            <option value="$PROJECT_DIR$/bluetoothPrint" />
             <option value="$PROJECT_DIR$/interfaceconfig" />
             <option value="$PROJECT_DIR$/library" />
             <option value="$PROJECT_DIR$/map" />
             <option value="$PROJECT_DIR$/tabstrip" />
             <option value="$PROJECT_DIR$/util" />
             <option value="$PROJECT_DIR$/xgpush" />
+            <option value="$PROJECT_DIR$/zxing" />
           </set>
         </option>
         <option name="resolveModulePerSourceSet" value="false" />

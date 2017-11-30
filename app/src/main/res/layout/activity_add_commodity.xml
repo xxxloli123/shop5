@@ -28,14 +28,27 @@
             android:layout_width="wrap_content"
             android:layout_height="wrap_content"
             android:layout_centerInParent="true"
-            android:text="添加菜品"
+            android:text="添加商品"
             android:textColor="@color/white"
             android:textSize="16sp" />
+
+        <RelativeLayout
+            android:layout_alignParentRight="true"
+            android:id="@+id/scan_rl"
+            android:layout_width="50dp"
+            android:layout_height="match_parent"
+            android:paddingLeft="16dp">
+
+            <ImageView
+                android:layout_width="22dp"
+                android:layout_height="22dp"
+                android:layout_centerVertical="true"
+                android:src="@drawable/sao" />
+        </RelativeLayout>
 
     </RelativeLayout>
 
     <ScrollView
-
         android:layout_width="match_parent"
         android:layout_height="match_parent">
 
@@ -518,7 +531,7 @@
                 android:layout_marginRight="10dp"
                 android:layout_marginTop="25dp"
                 android:background="@drawable/rounded_corners"
-                android:text="提交"
+                android:text="保存"
                 android:textColor="@color/white"
                 android:textSize="15dp" />
 

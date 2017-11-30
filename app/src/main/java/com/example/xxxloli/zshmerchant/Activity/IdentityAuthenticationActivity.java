@@ -346,7 +346,8 @@ public class IdentityAuthenticationActivity extends AppCompatActivity {
                                         JSONObject result = new JSONObject(responseResult);
                                         System.out.println(result.toString());
                                         if (result.getInt("statusCode") != 200) {
-                                            Toast.makeText(IdentityAuthenticationActivity.this, "上传失败" + result.getJSONObject("message"), Toast.LENGTH_SHORT).show();
+                                            Toast.makeText(IdentityAuthenticationActivity.this,
+                                                    "上传失败" + result.getJSONObject("message"), Toast.LENGTH_SHORT).show();
                                         } else {
                                             Toast.makeText(IdentityAuthenticationActivity.this, "上传成功", Toast.LENGTH_SHORT).show();
                                             Intent intent = new Intent();

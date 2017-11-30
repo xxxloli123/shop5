@@ -182,6 +182,8 @@ public class AddSpecialOfferCommodityActivity extends BaseActivity {
                     }
                     pictureLibraryId = data.getStringExtra("pictureLibraryId");
                     Picasso.with(this).load(Config.Url.getUrl(Config.IMG_Commodity) + data.getStringExtra("img")).into(commodityImg);
+                    nameET.setText(data.getStringExtra("name"));
+                    describeET.setText(data.getStringExtra("describe"));
                     break;
             }
         }

@@ -337,7 +337,7 @@
                     android:layout_height="wrap_content"
                     android:layout_marginLeft="12dp"
                     android:layout_marginTop="1dp"
-                    android:text="商品"
+                    android:text="我的商品"
                     android:textColor="@color/text_color"
                     android:textSize="14sp" />
 

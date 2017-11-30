@@ -37,6 +37,7 @@
                 android:text="选择区域"
                 android:textColor="@color/white"
                 android:textSize="16sp" />
+
         </RelativeLayout>
         <ListView
             android:id="@+id/listview"

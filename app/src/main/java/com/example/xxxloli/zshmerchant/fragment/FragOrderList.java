@@ -5,6 +5,7 @@ import android.app.AlertDialog;
 import android.bluetooth.BluetoothAdapter;
 import android.content.Intent;
 import android.os.Bundle;
+import android.text.InputType;
 import android.text.TextUtils;
 import android.util.Log;
 import android.view.LayoutInflater;
@@ -79,6 +80,7 @@ public class FragOrderList extends BaseFragment implements OrderListAdapter1.Cal
     private Shop shop;
     private ArrayList<OrderEntity> orders;
     private OrderListAdapter1 orderListAdapter1;
+    private BluetoothAdapter bluetoothAdapter;
 
     /**
      * bluetooth adapter
@@ -100,6 +102,7 @@ public class FragOrderList extends BaseFragment implements OrderListAdapter1.Cal
 
     @Override
     protected void init() {
+        bluetoothAdapter = BluetoothAdapter.getDefaultAdapter();
         dbManagerShop = DBManagerShop.getInstance(getActivity());
         shop = dbManagerShop.queryById((long) 2333).get(0);
         mAdapter = BluetoothAdapter.getDefaultAdapter();
@@ -131,7 +134,8 @@ public class FragOrderList extends BaseFragment implements OrderListAdapter1.Cal
 
     @Override
     protected void loadData() {
-        //订单处理 lineOrderType： 所有新订单All，ReserveOrder(预定单),NormalOrder(配送到家),ShopConsumption(到店消费单)
+        //订单处理 lineOrderType： 所有新订单All，ReserveOrder(预定单),NormalOrder(配送到家)
+        // UnPayed(待付款),ShopConsumption(到店消费单)
 //        if (!firstLoad && srl != null && !srl.isRefreshing()) return;
         firstLoad = false;
         Map<String, Object> map = new HashMap<>();
@@ -228,8 +232,15 @@ public class FragOrderList extends BaseFragment implements OrderListAdapter1.Cal
                     reject(orders.get((Integer) v.getTag()));
                 break;
             case R.id.receiving_order:
-                if (orders.get((Integer) v.getTag()).getLineOrder().equals("NormalOrder"))
+                //订单处理 lineOrderType： 所有新订单 All，ReserveOrder(预定单),NormalOrder(配送到家)
+                // UnPayed(待付款),ShopConsumption(到店消费单)
+                if (orders.get(0).getLineOrder().equals("NormalOrder")&&lineOrderType.equals("All"))
                     receive(orders.get((Integer) v.getTag()));
+                else if (orders.get(0).getLineOrder().equals("UnPayed")){
+                    editPrice(orders.get((Integer) v.getTag()));
+                }else if (lineOrderType.equals("NormalOrder")&&orders.get(0).getLineOrder().equals("NormalOrder")){
+                    PrintOrder(orders.get((Integer) v.getTag()));
+                }
                 else {
                     Map<String, Object> map = new HashMap<>();
                     map.put("receivedorder", "yes");
@@ -239,10 +250,62 @@ public class FragOrderList extends BaseFragment implements OrderListAdapter1.Cal
                     map.put("cause", "");
                     newCall(Config.Url.getUrl(Config.Receive_Reject), map);
                     //List移除某Item
+                    PrintOrder( orders.get((Integer) v.getTag()));
                     orders.remove(orders.get((Integer) v.getTag()));
                     orderListAdapter1.notifyDataSetChanged();
                 }
                 break;
+        }
+    }
+
+    private void editPrice(final OrderEntity orderEntity) {
+        View view = LayoutInflater.from(getActivity()).inflate(R.layout.dialog_receive_or_reject, null);
+        final AlertDialog alertDialog = new AlertDialog.Builder(getActivity(), R.style.Theme_AppCompat_DayNight_Dialog).create();
+        Button sure = view.findViewById(R.id.sure_bt);
+        Button cancel = view.findViewById(R.id.cancel_bt);
+        final EditText causeEdit = view.findViewById(R.id.cause_edit);
+        causeEdit.setInputType(InputType.TYPE_NUMBER_FLAG_DECIMAL);
+        causeEdit.setHint("输入修改价格");
+        sure.setOnClickListener(new View.OnClickListener() {
+            @Override
+            public void onClick(View view) {
+                if (isEmpty(causeEdit.getText().toString())) {
+                    Toast.makeText(getActivity(), "请输入修改价格", Toast.LENGTH_SHORT).show();
+                    return;
+                }
+//                参数：[orderId, cost, userId]
+                Map<String, Object> map = new HashMap<>();
+                map.put("orderId", orderEntity.getId());
+                map.put("userId", shop.getShopkeeperId());
+                map.put("cost", causeEdit.getText());
+                newCall(Config.Url.getUrl(Config.Edit_Price), map);
+                alertDialog.dismiss();
+            }
+        });
+        cancel.setOnClickListener(new View.OnClickListener() {
+            @Override
+            public void onClick(View view) {
+                alertDialog.dismiss();
+            }
+        });
+        alertDialog.setView(view);
+        alertDialog.show();
+    }
+
+    private void PrintOrder(OrderEntity orderEntity) {
+        if (TextUtils.isEmpty(AppInfo.btAddress)||!bluetoothAdapter.isEnabled()) {
+            ToastUtil.showToast(getActivity(), "如需打印订单请设置打印机功能");
+            return;
+        }
+        if (mAdapter.getState() == BluetoothAdapter.STATE_OFF) {//蓝牙被关闭时强制打开
+            mAdapter.enable();
+            ToastUtil.showToast(getActivity(), "蓝牙被关闭请打开...");
+        } else {
+            PrintOrderDataMaker printOrderDataMaker = new PrintOrderDataMaker(getActivity(), "",
+                    PrinterWriter58mm.TYPE_58, PrinterWriter.HEIGHT_PARTING_DEFAULT, orderEntity);
+            ArrayList<byte[]> printData = (ArrayList<byte[]>) printOrderDataMaker
+                    .getPrintData(PrinterWriter58mm.TYPE_58);
+            PrintQueue.getQueue(getActivity()).add(printData);
         }
     }
 
@@ -274,20 +337,7 @@ public class FragOrderList extends BaseFragment implements OrderListAdapter1.Cal
                 orders.remove(orderEntity);
                 orderListAdapter1.notifyDataSetChanged();
                 alertDialog.dismiss();
-                if (TextUtils.isEmpty(AppInfo.btAddress)) {
-                    ToastUtil.showToast(getActivity(), "如需打印订单请设置打印机功能");
-                    return;
-                }
-                if (mAdapter.getState() == BluetoothAdapter.STATE_OFF) {//蓝牙被关闭时强制打开
-                    mAdapter.enable();
-                    ToastUtil.showToast(getActivity(), "蓝牙被关闭请打开...");
-                } else {
-                    PrintOrderDataMaker printOrderDataMaker = new PrintOrderDataMaker(getActivity(), "",
-                            PrinterWriter58mm.TYPE_58, PrinterWriter.HEIGHT_PARTING_DEFAULT, orderEntity);
-                    ArrayList<byte[]> printData = (ArrayList<byte[]>) printOrderDataMaker
-                            .getPrintData(PrinterWriter58mm.TYPE_58);
-                    PrintQueue.getQueue(getActivity()).add(printData);
-                }
+                PrintOrder(orderEntity);
             }
         });
         cancel.setOnClickListener(new View.OnClickListener() {
@@ -345,12 +395,10 @@ public class FragOrderList extends BaseFragment implements OrderListAdapter1.Cal
                 firstLoad = false;
                 if (orders==null)orders = new ArrayList<>();
                 Log.e("page", "丢了个雷姆" + lineOrderType);
-                ptrFrameLayout=rootView.findViewById(R.id.ptr_frame_layout);
-                ptrFrameLayout.refreshComplete();
+                if (ptrFrameLayout!=null) ptrFrameLayout.refreshComplete();
 
                 if (page == 1 && !orders.isEmpty()) orders.clear();
                 JSONArray arr = json.getJSONObject("ordersInfo").getJSONArray("aaData");
-                Log.e("orders", "丢了个雷姆" + arr.get(0));
                 Gson gson = new Gson();
                 for (int i = 0; i < arr.length(); i++) {
                     final JSONObject cache = arr.getJSONObject(i);
@@ -363,7 +411,9 @@ public class FragOrderList extends BaseFragment implements OrderListAdapter1.Cal
                     orderListAdapter1.refresh(orders);
                     return;
                 }
-                orderListAdapter1=new OrderListAdapter1(getActivity(),orders,this);
+                if (lineOrderType.equals("All"))
+                orderListAdapter1=new OrderListAdapter1(getActivity(),orders,this,true);
+                else orderListAdapter1=new OrderListAdapter1(getActivity(),orders,this,false);
                 listview.setAdapter(orderListAdapter1);
                 break;
             case Config.Receive_Reject:

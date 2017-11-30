@@ -60,14 +60,14 @@ public class XgReceiver extends XGPushBaseReceiver {
     @Override
     public void onNotifactionClickedResult(Context context, XGPushClickedResult message) {
         System.out.println(message);
-        if (message.getActionType() == XGPushClickedResult.NOTIFACTION_CLICKED_TYPE) {
-            // 通知在通知栏被点击啦。。。。。
-            // APP自己处理点击的相关动作
-            // 这个动作可以在activity的onResume也能监听，请看第3点相关内容
-            String text = "通知被打开 :" + message;
-            Toast.makeText(context, "广播接收到通知被点击:" + text,
-                    Toast.LENGTH_SHORT).show();
-        }
+//        if (message.getActionType() == XGPushClickedResult.NOTIFACTION_CLICKED_TYPE) {
+//            // 通知在通知栏被点击啦。。。。。
+//            // APP自己处理点击的相关动作
+//            // 这个动作可以在activity的onResume也能监听，请看第3点相关内容
+//            String text = "通知被打开 :" + message;
+//            Toast.makeText(context, "广播接收到通知被点击:" + text,
+//                    Toast.LENGTH_SHORT).show();
+//        }
     }
 
     @Override

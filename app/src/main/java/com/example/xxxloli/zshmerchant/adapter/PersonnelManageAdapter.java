@@ -8,6 +8,7 @@ import android.support.v7.app.AlertDialog;
 import android.support.v7.widget.RecyclerView;
 import android.text.InputFilter;
 import android.text.InputType;
+import android.util.Log;
 import android.view.LayoutInflater;
 import android.view.View;
 import android.view.ViewGroup;
@@ -201,6 +202,7 @@ public class PersonnelManageAdapter extends RecyclerView.Adapter {
                                 Toast.makeText(activity, "上传失败", Toast.LENGTH_SHORT).show();
                                 return;
                             }
+                            Log.e("responseResult",""+responseResult);
                             try {
                                 JSONObject result = new JSONObject(responseResult);
                                 System.out.println(result.toString());
@@ -218,6 +220,7 @@ public class PersonnelManageAdapter extends RecyclerView.Adapter {
                                     Toast.makeText(activity, "上传成功", Toast.LENGTH_SHORT).show();
                                 }
                             } catch (JSONException e) {
+                                Toast.makeText(activity, "" + responseResult, Toast.LENGTH_SHORT).show();
                                 Toast.makeText(activity, "解析数据失败", Toast.LENGTH_SHORT).show();
                             }
                         }

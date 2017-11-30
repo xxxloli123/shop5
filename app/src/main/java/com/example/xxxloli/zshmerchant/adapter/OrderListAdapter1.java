@@ -7,7 +7,6 @@ import android.view.ViewGroup;
 import android.widget.BaseAdapter;
 import android.widget.Button;
 import android.widget.LinearLayout;
-import android.widget.ListView;
 import android.widget.RelativeLayout;
 import android.widget.TextView;
 
@@ -29,6 +28,7 @@ public class OrderListAdapter1 extends BaseAdapter implements View.OnClickListen
     private ArrayList<OrderEntity> orderEntities;
     private Context mContext;
     private Callback mCallback;
+    private boolean isNew;
 
     //响应按钮点击事件,调用子定义接口，并传入View
     @Override
@@ -46,10 +46,11 @@ public class OrderListAdapter1 extends BaseAdapter implements View.OnClickListen
         public void click(View v);
     }
 
-    public OrderListAdapter1(Context mContext, ArrayList<OrderEntity> orderEntities, Callback callback) {
+    public OrderListAdapter1(Context mContext, ArrayList<OrderEntity> orderEntities, Callback callback,boolean isNew ) {
         this.orderEntities = orderEntities;
         this.mContext = mContext;
         mCallback = callback;
+        this.isNew=isNew;
     }
 
     //刷新Adapter
@@ -87,7 +88,7 @@ public class OrderListAdapter1 extends BaseAdapter implements View.OnClickListen
         holder.orderMoney.setText(orderEntities.get(i).getUserActualFee() + "");
         holder.downOrderTime.setText(orderEntities.get(i).getCreateDate());
         holder.orderNumber.setText(orderEntities.get(i).getOrderNumber());
-//        所有新订单 All，ReserveOrder(预定单),NormalOrder(配送到家),ShopConsumption(到店消费单)
+//        所有新订单 All，ReserveOrder(预定单),NormalOrder(配送到家),ShopConsumption(到店消费单)UnPayed(待付款),
         if (orderEntities.get(i).getLineOrder().equals("ReserveOrder")) {
             holder.psdjText.setText("预定单");
             holder.psdjText.setBackgroundResource(R.drawable.round_yellow_background);
@@ -97,11 +98,21 @@ public class OrderListAdapter1 extends BaseAdapter implements View.OnClickListen
             holder.money.setText(orderEntities.get(i).getTableNumber() + "");
             holder.identifyingMoneyTv.setVisibility(View.GONE);
             holder.address.setVisibility(View.GONE);
+        } else if (orderEntities.get(i).getLineOrder().equals("UnPayed")) {
+            holder.psdjText.setText("未付款");
+            holder.psdjText.setBackgroundResource(R.drawable.round_red_background);
+            holder.reject.setVisibility(View.GONE);
+            holder.receivingOrder.setText("修改价格");
+        } else if (orderEntities.get(i).getLineOrder().equals("NormalOrder")&&isNew) {
+            holder.reject.setVisibility(View.GONE);
+            holder.receivingOrder.setText("打印订单");
+            holder.infoLl.setVisibility(View.VISIBLE);
+            holder.infoTv.setText(orderEntities.get(i).getStatus_value());
         }
-        String phone = (orderEntities.get(i).getPostmanPhone()!=null) ? "" + orderEntities.get(i).getPostmanPhone() : " ";
-        holder.namePhone.setText((orderEntities.get(i).getPostmanName()!=null) ?
-                "" + orderEntities.get(i).getCreateUserName() : "" + "  " + phone);
-        holder.address.setText(orderEntities.get(i).getEndHouseNumber()+"");
+        String phone = (orderEntities.get(i).getPostmanPhone() != null) ? "" + orderEntities.get(i).getPostmanPhone() : " ";
+        holder.namePhone.setText(((orderEntities.get(i).getCreateUserName() != null) ?
+                "" + orderEntities.get(i).getCreateUserName() : " ") + phone);
+        holder.address.setText(orderEntities.get(i).getEndHouseNumber() + "");
         holder.distance.setText(orderEntities.get(i).getShopUserDistance() + "km");
 
         if (orderEntities.size() < 4) {
@@ -151,7 +162,7 @@ public class OrderListAdapter1 extends BaseAdapter implements View.OnClickListen
         holder.receivingOrder.setOnClickListener(this);
         holder.receivingOrder.setTag(i);
         //设置宽度和高度
-        if (i==orderEntities.size()-1){
+        if (i == orderEntities.size() - 1) {
             finalHolder.remark.setVisibility(View.VISIBLE);
             finalHolder.billList.setVisibility(View.VISIBLE);
             finalHolder.packagingDispatchingRL.setVisibility(View.VISIBLE);
@@ -161,7 +172,9 @@ public class OrderListAdapter1 extends BaseAdapter implements View.OnClickListen
         return view;
     }
 
-    public static class ViewHolder {
+    static class ViewHolder {
+        @BindView(R.id.identifying_money_tv)
+        TextView identifyingMoneyTv;
         @BindView(R.id.money)
         TextView money;
         @BindView(R.id.down_order_time)
@@ -200,15 +213,16 @@ public class OrderListAdapter1 extends BaseAdapter implements View.OnClickListen
         TextView orderMoney;
         @BindView(R.id.order_moneyRL)
         RelativeLayout orderMoneyRL;
+        @BindView(R.id.info_tv)
+        TextView infoTv;
+        @BindView(R.id.info_ll)
+        LinearLayout infoLl;
         @BindView(R.id.reject)
         Button reject;
         @BindView(R.id.receiving_order)
         Button receivingOrder;
         @BindView(R.id.LL)
         LinearLayout LL;
-        @BindView(R.id.identifying_money_tv)
-        TextView identifyingMoneyTv;
-
 
         ViewHolder(View view) {
             ButterKnife.bind(this, view);

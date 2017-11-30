@@ -20,7 +20,6 @@ import butterknife.BindView;
 public class MessageListAdapter extends BaseAdapter<Message> {
 
     public MessageListAdapter(Context context) {
-
         super(context, new ArrayList<Message>());
     }
 

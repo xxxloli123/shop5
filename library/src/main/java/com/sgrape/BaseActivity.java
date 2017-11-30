@@ -160,6 +160,4 @@ public abstract class BaseActivity extends AppCompatActivity implements OkHttpCa
         if (str == null || str.length() == 0) return true;
         else return false;
     }
-
-
 }

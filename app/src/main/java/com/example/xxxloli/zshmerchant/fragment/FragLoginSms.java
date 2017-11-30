@@ -11,6 +11,7 @@ import android.widget.Toast;
 
 import com.example.xxxloli.zshmerchant.Activity.AccountManageActivity;
 import com.example.xxxloli.zshmerchant.Activity.ResetPasswordActivity;
+import com.example.xxxloli.zshmerchant.MainActivity;
 import com.example.xxxloli.zshmerchant.R;
 import com.example.xxxloli.zshmerchant.greendao.Account;
 import com.example.xxxloli.zshmerchant.greendao.DBManagerAccount;
@@ -19,10 +20,12 @@ import com.example.xxxloli.zshmerchant.greendao.DBManagerUser;
 import com.example.xxxloli.zshmerchant.greendao.Shop;
 import com.example.xxxloli.zshmerchant.greendao.User;
 import com.example.xxxloli.zshmerchant.util.Common;
+import com.example.xxxloli.zshmerchant.util.ToastUtil;
 import com.example.xxxloli.zshmerchant.view.TimeButton;
 import com.google.gson.Gson;
 import com.interfaceconfig.Config;
 import com.sgrape.BaseFragment;
+import com.sgrape.http.OkHttpCallback;
 import com.tencent.android.tpush.XGIOperateCallback;
 import com.tencent.android.tpush.XGPushConfig;
 import com.tencent.android.tpush.XGPushManager;
@@ -35,6 +38,7 @@ import java.util.Map;
 
 import butterknife.BindView;
 import butterknife.OnClick;
+
 
 /**
  * Created by sgrape on 2017/5/24.
@@ -67,57 +71,58 @@ public class FragLoginSms extends BaseFragment {
     @Override
     protected void init() {
         verificationCode.setEnabled(false);
+        /**
+         *         //开启信鸽日志输出
+
+         */
+
+        XGPushConfig.enableDebug(getActivity(), true);
+
+        //信鸽注册代码
+
+        XGPushManager.registerPush(getActivity(), new XGIOperateCallback() {
+
+            @Override
+            public void onSuccess(Object data, int flag) {
+                token = data.toString();
+                Log.d("TPush", "注册成功，设备token为：" + data);
+
+            }
+
+            @Override
+            public void onFail(Object data, int errCode, String msg) {
+
+                Log.d("TPush", "注册失败，错误码：" + errCode + ",错误信息：" + msg);
+
+            }
+        });
     }
-//
-//    @Override
-//    protected void initListener() {
-//        super.initListener();
-//        verificationCode.setOnClickListener(this);
-//        phoneEdit.addTextChangedListener(new TextWatcher() {
-//            @Override
-//            public void beforeTextChanged(CharSequence s, int start, int count, int after) {
-//
-//            }
-//
-//            @Override
-//            public void onTextChanged(CharSequence s, int start, int before, int count) {
-//
-//            }
-//
-//            @Override
-//            public void afterTextChanged(Editable s) {
-//                if (Common.matchePhone(phoneEdit.getText().toString().trim())) {
-//                    verificationCode.setEnabled(true);
-//                } else verificationCode.setEnabled(false);
-//            }
-//        });
-//        /**
-//         *         //开启信鸽日志输出
-//
-//         */
-//
-//        XGPushConfig.enableDebug(getActivity(), true);
-//
-//        //信鸽注册代码
-//
-//        XGPushManager.registerPush(getActivity(), new XGIOperateCallback() {
-//
-//            @Override
-//            public void onSuccess(Object data, int flag) {
-//                token = data.toString();
-//                Log.d("TPush", "注册成功，设备token为：" + data);
-//
-//            }
-//
-//            @Override
-//            public void onFail(Object data, int errCode, String msg) {
-//
-//                Log.d("TPush", "注册失败，错误码：" + errCode + ",错误信息：" + msg);
-//
-//            }
-//        });
-//
-//    }
+
+    @Override
+    protected void initListener() {
+        super.initListener();
+        verificationCode.setOnClickListener(this);
+        phoneEdit.addTextChangedListener(new TextWatcher() {
+            @Override
+            public void beforeTextChanged(CharSequence s, int start, int count, int after) {
+
+            }
+
+            @Override
+            public void onTextChanged(CharSequence s, int start, int before, int count) {
+
+            }
+
+            @Override
+            public void afterTextChanged(Editable s) {
+                if (Common.matchePhone(phoneEdit.getText().toString().trim())) {
+                    verificationCode.setEnabled(true);
+                } else verificationCode.setEnabled(false);
+            }
+        });
+
+
+    }
 
     @OnClick({ R.id.login_bt, R.id.login_resetPwd})
 
@@ -162,7 +167,6 @@ public class FragLoginSms extends BaseFragment {
 // oid-安卓  Ios-IOS),token(推送唯一标示)")
         //smsStr:id(必填)、code(必填)、phone(必填)
 
-
         try {
             JSONObject userJson = new JSONObject();
             userJson.put("phone", phone);
@@ -181,9 +185,7 @@ public class FragLoginSms extends BaseFragment {
             Toast.makeText(getContext(), "解析数据失败", Toast.LENGTH_SHORT).show();
             e.printStackTrace();
         }
-
     }
-
 
     @Override
     public void onSuccess(Object tag, JSONObject json) throws JSONException {
@@ -192,9 +194,8 @@ public class FragLoginSms extends BaseFragment {
                 this.smsId = json.getJSONObject("sms").getString("id");
                 break;
             case Config.LOGIN:
-                Toast.makeText(getContext(), json.getString("message"), Toast.LENGTH_SHORT).show();
                 if (json.getInt("statusCode")==200) {
-                    Toast.makeText(getContext(), "成功了", Toast.LENGTH_SHORT).show();
+                    ToastUtil.showToast(getActivity(),"smg");
                     dbManagerUser = DBManagerUser.getInstance(getActivity());
                     User user = new Gson().fromJson(json.getString("user"), User.class);
                     user.setWritId((long) 2333);
@@ -206,7 +207,14 @@ public class FragLoginSms extends BaseFragment {
 
                     dbManagerAccount = DBManagerAccount.getInstance(getActivity());
                     Account account=new Account();
-                    if (dbManagerAccount.queryByPhone(phone).size()==0) {
+                    if (!dbManagerAccount.queryById((long) 2333).isEmpty()) {
+                        account=dbManagerAccount.queryById((long) 2333).get(0);
+                        account.setWritId(null);
+                        dbManagerAccount.insertAccount(account);
+                        dbManagerAccount.deleteById((long) 2333);
+                    }
+
+                    if (dbManagerAccount.queryByPhone(phone)==null) {
                         account.setHead(shop.getShopImage());
                         account.setName(shop.getShopkeeperName());
                         account.setPhone(phone);
@@ -220,11 +228,9 @@ public class FragLoginSms extends BaseFragment {
                         account.setWritId((long) 2333);
                         dbManagerAccount.insertAccount(account);
                     }
-                    startActivity(new Intent(getContext(), AccountManageActivity.class));
+                    startActivity(new Intent(getContext(), MainActivity.class));
+                    if (getActivity() != null) getActivity().finish();
                 }
-//                startActivity(new Intent(getContext(), MainActivity.class));
-//                ((MyApplicatio) getContext().getApplicationContext()).setInfo(new Gson().fromJson(json.getString("user"), Info.class));
-                if (getActivity() != null) getActivity().finish();
                 break;
         }
     }

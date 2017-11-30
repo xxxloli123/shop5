@@ -33,13 +33,13 @@
                 android:layout_gravity="center"
                 android:text="66"
                 android:textColor="@color/blue"
-                android:textSize="35sp" />
+                android:textSize="30dp" />
 
             <LinearLayout
                 android:layout_width="wrap_content"
                 android:layout_height="wrap_content"
                 android:layout_gravity="center"
-                android:layout_marginLeft="10dp"
+                android:layout_marginLeft="6dp"
                 android:orientation="vertical">
 
                 <LinearLayout
@@ -87,20 +87,18 @@
             <RelativeLayout
                 android:layout_width="match_parent"
                 android:layout_height="match_parent">
-
                 <TextView
                     android:id="@+id/psdj_text"
                     android:layout_width="50dp"
                     android:layout_height="18dp"
-                    android:layout_alignParentBottom="true"
                     android:layout_alignParentRight="true"
-                    android:layout_marginBottom="10dp"
+                    android:layout_marginTop="10dp"
                     android:layout_marginRight="10dp"
                     android:background="@drawable/round_green_background"
                     android:gravity="center"
                     android:text="配送到家"
                     android:textColor="@color/white"
-                    android:textSize="10sp">
+                    android:textSize="10dp">
 
                 </TextView>
 
@@ -332,6 +330,33 @@
                 android:text="6.66"
                 android:textColor="@color/coffee" />
         </RelativeLayout>
+
+        <LinearLayout
+            android:layout_marginTop="8dp"
+            android:layout_marginRight="10dp"
+            android:visibility="gone"
+            android:id="@+id/info_ll"
+            android:layout_marginLeft="10dp"
+            android:layout_width="match_parent"
+            android:layout_height="wrap_content">
+            <Button
+                android:layout_marginRight="3dp"
+                android:background="@drawable/round_green_background"
+                android:layout_gravity="center_vertical"
+                android:textSize="40dp"
+                android:layout_width="8dp"
+                android:layout_height="8dp" />
+
+            <TextView
+                android:layout_marginLeft="2dp"
+                android:layout_gravity="center_vertical"
+                android:textSize="14sp"
+                android:textColor="@color/blue"
+                android:id="@+id/info_tv"
+                android:text="23:33  配送员已取货  电磁法王  666"
+                android:layout_width="wrap_content"
+                android:layout_height="wrap_content" />
+        </LinearLayout>
 
         <LinearLayout
             android:layout_marginTop="10dp"

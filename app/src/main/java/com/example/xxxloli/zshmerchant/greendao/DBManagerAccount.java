@@ -173,8 +173,7 @@ public class DBManagerAccount {
         AccountDao accountDao=daoSession.getAccountDao();
         QueryBuilder<Account> qb=accountDao.queryBuilder();
         qb.where(AccountDao.Properties.Phone.eq(s));
-        List<Account> shuju=qb.list();
-        return shuju;
+        return qb.list();
     }
     /**
      * 通过WritId查找数据
