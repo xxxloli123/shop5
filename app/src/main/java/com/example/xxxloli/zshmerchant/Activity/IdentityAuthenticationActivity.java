@@ -394,7 +394,7 @@ public class IdentityAuthenticationActivity extends AppCompatActivity {
         // 最长宽度或高度1024
         float be = 1.0f;
         try {
-            be = getFileSize(srcPath) / 1000 / 1000 / 2f;
+            be = getFileSize(srcPath) / 1000 / 1000 / 1f;
 //            int be1= (int) (getFileSize(file) / 1024);
 //
             Log.e("大小", "丢了个雷姆" + be);

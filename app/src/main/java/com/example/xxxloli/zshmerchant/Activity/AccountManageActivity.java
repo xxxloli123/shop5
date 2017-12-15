@@ -6,7 +6,6 @@ import android.os.Bundle;
 import android.util.Log;
 import android.view.LayoutInflater;
 import android.view.View;
-import android.view.animation.AnimationSet;
 import android.widget.AdapterView;
 import android.widget.Button;
 import android.widget.LinearLayout;
@@ -17,7 +16,7 @@ import android.widget.Toast;
 
 import com.example.xxxloli.zshmerchant.R;
 import com.example.xxxloli.zshmerchant.adapter.AccountListAdapter;
-import com.example.xxxloli.zshmerchant.base.MyAsyncTask;
+import com.example.xxxloli.zshmerchant.fragment.FragLoginPwd;
 import com.example.xxxloli.zshmerchant.fragment.OrderHandleFragment;
 import com.example.xxxloli.zshmerchant.greendao.Account;
 import com.example.xxxloli.zshmerchant.greendao.DBManagerAccount;
@@ -25,11 +24,15 @@ import com.example.xxxloli.zshmerchant.greendao.DBManagerShop;
 import com.example.xxxloli.zshmerchant.greendao.DBManagerUser;
 import com.example.xxxloli.zshmerchant.greendao.Shop;
 import com.example.xxxloli.zshmerchant.greendao.User;
+import com.example.xxxloli.zshmerchant.util.ToastUtil;
 import com.example.xxxloli.zshmerchant.view.MyListView;
 import com.google.gson.Gson;
 import com.interfaceconfig.Config;
 import com.sgrape.BaseActivity;
 import com.slowlife.lib.MD5;
+import com.tencent.android.tpush.XGIOperateCallback;
+import com.tencent.android.tpush.XGPushConfig;
+import com.tencent.android.tpush.XGPushManager;
 
 import org.json.JSONException;
 import org.json.JSONObject;
@@ -43,7 +46,6 @@ import butterknife.ButterKnife;
 import butterknife.OnClick;
 
 public class AccountManageActivity extends BaseActivity {
-
     @BindView(R.id.back_rl)
     RelativeLayout backRl;
     @BindView(R.id.account_list)
@@ -64,6 +66,7 @@ public class AccountManageActivity extends BaseActivity {
     private AccountListAdapter accountListAdapter;
     private String token;
     private Account account, switchoverEd;
+    private static final String TAG = FragLoginPwd.class.getSimpleName();
 
     @Override
     protected void onCreate(Bundle savedInstanceState) {
@@ -74,6 +77,30 @@ public class AccountManageActivity extends BaseActivity {
         dbManagerShop = DBManagerShop.getInstance(this);
         dbManagerUser = DBManagerUser.getInstance(this);
         accounts = dbManagerAccount.queryAccountList();
+
+/**
+ *         //开启信鸽日志输出
+ */
+        XGPushConfig.enableDebug(this, true);
+
+        //信鸽注册代码
+
+        XGPushManager.registerPush(this, new XGIOperateCallback() {
+
+            @Override
+            public void onSuccess(Object data, int flag) {
+                token = data.toString();
+                Log.d("TPush", "注册成功，设备token为：" + data);
+
+            }
+
+            @Override
+            public void onFail(Object data, int errCode, String msg) {
+
+                Log.d("TPush", "注册失败，错误码：" + errCode + ",错误信息：" + msg);
+
+            }
+        });
         initView();
     }
 
@@ -146,7 +173,10 @@ public class AccountManageActivity extends BaseActivity {
                 finish();
                 break;
             case R.id.add_registerLL:
-                startActivity(new Intent(this, LoginActivity.class));
+                Intent intent = new Intent();
+                intent.putExtra("add",true);
+                intent.setClass(this,FirstActivity.class);
+                startActivity( intent);
                 break;
             case R.id.log_out:
                 isLogOut();
@@ -207,7 +237,46 @@ public class AccountManageActivity extends BaseActivity {
             dbManagerShop.insertShop(shop);
             switchoverEd.setWritId((long) 2333);
             dbManagerAccount.insertAccount(switchoverEd);
-            finish();
+//            //OpenIM 开始登录
+//            String userid = shop.getShopkeeperId();
+//            LoginSampleHelper loginHelper=LoginSampleHelper.getInstance();
+//            init2(userid,"24663803");
+//            loginHelper.login_Sample(userid, userid, "24663803", new IWxCallback() {
+//
+//                @Override
+//                public void onSuccess(Object... arg0) {
+//                    ToastUtil.showToast(AccountManageActivity.this,"login success");
+//                    YWLog.i(TAG, "login success!");
+//
+////						YWIMKit mKit = LoginSampleHelper.getInstance().getIMKit();
+////						EServiceContact contact = new EServiceContact("qn店铺测试账号001:找鱼");
+////						LoginActivity.this.startActivity(mKit.getChattingActivityIntent(contact));
+////                        mockConversationForDemo();
+//                }
+//
+//                @Override
+//                public void onProgress(int arg0) {
+//
+//                }
+//
+//                @Override
+//                public void onError(int errorCode, String errorMessage) {
+//                    if (errorCode == YWLoginCode.LOGON_FAIL_INVALIDUSER) { //若用户不存在，则提示使用游客方式登陆
+//                        ToastUtil.showToast(AccountManageActivity.this,"则提示使用游客方式登陆");
+//                    } else {
+//                        YWLog.w(TAG, "登录失败，错误码：" + errorCode + "  错误信息：" + errorMessage);
+//                        ToastUtil.showToast(AccountManageActivity.this,errorMessage);
+//                    }
+//                }
+//            });
+//            finish();
         }
     }
+
+//    private void init2(String userId, String appKey){
+//        //初始化imkit
+//        LoginSampleHelper.getInstance().initIMKit(userId, appKey);
+//        //通知栏相关的初始化
+//        NotificationInitSampleHelper.init();
+//    }
 }

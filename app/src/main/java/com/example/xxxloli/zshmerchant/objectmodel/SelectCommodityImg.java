@@ -1,10 +1,12 @@
 package com.example.xxxloli.zshmerchant.objectmodel;
 
+import java.io.Serializable;
+
 /**
  * Created by xxxloli on 2017/10/18.
  */
 
-public class SelectCommodityImg {
+public class SelectCommodityImg implements Serializable {
     /**
      * id : 402880e45eb72375015eb73125580000
      * status : Normal

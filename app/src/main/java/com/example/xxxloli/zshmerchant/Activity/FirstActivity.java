@@ -58,18 +58,21 @@ public class FirstActivity extends AppCompatActivity {
         super.onCreate(savedInstanceState);
         setContentView(R.layout.activity_first);
         ButterKnife.bind(this);
+        if (getIntent().getBooleanExtra("add",false))return;
         if(Build.VERSION.SDK_INT >= Build.VERSION_CODES.KITKAT){
             if(lacksPermissions(PERMISSIONS))
                 ActivityCompat.requestPermissions(this,PERMISSIONS,PERMISSIONS.length);
             else
                 setResult(PERMISSIONS.length);
         }
-        if (!DaoUtil.isSaveShop(this)&&DaoUtil.isSaveUser(this))
+        if (!DaoUtil.isSaveShop(this)&&DaoUtil.isSaveUser(this)){
             startActivity(new Intent(FirstActivity.this, XXRZActivity.class));
-            if (DaoUtil.isSaveShop(this)) {
-                startActivity(new Intent(FirstActivity.this, MainActivity.class));
-                finish();
-            }else update(this,getVersionCode(this));
+            return;
+        }
+        if (DaoUtil.isSaveShop(this)) {
+            startActivity(new Intent(FirstActivity.this, MainActivity.class));
+            finish();
+        } else update(this,getVersionCode(this));
     }
 
     public static int getVersionCode(Context context) {

@@ -2,8 +2,9 @@
 <project version="4">
   <component name="ProjectModuleManager">
     <modules>
+      <module fileurl="file://$PROJECT_DIR$/OneSDK/OneSDK.iml" filepath="$PROJECT_DIR$/OneSDK/OneSDK.iml" />
       <module fileurl="file://$PROJECT_DIR$/app/app.iml" filepath="$PROJECT_DIR$/app/app.iml" />
-      <module fileurl="file://$PROJECT_DIR$/bluetoothPrint/bluetooth_print.iml" filepath="$PROJECT_DIR$/bluetoothPrint/bluetooth_print.iml" />
+      <module fileurl="file://E:\android\pro\zshMerchant_backup\zshMerchant3\bluetoothPrint\bluetooth_print.iml" filepath="E:\android\pro\zshMerchant_backup\zshMerchant3\bluetoothPrint\bluetooth_print.iml" />
       <module fileurl="file://$PROJECT_DIR$/interfaceconfig/interfaceconfig.iml" filepath="$PROJECT_DIR$/interfaceconfig/interfaceconfig.iml" />
       <module fileurl="file://$PROJECT_DIR$/library/library.iml" filepath="$PROJECT_DIR$/library/library.iml" />
       <module fileurl="file://$PROJECT_DIR$/map/map.iml" filepath="$PROJECT_DIR$/map/map.iml" />

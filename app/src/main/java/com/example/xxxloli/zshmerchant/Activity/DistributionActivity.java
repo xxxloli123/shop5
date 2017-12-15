@@ -90,7 +90,7 @@ public class DistributionActivity extends BaseActivity implements AMapLocationLi
         return R.layout.activity_distribution;
     }
 
-    @OnClick({R.id.back_rl, R.id.distribution_service,R.id.selective_dissemination})
+    @OnClick({R.id.back_rl, R.id.distribution_service, R.id.selective_dissemination,R.id.community_tv})
     public void onViewClicked(View view) {
         switch (view.getId()) {
             case R.id.back_rl:
@@ -102,6 +102,9 @@ public class DistributionActivity extends BaseActivity implements AMapLocationLi
             case R.id.selective_dissemination:
                 SelectiveDissemination();
                 break;
+            case R.id.community_tv:
+                startActivity(new Intent(this, CommunityActivity.class));
+                break;
         }
     }
 
@@ -112,8 +115,8 @@ public class DistributionActivity extends BaseActivity implements AMapLocationLi
         Button cancel = view.findViewById(R.id.cancel_bt);
         final EditText distance = view.findViewById(R.id.distance);
         final EditText price = view.findViewById(R.id.price);
-        if (shop.getDistance()!=null)distance.setText(shop.getDistance());
-        if (shop.getDeliveryFee()!=null)price.setText(shop.getDeliveryFee());
+        if (shop.getDistance() != null) distance.setText(shop.getDistance());
+        if (shop.getDeliveryFee() != null) price.setText(shop.getDeliveryFee());
         sure.setOnClickListener(new View.OnClickListener() {
             @Override
             public void onClick(View view) {
@@ -195,4 +198,5 @@ public class DistributionActivity extends BaseActivity implements AMapLocationLi
         //启动定位
         mlocationClient.startLocation();
     }
+
 }

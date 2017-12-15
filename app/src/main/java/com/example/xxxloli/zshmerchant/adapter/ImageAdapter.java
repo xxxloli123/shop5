@@ -14,7 +14,9 @@ import android.view.View;
 import android.view.ViewGroup;
 import android.widget.ImageView;
 
+import com.example.xxxloli.zshmerchant.Activity.UploadIMGActivity;
 import com.example.xxxloli.zshmerchant.R;
+import com.example.xxxloli.zshmerchant.util.ToastUtil;
 import com.squareup.picasso.Picasso;
 
 import java.util.List;
@@ -61,6 +63,10 @@ public class ImageAdapter extends RecyclerView.Adapter {
         @Override
         public void onClick(final View v) {
             Log.d("ImageAdapter","total>"+uris.size()+" id>"+v.getId());
+            if (uris.size() > 6){
+                ToastUtil.showToast(activity, "最多只能上传六张图片");
+                return;
+            }
             if(uris.size() -1 == v.getId()){
                 Intent local;
                 if(Build.VERSION.SDK_INT < Build.VERSION_CODES.KITKAT) {

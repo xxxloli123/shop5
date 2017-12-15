@@ -37,6 +37,7 @@ public class SettingActivity extends AppCompatActivity {
 
     @OnClick({R.id.back_rl, R.id.my_accountLL, R.id.notificationLL, R.id.helpLL, R.id.printerLL, R.id.complainLL})
     public void onViewClicked(View view) {
+        Intent intent=null;
         switch (view.getId()) {
             case R.id.back_rl:
                 finish();
@@ -46,8 +47,14 @@ public class SettingActivity extends AppCompatActivity {
                 break;
             case R.id.notificationLL:
                 startActivity(new Intent(this, NewMessageActivity.class));
+//                 intent = LoginSampleHelper.getInstance().getIMKit().getConversationActivityIntent();
+//                startActivity(intent);
                 break;
             case R.id.helpLL:
+//                final String target = "2c9ad8435ff13d8b015ffc86cf1902e5"; //消息接收者ID
+//                final String appkey = "24663803"; //消息接收者appKey
+//                 intent =new LoginSampleHelper().getIMKit().getChattingActivityIntent(target, appkey);
+//                startActivity(intent);
                 break;
             case R.id.printerLL:
                 startActivity(new Intent(this, SearchBluetoothActivity.class));

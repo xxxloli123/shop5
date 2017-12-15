@@ -5,6 +5,8 @@ import android.app.Application;
 import android.content.Context;
 import android.util.Log;
 
+
+import com.example.xxxloli.zshmerchant.util.ToastUtil;
 import com.slowlife.xgpush.XgReceiver;
 import com.tencent.android.tpush.XGNotifaction;
 import com.tencent.android.tpush.XGPushManager;
@@ -19,11 +21,16 @@ import java.util.List;
 public class MyApplication extends Application {
 
     public static Context mContext;
-    private String token = "";
+    //云旺OpenIM的DEMO用到的Application上下文实例
+    private static Context sContext;
+    public static Context getContext(){
+        return sContext;
+    }
 
     @Override
     public void onCreate() {
         super.onCreate();
+
         if (isMainProcess()) {
             // 为保证弹出通知前一定调用本方法，需要在application的onCreate注册
             // 收到通知时，会调用本回调函数。
@@ -47,12 +54,14 @@ public class MyApplication extends Application {
                 }
             });
         }
-    }
 
-    public String getToken() {
-        return token;
+//        //todo Application.onCreate中，首先执行这部分代码，以下代码固定在此处，不要改动，这里return是为了退出Application.onCreate！！！
+//        if(mustRunFirstInsideApplicationOnCreate()){
+//            //todo 如果在":TCMSSevice"进程中，无需进行openIM和app业务的初始化，以节省内存
+//            return;
+//        }
+//        initYWSDK(this);
     }
-
 
     public boolean isMainProcess() {
         ActivityManager am = ((ActivityManager) getSystemService(Context.ACTIVITY_SERVICE));
@@ -66,4 +75,23 @@ public class MyApplication extends Application {
         }
         return false;
     }
+
+//    public static void initYWSDK(Application application){
+//        //todo 只在主进程进行云旺SDK的初始化!!!
+//        if(SysUtil.isMainProcess()){
+//            //TODO 注意：--------------------------------------
+//            //  以下步骤调用顺序有严格要求，请按照示例的步骤（todo step）
+//            // 的顺序调用！
+//            //TODO --------------------------------------------
+//            //SDK初始化
+//            LoginSampleHelper.getInstance().initSDK_Sample(application);
+//        }
+//    }
+//
+//    private boolean mustRunFirstInsideApplicationOnCreate() {
+//        //必须的初始化
+//        SysUtil.setApplication(this);
+//        sContext = getApplicationContext();
+//        return SysUtil.isTCMSServiceProcess(sContext);
+//    }
 }

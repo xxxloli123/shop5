@@ -98,12 +98,12 @@ public class OrderListAdapter1 extends BaseAdapter implements View.OnClickListen
             holder.money.setText(orderEntities.get(i).getTableNumber() + "");
             holder.identifyingMoneyTv.setVisibility(View.GONE);
             holder.address.setVisibility(View.GONE);
-        } else if (orderEntities.get(i).getLineOrder().equals("UnPayed")) {
+        } else if (orderEntities.get(i).getStatus().equals("UnPayed")) {
             holder.psdjText.setText("未付款");
             holder.psdjText.setBackgroundResource(R.drawable.round_red_background);
             holder.reject.setVisibility(View.GONE);
             holder.receivingOrder.setText("修改价格");
-        } else if (orderEntities.get(i).getLineOrder().equals("NormalOrder")&&isNew) {
+        } else if (orderEntities.get(i).getLineOrder().equals("NormalOrder")&&!isNew) {
             holder.reject.setVisibility(View.GONE);
             holder.receivingOrder.setText("打印订单");
             holder.infoLl.setVisibility(View.VISIBLE);

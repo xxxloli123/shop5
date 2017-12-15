@@ -11,7 +11,19 @@ android {
     }
     compileSdkVersion 26
     buildToolsVersion '26.0.2'
+    dexOptions {
+        jumboMode true
+    }
+
+    repositories {
+        flatDir {
+            dirs 'modules'
+        }
+    }
+
+
     defaultConfig {
+        multiDexEnabled true
         applicationId "com.example.xxxloli.zshmerchant"
         minSdkVersion 17
         targetSdkVersion 26
@@ -48,6 +60,7 @@ greendao {
     targetGenDir 'src/main/java'
 }
 
+
 dependencies {
     compile fileTree(include: ['*.jar'], dir: 'libs')
     androidTestCompile('com.android.support.test.espresso:espresso-core:2.2.2', {
@@ -72,4 +85,5 @@ dependencies {
     compile 'de.greenrobot:eventbus:2.2.1'
     compile 'com.nostra13.universalimageloader:universal-image-loader:1.9.3'
     compile project(path: ':zxing')
+    compile 'com.android.support:design:26.0.0-alpha1'
 }

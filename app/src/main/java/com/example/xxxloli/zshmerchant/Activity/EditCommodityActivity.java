@@ -149,10 +149,8 @@ public class EditCommodityActivity extends BaseActivity {
     }
 
     private void initView() {
-        Map<String, Object> params1 = new HashMap<>();
-        params1.put("shopId", shop.getId());
-        newCall(Config.Url.getUrl(Config.GET_Classify_1), params1);
-        Picasso.with(this).load(Config.Url.getUrl(Config.IMG_Commodity)+commodity.getSmallImg()).into(commodityImg);
+        Picasso.with(this).load(Config.Url.getUrl(Config.IMG_Commodity)+
+                commodity.getSmallImg()).into(commodityImg);
         sequenceTV.setText(commodity.getShopsort() + "");
         nameET.setText(commodity.getProductName());
         describeET.setText(commodity.getDetails());
@@ -179,6 +177,9 @@ public class EditCommodityActivity extends BaseActivity {
                 finish();
                 break;
             case R.id.classifyRL:
+                Map<String, Object> params = new HashMap<>();
+                params.put("shopId", shop.getId());
+                newCall(Config.Url.getUrl(Config.GET_Classify_1), params);
                 selectClassify();
                 break;
             case R.id.priceRL:
@@ -422,7 +423,6 @@ public class EditCommodityActivity extends BaseActivity {
 
     @Override
     public void onSuccess(Object tag, JSONObject json) throws JSONException {
-
         switch (tag.toString()) {
             case Config.GET_Classify_1:
                 classifies1 = new ArrayList<>();
@@ -430,7 +430,7 @@ public class EditCommodityActivity extends BaseActivity {
                 if (arr1.length() == 0) return;
                 Gson gson1 = new Gson();
                 for (int i = 0; i < arr1.length(); i++) {
-                    classifies1.add(gson1.fromJson(arr1.getString(arr1.length() - i - 1), Classify.class));
+                    classifies1.add(gson1.fromJson(arr1.getString(i), Classify.class));
                 }
                 Map<String, Object> params = new HashMap<>();
                 params.put("shopId", shop.getId());
@@ -443,14 +443,11 @@ public class EditCommodityActivity extends BaseActivity {
                 if (arr2.length() == 0) return;
                 Gson gson2 = new Gson();
                 for (int i = 0; i < arr2.length(); i++) {
-                    classifies2.add(gson2.fromJson(arr2.getString(arr2.length() - i - 1), Classify.class));
+                    classifies2.add(gson2.fromJson(arr2.getString(i), Classify.class));
                 }
-                classify = classifies2.get(0);
                 break;
             case Config.EDIT_Commodity:
-                Toast.makeText(this, json.getString("message"), Toast.LENGTH_SHORT).show();
-                finish();
-                break;
+
             case Config.DELETE_Commodity:
                 Toast.makeText(this, json.getString("message"), Toast.LENGTH_SHORT).show();
                 finish();

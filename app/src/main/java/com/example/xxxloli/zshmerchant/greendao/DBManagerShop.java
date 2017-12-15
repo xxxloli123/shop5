@@ -172,8 +172,7 @@ public class DBManagerShop {
         UserDao userDao=daoSession.getUserDao();
         QueryBuilder<User> qb=userDao.queryBuilder();
 //        qb.where(UserDao.Properties.Phone.eq(s));
-        List<User> shuju=qb.list();
-        return shuju;
+        return qb.list();
     }
     /**
      * 通过Phone查找某一条数据
@@ -186,8 +185,7 @@ public class DBManagerShop {
         ShopDao shopDao=daoSession.getShopDao();
         QueryBuilder<Shop> qb=shopDao.queryBuilder();
         qb.where(ShopDao.Properties.WritId.eq(s));
-        List<Shop> shuju=qb.list();
-        return shuju;
+        return qb.list();
     }
 //    /**
 //     * 插入一条LoginIfio记录

@@ -67,7 +67,8 @@ public class ExceptionActivity extends AppCompatActivity {
         shop = dbManagerShop.queryById((long) 2333).get(0);
 
         ((TextView) findViewById(R.id.text_title)).setText(getString(getIntent().getIntExtra(getString(R.string.title), R.string.terraceFunctionException)));
-        images.setLayoutManager(new GridLayoutManager(this, 6, GridLayoutManager.VERTICAL, false));
+        images.setLayoutManager(new GridLayoutManager(this,
+                6, GridLayoutManager.VERTICAL, false));
         images.setItemAnimator(new DefaultItemAnimator());
         uris = new LinkedList<>();
         uris.add(Uri.parse("android.resource://" + getPackageName() + "/" + R.drawable.icon_add));
@@ -95,7 +96,8 @@ public class ExceptionActivity extends AppCompatActivity {
                 requestBody.addFormDataPart("opinionStr", jsonSb.toString());
                 for (int index = 0; index < uris.size() - 1; index++) {//Android okHttp上传单张或多张照片 http://blog.csdn.net/sanyang730/article/details/51317083
                     String path = FileHelper.toImagePath(this, uris.get(index));
-                    requestBody.addFormDataPart("pictures", path.substring(path.lastIndexOf('/') + 1, path.length()), RequestBody.create(MediaType.parse("image/png"), FileHelper.compressFile(path, 100)));
+                    requestBody.addFormDataPart("pictures", path.substring(path.lastIndexOf('/') + 1,
+                            path.length()), RequestBody.create(MediaType.parse("image/png"), FileHelper.compressFile(path, 100)));
                 }
                 request.method("POST", requestBody.build());
                 new OkHttpClient().newCall(request.build()).enqueue(new Callback() {

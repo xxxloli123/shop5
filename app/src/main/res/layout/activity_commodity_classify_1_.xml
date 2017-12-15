@@ -5,7 +5,7 @@
     android:orientation="vertical"
     android:layout_width="match_parent"
     android:layout_height="match_parent"
-    tools:context="com.example.xxxloli.zshmerchant.Activity.CommodityClassify_1_Activity">
+    >
     <!--头部-->
     <RelativeLayout
         android:id="@+id/RL"
@@ -72,6 +72,7 @@
                 android:paddingTop="3dp"
                 android:text=" 添加分类"
                 android:textSize="14sp" />
+
         </RelativeLayout>
 
     </ScrollView>

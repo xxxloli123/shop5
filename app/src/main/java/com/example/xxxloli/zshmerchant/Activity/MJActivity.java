@@ -143,6 +143,7 @@ public class MJActivity extends BaseActivity {
             params.put("shopactivityStr", shopactivityStr);
             params.put("userId", shop.getShopkeeperId());
             newCall(Config.Url.getUrl(Config.ADD_EDIT_Activity), params);
+            saveBt.setClickable(false);
         } catch (JSONException e) {
             e.printStackTrace();
         }

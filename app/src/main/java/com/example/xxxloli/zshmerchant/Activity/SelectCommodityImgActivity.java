@@ -3,9 +3,9 @@ package com.example.xxxloli.zshmerchant.Activity;
 import android.app.Activity;
 import android.content.Intent;
 import android.os.Bundle;
-import android.support.v7.app.AppCompatActivity;
 import android.view.View;
 import android.widget.AdapterView;
+import android.widget.EditText;
 import android.widget.GridView;
 import android.widget.RelativeLayout;
 import android.widget.Toast;
@@ -13,7 +13,6 @@ import android.widget.Toast;
 import com.example.xxxloli.zshmerchant.R;
 import com.example.xxxloli.zshmerchant.adapter.SelectCommodityImgAdapter;
 import com.example.xxxloli.zshmerchant.objectmodel.SelectCommodityImg;
-import com.example.xxxloli.zshmerchant.objectmodel.UniversalClassify;
 import com.google.gson.Gson;
 import com.interfaceconfig.Config;
 import com.sgrape.BaseActivity;
@@ -36,30 +35,38 @@ public class SelectCommodityImgActivity extends BaseActivity {
     RelativeLayout backRl;
     @BindView(R.id.show_list)
     GridView showList;
+    @BindView(R.id.scan_et)
+    EditText scanEt;
+    @BindView(R.id.scan_rl)
+    RelativeLayout scanRl;
 
     @Override
     protected void onCreate(Bundle savedInstanceState) {
         super.onCreate(savedInstanceState);
 //        setContentView(R.layout.activity_select_commodity_img);
         ButterKnife.bind(this);
-        Intent intent=getIntent();
-        if (intent.getStringExtra("classId")==null){
+        Intent intent = getIntent();
+        if (intent.getStringExtra("classId") != null) {
+            submit("classId", intent.getStringExtra("classId"));
+        } else if (intent.getStringExtra("number") != null) {
+            submit("number", intent.getStringExtra("number"));
+        } else if (intent.getStringExtra("scan") != null) {
+            scanRl.setVisibility(View.VISIBLE);
+        } else {
             Toast.makeText(this, "数据读取错误", Toast.LENGTH_SHORT).show();
-            return;
+            finish();
         }
+    }
+
+    private void submit(String type, String classId) {
         Map<String, Object> params = new HashMap<>();
-        params.put("classId", intent.getStringExtra("classId"));
+        params.put(type, classId);
         newCall(Config.Url.getUrl(Config.GET_SelectCommodityImg), params);
     }
 
     @Override
     protected int getLayoutId() {
         return R.layout.activity_select_commodity_img;
-    }
-
-    @OnClick(R.id.back_rl)
-    public void onViewClicked() {
-        finish();
     }
 
     @Override
@@ -72,20 +79,35 @@ public class SelectCommodityImgActivity extends BaseActivity {
         for (int i = 0; i < arr.length(); i++) {
             selectCommodityImgs.add(gson.fromJson(arr.getString(arr.length() - i - 1), SelectCommodityImg.class));
         }
-        SelectCommodityImgAdapter selectCommodityImgAdapter=new SelectCommodityImgAdapter(this,selectCommodityImgs);
+        SelectCommodityImgAdapter selectCommodityImgAdapter = new SelectCommodityImgAdapter(this, selectCommodityImgs);
         showList.setAdapter(selectCommodityImgAdapter);
         showList.setOnItemClickListener(new AdapterView.OnItemClickListener() {
             @Override
             public void onItemClick(AdapterView<?> adapterView, View view, int i, long l) {
                 Intent intent = new Intent();
-                intent.putExtra("pictureLibraryId",selectCommodityImgs.get(i).getId());
-                intent.putExtra("img",selectCommodityImgs.get(i).getSmallImg());
-                intent.putExtra("name",selectCommodityImgs.get(i).getImgName());
-                intent.putExtra("describe",selectCommodityImgs.get(i).getImgTextDescription());
+                intent.putExtra("pictureLibraryId", selectCommodityImgs.get(i).getId());
+                intent.putExtra("img", selectCommodityImgs.get(i).getSmallImg());
+                intent.putExtra("name", selectCommodityImgs.get(i).getImgName());
+                intent.putExtra("describe", selectCommodityImgs.get(i).getImgTextDescription());
+                intent.putExtra("SelectCommodityImg", selectCommodityImgs.get(i));
                 setResult(Activity.RESULT_OK, intent);
                 finish();
             }
         });
-
     }
+
+    @OnClick({R.id.back_rl, R.id.scan_bt})
+    public void onViewClicked(View view) {
+        switch (view.getId()) {
+            case R.id.back_rl:
+                finish();
+                break;
+            case R.id.scan_bt:
+                if (!scanEt.getText().toString().isEmpty()) {
+                    submit("number",scanEt.getText().toString());
+                }
+                break;
+        }
+    }
+
 }

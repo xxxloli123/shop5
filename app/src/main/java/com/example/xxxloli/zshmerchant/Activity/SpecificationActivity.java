@@ -41,7 +41,6 @@ public class SpecificationActivity extends AppCompatActivity {
         Intent intent=getIntent();
         if (intent.getStringExtra("productId")==null){
             Toast.makeText(this, "数据读取错误", Toast.LENGTH_SHORT).show();
-            AddCommodityActivity.mMainActivity.finish();
             finish();
         }
         init();

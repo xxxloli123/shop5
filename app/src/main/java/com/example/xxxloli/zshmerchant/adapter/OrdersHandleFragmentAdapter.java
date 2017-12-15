@@ -48,6 +48,7 @@ public class OrdersHandleFragmentAdapter extends FragmentPagerAdapter {
                 if (UnPayed == null)
                     UnPayed = new FragOrderList("UnPayed");
                 return UnPayed;
+
             default:
                 return null;
         }

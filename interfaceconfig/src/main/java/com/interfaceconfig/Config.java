@@ -1,7 +1,7 @@
 package com.interfaceconfig;
 
 public interface Config {
-    String LOCAL_HOST = "http://192.168.0.110:8080/";
+    String LOCAL_HOST = "http://192.168.0.103:8080/";
     String HOST = "http://www.zsh7.com/";
     // 登录
     String LOGIN = "slowlife/appuser/userlogin";
@@ -245,6 +245,11 @@ public interface Config {
      * 删除店铺商品分类:
      */
     String DELETE_Classify = "slowlife/appshop/delproductclass";
+
+    /**
+        上传商品图片
+     */
+    String Upload_Imgs = "slowlife/appshop/shopuntreatedpicture\n";
 
     String platformException = "slowlife/appshop/shopopinion";
     String getPlatformException = "slowlife/appshop/shopqueryopinion";

@@ -8,7 +8,6 @@ import android.view.View;
 import android.widget.EditText;
 import android.widget.Toast;
 
-
 import com.example.xxxloli.zshmerchant.Activity.AccountManageActivity;
 import com.example.xxxloli.zshmerchant.Activity.ResetPasswordActivity;
 import com.example.xxxloli.zshmerchant.MainActivity;
@@ -58,6 +57,7 @@ public class FragLoginSms extends BaseFragment {
     private DBManagerUser dbManagerUser;
     private DBManagerAccount dbManagerAccount;
     private DBManagerShop dbManagerShop;
+    private static final String TAG = FragLoginSms.class.getSimpleName();
 
     public FragLoginSms() {
         super();
@@ -228,6 +228,40 @@ public class FragLoginSms extends BaseFragment {
                         account.setWritId((long) 2333);
                         dbManagerAccount.insertAccount(account);
                     }
+//                    //OpenIM 开始登录
+//                    String userid = shop.getShopkeeperId();
+//                    String password = shop.getShopkeeperId();
+//                    //初始化imkit
+//                    LoginSampleHelper.getInstance().initIMKit(userid, "24663803");
+//                    //通知栏相关的初始化
+//                    NotificationInitSampleHelper.init();
+//                    LoginSampleHelper loginHelper = LoginSampleHelper.getInstance();
+//                    loginHelper.login_Sample(userid, password, "24663803", new IWxCallback() {
+//
+//                        @Override
+//                        public void onSuccess(Object... arg0) {
+//                            ToastUtil.showToast(getActivity(),"openIM login success");
+////						YWIMKit mKit = LoginSampleHelper.getInstance().getIMKit();
+////						EServiceContact contact = new EServiceContact("qn店铺测试账号001:找鱼");
+////						LoginActivity.this.startActivity(mKit.getChattingActivityIntent(contact));
+////                        mockConversationForDemo();
+//                        }
+//
+//                        @Override
+//                        public void onProgress(int arg0) {
+//
+//                        }
+//
+//                        @Override
+//                        public void onError(int errorCode, String errorMessage) {
+//                            if (errorCode == YWLoginCode.LOGON_FAIL_INVALIDUSER) { //若用户不存在，则提示使用游客方式登陆
+//                                IMNotificationUtils.getInstance().showToast(getContext(), "游客");
+//                            } else {
+//                                YWLog.w(TAG, "登录失败，错误码：" + errorCode + "  错误信息：" + errorMessage);
+//                                IMNotificationUtils.getInstance().showToast(getContext(), errorMessage);
+//                            }
+//                        }
+//                    });
                     startActivity(new Intent(getContext(), MainActivity.class));
                     if (getActivity() != null) getActivity().finish();
                 }

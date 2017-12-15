@@ -89,7 +89,7 @@ public class OrderHandleFragment extends BaseFragment {
         list.add("配送到家");
         list.add("预约到店");
         list.add("到店消费");
-//        list.add("未付款");
+        list.add("未付款");
 
         pager.setAdapter(new OrdersHandleFragmentAdapter(getActivity().getSupportFragmentManager(), list));
         tabs.setViewPager(pager);

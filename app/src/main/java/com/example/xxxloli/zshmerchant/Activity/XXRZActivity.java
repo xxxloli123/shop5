@@ -281,61 +281,12 @@ public class XXRZActivity extends BaseActivity {
                         return;
                     }
                     startImageZoom(uri);
-//                    if (data == null) {
-//                        Toast.makeText(this, "图片文件读取出错", Toast.LENGTH_LONG).show();
-//                        return;
-//                    } else {
-////                    //用户从图库选择图片后会返回所选图片的Uri
-//                        Uri uri;
-////                    //获取到用户所选图片的Uri
-//                        uri = data.getData();
-////                    //返回的Uri为content类型的Uri,不能进行复制等操作,需要转换为文件Uri
-//                        uri = convertUri(uri);
-//                        startImageZoom(uri);
-//                    }
                     break;
                 case 1:
-//                     else {
-//                        Bundle extras = data.getExtras();
-//                        if (extras != null) {
-//                            //获得拍的照片
-//                            Bitmap bm = extras.getParcelable("data");
-//                            //将Bitmap转化为uri
-//                            Uri uri1 = saveBitmap(bm, "temp");
-//                            //启动图像裁剪
-//                            startImageZoom(uri1);
-//                            getPhoto.setImageBitmap(bm);
-//                        }
-//                    }
-                    //用户点击了取消
-//                    if (data == null) {
-//                        Toast.makeText(this, "图片文件读取出错", Toast.LENGTH_LONG).show();
-//                        return;
-//                    }
                     startImageZoom(FileProvider.getUriForFile(this, BuildConfig.APPLICATION_ID  +
                             ".provider", camera));
                     break;
                 case CROP_CODE:
-////                    if (data == null) {
-////                        return;
-////                    } else {
-//                    if (!clippingLater.exists()) {
-//                        Toast.makeText(this, "图片文件剪裁出错", Toast.LENGTH_LONG).show();
-//                        return;
-//                    }
-////                        Toast.makeText(this, "拍照后图片文件读取出错", Toast.LENGTH_LONG).show();
-////                        Bundle extras = data.getExtras();
-////                        if (extras != null) {
-//                            //获取到裁剪后的图像
-////                        Bitmap bm = extras.getParcelable("data");
-//                            String fils = clippingBefore.getAbsolutePath();
-//                            Bitmap bitmap1 = BitmapFactory.decodeFile(fils);
-//                            getPhoto.setImageBitmap(bitmap1);
-//                            compressPicture(fils, clippingLater);
-//                            hint.setVisibility(View.GONE);
-////                            submitImg();
-////                        }
-////                    }
                     if (data != null) {
                         try {
                             String fils = clipping.getAbsolutePath();

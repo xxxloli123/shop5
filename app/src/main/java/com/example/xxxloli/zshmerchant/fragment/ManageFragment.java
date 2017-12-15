@@ -27,6 +27,7 @@ import com.example.xxxloli.zshmerchant.Activity.PlatformActivitsActivity;
 import com.example.xxxloli.zshmerchant.Activity.SearchBluetoothActivity;
 import com.example.xxxloli.zshmerchant.Activity.SettingActivity;
 import com.example.xxxloli.zshmerchant.Activity.ShopInfoActivity;
+import com.example.xxxloli.zshmerchant.Activity.UploadIMGActivity;
 import com.example.xxxloli.zshmerchant.R;
 import com.example.xxxloli.zshmerchant.base.AppInfo;
 import com.example.xxxloli.zshmerchant.greendao.DBManagerShop;
@@ -97,7 +98,6 @@ public class ManageFragment extends BaseFragment {
     RelativeLayout nameRL;
     @BindView(R.id.linear_personnelManage)
     LinearLayout linearPersonnelManage;
-    Unbinder unbinder1;
 
     private DBManagerShop dbManagerShop;
     private Shop shop;
@@ -145,7 +145,7 @@ public class ManageFragment extends BaseFragment {
 
     @OnClick({R.id.image_tx, R.id.shop_name, R.id.open_shop_text, R.id.printer_text, R.id.commodityLL,
             R.id.evaluateLL, R.id.billLL, R.id.analyzeLL, R.id.shop_infoLL, R.id.distributionLL, R.id.self_buildLL,
-            R.id.platformLL, R.id.linear_personnelManage, R.id.settingLL, R.id.message_number})
+            R.id.platformLL, R.id.linear_personnelManage, R.id.settingLL, R.id.message_number,R.id.upload_ll})
     public void onViewClicked(View view) {
         switch (view.getId()) {
             case R.id.image_tx:
@@ -172,7 +172,7 @@ public class ManageFragment extends BaseFragment {
                 }
                 break;
             case R.id.printer_text:
-                    startActivity(new Intent(getActivity(), SearchBluetoothActivity.class));
+                startActivity(new Intent(getActivity(), SearchBluetoothActivity.class));
                 break;
             case R.id.commodityLL:
                 startActivity(new Intent(getActivity(), CommodityActivity.class));
@@ -206,6 +206,9 @@ public class ManageFragment extends BaseFragment {
                 break;
             case R.id.linear_personnelManage:
                 startActivity(new Intent(getActivity(), PersonnelManageActivity.class));
+                break;
+            case R.id.upload_ll:
+                startActivity(new Intent(getActivity(), UploadIMGActivity.class));
                 break;
         }
     }
@@ -253,14 +256,15 @@ public class ManageFragment extends BaseFragment {
     }
 
     @Override
-    public void onClick(View v) {}
+    public void onClick(View v) {
+    }
 
     @Override
     public void onSuccess(Object tag, JSONObject json) throws JSONException {
         switch (tag.toString()) {
             case Config.GET_Data:
                 todayOrder = rootView.findViewById(R.id.today_order);
-                todayMoney=rootView.findViewById(R.id.today_money);
+                todayMoney = rootView.findViewById(R.id.today_money);
                 if (json.getInt("statusCode") == 200) {
                     todayOrder.setText(json.getString("ordercount"));
                     if (json.getString("actualcost").equals("null"))
@@ -271,7 +275,7 @@ public class ManageFragment extends BaseFragment {
             case Config.EDIT_SHOP_INFO:
                 Toast.makeText(getActivity(), json.getString("message"), Toast.LENGTH_SHORT).show();
                 if (json.getInt("statusCode") == 200) {
-                    if (shop.getBusiness() != null &&shop.getBusiness().equals("yes")) {
+                    if (shop.getBusiness() != null && shop.getBusiness().equals("yes")) {
                         openShopText.setText("已关店");
                         openShopText.setTextColor(getActivity().getResources().getColor(R.color.gray_2));
                         shopImg.setImageResource(R.drawable.shop);
@@ -289,22 +293,9 @@ public class ManageFragment extends BaseFragment {
         }
     }
 
-    @Override
-    public View onCreateView(LayoutInflater inflater, ViewGroup container, Bundle savedInstanceState) {
-        // TODO: inflate a fragment view
-        View rootView = super.onCreateView(inflater, container, savedInstanceState);
-        unbinder1 = ButterKnife.bind(this, rootView);
-        return rootView;
-    }
-
-    @Override
-    public void onDestroyView() {
-        super.onDestroyView();
-        unbinder1.unbind();
-    }
-
     @OnClick(R.id.name_RL)
     public void onViewClicked() {
         startActivity(new Intent(getActivity(), ShopInfoActivity.class));
     }
+
 }

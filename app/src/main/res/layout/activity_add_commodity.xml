@@ -33,6 +33,20 @@
             android:textSize="16sp" />
 
         <RelativeLayout
+            android:layout_toLeftOf="@+id/scan_rl"
+            android:id="@+id/inquireRL"
+            android:layout_width="40dp"
+            android:layout_height="match_parent"
+            android:paddingLeft="16dp">
+
+            <ImageView
+                android:src="@drawable/inquire"
+                android:layout_width="wrap_content"
+                android:layout_height="18dp"
+                android:layout_centerVertical="true" />
+        </RelativeLayout>
+
+        <RelativeLayout
             android:layout_alignParentRight="true"
             android:id="@+id/scan_rl"
             android:layout_width="50dp"
@@ -434,7 +448,7 @@
                     android:layout_centerVertical="true"
                     android:layout_marginRight="2dp"
                     android:layout_toLeftOf="@+id/i12"
-                    android:text=""
+                    android:text="1"
                     android:textColor="@color/text_color" />
 
                 <ImageView

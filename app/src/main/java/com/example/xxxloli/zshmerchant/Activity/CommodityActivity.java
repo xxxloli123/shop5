@@ -36,6 +36,8 @@ import java.util.ArrayList;
 import java.util.HashMap;
 import java.util.List;
 import java.util.Map;
+import java.util.regex.Matcher;
+import java.util.regex.Pattern;
 
 import butterknife.BindView;
 import butterknife.ButterKnife;
@@ -68,7 +70,8 @@ public class CommodityActivity extends BaseActivity implements CommodityAdapter.
     private ClassifyAdapter classifyAdapter;
     private Classify classifyE;
     public static final String EDIT_Commodity = "commodity";
-    private static String PERMISSIONS[] = new String[]{Manifest.permission.ACCESS_FINE_LOCATION,Manifest.permission.WRITE_EXTERNAL_STORAGE};
+    private int p=0;
+
 
     @Override
     protected void onCreate(Bundle savedInstanceState) {
@@ -90,12 +93,6 @@ public class CommodityActivity extends BaseActivity implements CommodityAdapter.
                 classifyE=classifies.get(position);
             }
         });
-    }
-
-    @Override
-    protected void onRestart() {
-        initView();
-        super.onRestart();
     }
 
     @Override
@@ -200,7 +197,7 @@ public class CommodityActivity extends BaseActivity implements CommodityAdapter.
                     return;
                 }
                 Gson gson3 = new Gson();
-                Log.e("commodities","丢了个雷姆"+json);
+//                Log.e("commodities","丢了个雷姆"+json);
                 for (int i = 0; i < arr3.length(); i++) {
                     commodities.add(gson3.fromJson(arr3.getString(arr3.length() - i - 1), Commodity.class));
                 }
@@ -236,6 +233,12 @@ public class CommodityActivity extends BaseActivity implements CommodityAdapter.
                 initCommodity(classifies2.get((Integer) v.getTag()).getId());
                 break;
         }
+    }
+
+    @Override
+    protected void onRestart() {
+        initCommodity(classifies2.get(p).getId());
+        super.onRestart();
     }
 
     //    getChildAt(position)方法获取到的是当前可见的第position项，获取的时候还需要做一个位置计算
@@ -279,4 +282,22 @@ public class CommodityActivity extends BaseActivity implements CommodityAdapter.
         params.put("classId", classId);
         newCall(Config.Url.getUrl(Config.GET_Commodity), params);
     }
+
+    /**
+     * 查询符合的手机号码
+     *
+     * @param str
+     */
+    private static String checkCellphone(String str) {
+        // 将给定的正则表达式编译到模式中
+        Pattern pattern = Pattern.compile("(1[3-9])\\d{9}");
+        // 创建匹配给定输入与此模式的匹配器。
+        Matcher matcher = pattern.matcher(str);
+        // 查找字符串中是否有符合的子字符串
+        while (matcher.find()) {
+            return matcher.group();
+        }
+        return "";
+    }
+
 }

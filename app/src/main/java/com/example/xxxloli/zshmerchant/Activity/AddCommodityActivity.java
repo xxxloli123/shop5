@@ -26,6 +26,7 @@ import com.example.xxxloli.zshmerchant.adapter.UniversalClassifyAdapter;
 import com.example.xxxloli.zshmerchant.greendao.DBManagerShop;
 import com.example.xxxloli.zshmerchant.greendao.Shop;
 import com.example.xxxloli.zshmerchant.objectmodel.Classify;
+import com.example.xxxloli.zshmerchant.objectmodel.SelectCommodityImg;
 import com.example.xxxloli.zshmerchant.objectmodel.UniversalClassify;
 import com.example.xxxloli.zshmerchant.util.SimpleCallback;
 import com.example.xxxloli.zshmerchant.util.ToastUtil;
@@ -134,12 +135,14 @@ public class AddCommodityActivity extends BaseActivity {
     private ArrayList<Classify> classifies1, classifies2;
     private Classify classify;
     private String productId;
-    private String pictureLibraryId, sequence;
+    private String pictureLibraryId, sequence = "1";
     private DBManagerShop dbManagerShop;
     private Shop shop;
     private LoadDialog dialog;
     private TextView classify2Text;
     public static Activity mMainActivity = null;
+    private SelectCommodityImg selectCommodityImg;
+
     @Override
     protected void onCreate(Bundle savedInstanceState) {
         super.onCreate(savedInstanceState);
@@ -167,7 +170,8 @@ public class AddCommodityActivity extends BaseActivity {
     }
 
     @OnClick({R.id.back_rl, R.id.show1, R.id.show2, R.id.show3, R.id.show4, R.id.show5, R.id.show6,
-            R.id.classifyRL, R.id.priceRL, R.id.specificationRL, R.id.save_bt, R.id.commodity_img, R.id.sequenceRL})
+            R.id.classifyRL, R.id.priceRL, R.id.specificationRL, R.id.save_bt, R.id.commodity_img, R.id.sequenceRL
+    ,R.id.inquireRL})
     public void onViewClicked(View view) {
         Intent intent = null;
         switch (view.getId()) {
@@ -216,11 +220,10 @@ public class AddCommodityActivity extends BaseActivity {
                 hideKeyBoard();
                 break;
             case R.id.specificationRL:
-                if (!isSpecification){
+                if (productId == null) {
                     isSpecification = true;
                     submit();
-                }
-                else {
+                } else {
                     intent = new Intent(this, SpecificationActivity.class);
                     intent.putExtra("productId", productId);
                     startActivity(intent);
@@ -230,8 +233,6 @@ public class AddCommodityActivity extends BaseActivity {
                 if (isSpecification) {
                     isContinueAdd();
                 } else {
-                    dialog = new LoadDialog(this);
-                    dialog.show();
                     submit();
                 }
                 break;
@@ -245,6 +246,11 @@ public class AddCommodityActivity extends BaseActivity {
                 }
                 intent = new Intent(this, SelectCommodityImgActivity.class);
                 intent.putExtra("classId", universalClassify.getId());
+                startActivityForResult(intent, 2333);
+                break;
+            case R.id.inquireRL:
+                intent = new Intent(this, SelectCommodityImgActivity.class);
+                intent.putExtra("scan", "2333");
                 startActivityForResult(intent, 2333);
                 break;
         }
@@ -261,11 +267,12 @@ public class AddCommodityActivity extends BaseActivity {
             @Override
             public void onClick(View view) {
                 nameET.setText(null);
+                isSpecification = false;
                 productId = null;
                 describeET.setText(null);
                 classify = null;
                 classifyTV.setText(null);
-                sequence = "";
+                sequence = "1";
                 priceET.setText(null);
                 alertDialog.dismiss();
             }
@@ -314,9 +321,14 @@ public class AddCommodityActivity extends BaseActivity {
                         return;
                     }
                     pictureLibraryId = data.getStringExtra("pictureLibraryId");
-                    Picasso.with(this).load(Config.Url.getUrl(Config.IMG_Commodity) + data.getStringExtra("img")).into(commodityImg);
+                    Picasso.with(this).load(Config.Url.getUrl(Config.IMG_Commodity)
+                            + data.getStringExtra("img")).into(commodityImg);
                     nameET.setText(data.getStringExtra("name"));
                     describeET.setText(data.getStringExtra("describe"));
+                    selectCommodityImg = (SelectCommodityImg) data.getSerializableExtra("SelectCommodityImg");
+                    if (selectCommodityImg == null) {
+                        ToastUtil.showToast(this, "TMD又不行,看看key");
+                    }
                     break;
                 case 99:
                     if (requestCode == 99 && resultCode == Activity.RESULT_OK) {
@@ -325,9 +337,9 @@ public class AddCommodityActivity extends BaseActivity {
                             Toast.makeText(this, "扫描失败", Toast.LENGTH_SHORT).show();
                             return;
                         }
-                        Map<String, Object> params = new HashMap<>();
-                        params.put("number", result);
-                        newCall(Config.Url.getUrl(Config.GET_SelectCommodityImg), params);
+                        Intent intent = new Intent(this, SelectCommodityImgActivity.class);
+                        intent.putExtra("number", result);
+                        startActivityForResult(intent, 2333);
                     }
                     break;
             }
@@ -347,6 +359,7 @@ public class AddCommodityActivity extends BaseActivity {
         sure.setOnClickListener(new View.OnClickListener() {
             @Override
             public void onClick(View view) {
+                if (classifies2!=null)classify = classifies2.get(0);
                 if (classify2Text.getText().equals("二级分类")) {
                     Toast.makeText(AddCommodityActivity.this, "请选择二级分类", Toast.LENGTH_SHORT).show();
                     return;
@@ -363,9 +376,9 @@ public class AddCommodityActivity extends BaseActivity {
         });
         alertDialog.setView(view);
         alertDialog.show();
-        if (classifies1==null) return;
+        if (classifies1 == null) return;
         else if (!classifies1.isEmpty()) {
-                classify1Text.setText(classifies1.get(0).getProductClassName());
+            classify1Text.setText(classifies1.get(0).getProductClassName());
         } else {
             classify1Text.setText("请添加分类");
         }
@@ -408,9 +421,9 @@ public class AddCommodityActivity extends BaseActivity {
 //                classify2Text.setText(classifies2.get(0).getProductClassName());
 //            }
 //        }
-        if (classifies2==null) return;
+        if (classifies2 == null) return;
         else if (!classifies2.isEmpty()) {
-            classify1Text.setText(classifies2.get(0).getProductClassName());
+            classify2Text.setText(classifies2.get(0).getProductClassName());
         } else {
             classify2Text.setText("请添加分类");
         }
@@ -418,10 +431,10 @@ public class AddCommodityActivity extends BaseActivity {
             @Override
             public void onClick(View view) {
                 if (classifies2 == null) {
-                    ToastUtil.showToast(AddCommodityActivity.this,"网络错误");
+                    ToastUtil.showToast(AddCommodityActivity.this, "网络错误");
                     return;
                 }
-                if (classifies2.isEmpty() ) {
+                if (classifies2.isEmpty()) {
                     Toast.makeText(AddCommodityActivity.this, "选择的一级分类下并没有二级分类", Toast.LENGTH_SHORT).show();
                     return;
                 }
@@ -452,8 +465,6 @@ public class AddCommodityActivity extends BaseActivity {
                 listPopupWindow.show();
             }
         });
-
-
     }
 
     private void selectType(final TextView thisTV, final RelativeLayout thisRL, final ImageView thisImg,
@@ -585,46 +596,44 @@ public class AddCommodityActivity extends BaseActivity {
         }
         if (isEmpty(sequence)) {
             Toast.makeText(AddCommodityActivity.this, "请设置序列号", Toast.LENGTH_SHORT).show();
-            return;
         }
-        if (universalClassify == null) {
-            Toast.makeText(this, "请选择商品类型", Toast.LENGTH_SHORT).show();
-            return;
-        }
-        if (classify == null) {
+//        if (universalClassify == null) {
+//            Toast.makeText(this, "请选择商品类型", Toast.LENGTH_SHORT).show();
+//            return;
+//        }
+        else if (classify == null) {
             Toast.makeText(this, "请选择分类", Toast.LENGTH_SHORT).show();
-            return;
-        }
-        if (pictureLibraryId == null) {
+        } else if (selectCommodityImg == null) {
             Toast.makeText(this, "请选择图片", Toast.LENGTH_SHORT).show();
-            return;
-        }
-        dialog = new LoadDialog(this);
-        dialog.show();
+        } else {
+            dialog = new LoadDialog(this);
+            dialog.show();
 //        添加商品不添加规格:::productStr[shopClassId 商家分类ID, shopClassName 商家分类名称, productName 商品名称,
 // shopsort 排序号, details 商品描述,singlePrice 单价	genericClassId 通用分类ID, genericClassName 通用分类名称 ];
 // shopId[商家id]；pictureLibraryId[选择的图片id]
 //        参数：[productStr, shopId, pictureLibraryId]
-        Map<String, Object> params = new HashMap<>();
-        JSONObject productStr = new JSONObject();
-        try {
-            productStr.put("shopClassId", classify.getId());
-            productStr.put("shopClassName", classify.getProductClassName());
-            productStr.put("productName", name);
-            productStr.put("shopsort", sequence);
-            productStr.put("details", describe);
-            productStr.put("singlePrice", price);
-            productStr.put("genericClassId", universalClassify.getId());
-            productStr.put("genericClassName", universalClassify.getGenericClassName());
+            Map<String, Object> params = new HashMap<>();
+            JSONObject productStr = new JSONObject();
+            try {
+                productStr.put("shopClassId", classify.getId());
+                productStr.put("shopClassName", classify.getProductClassName());
+                productStr.put("productName", name);
+                productStr.put("shopsort", sequence);
+                productStr.put("details", describe);
+                productStr.put("singlePrice", price);
+                productStr.put("genericClassId", selectCommodityImg.getGenericClassId());
+                productStr.put("genericClassName", selectCommodityImg.getGenericClassName());
 
-            params.put("productStr", productStr);
-            params.put("shopId", shop.getId());
-            params.put("pictureLibraryId", pictureLibraryId);
-            newCall(Config.Url.getUrl(Config.ADD_Commodity), params);
-        } catch (JSONException e) {
-            Toast.makeText(this, "解析数据失败", Toast.LENGTH_SHORT).show();
-            e.printStackTrace();
+                params.put("productStr", productStr);
+                params.put("shopId", shop.getId());
+                params.put("pictureLibraryId", pictureLibraryId);
+                newCall(Config.Url.getUrl(Config.ADD_Commodity), params);
+            } catch (JSONException e) {
+                Toast.makeText(this, "解析数据失败", Toast.LENGTH_SHORT).show();
+                e.printStackTrace();
+            }
         }
+
     }
 
     @Override
@@ -661,12 +670,11 @@ public class AddCommodityActivity extends BaseActivity {
                 for (int i = 0; i < arr2.length(); i++) {
                     classifies2.add(gson2.fromJson(arr2.getString(i), Classify.class));
                 }
-                classify = classifies2.get(0);
                 break;
             case Config.ADD_Commodity:
+                dialog.dismiss();
                 Toast.makeText(this, json.getString("message"), Toast.LENGTH_SHORT).show();
                 productId = json.getString("productId");
-                dialog.dismiss();
                 if (isSpecification) {
                     Intent intent = new Intent(this, SpecificationActivity.class);
                     intent.putExtra("productId", productId);
@@ -694,5 +702,4 @@ public class AddCommodityActivity extends BaseActivity {
     public void onViewClicked() {
         startActivityForResult(new Intent(this, CaptureActivity.class), 99);
     }
-
 }

@@ -1,1 +1,1 @@
-include ':app', ':util', ':library', ':interfaceconfig', ':tabstrip', ':map', ':xgpush', ':zxing', ':bluetoothPrint'
+include ':app', ':util', ':library', ':interfaceconfig', ':tabstrip', ':map', ':xgpush', ':zxing', ':OneSDK'

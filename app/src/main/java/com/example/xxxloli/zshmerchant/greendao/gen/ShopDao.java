@@ -63,6 +63,7 @@ public class ShopDao extends AbstractDao<Shop, Long> {
         public final static Property RegisterDate = new Property(36, String.class, "registerDate", false, "REGISTER_DATE");
         public final static Property ShopUserDistance = new Property(37, String.class, "shopUserDistance", false, "SHOP_USER_DISTANCE");
         public final static Property ShopNotices = new Property(38, String.class, "shopNotices", false, "SHOP_NOTICES");
+        public final static Property ShopTransportArea = new Property(39, String.class, "shopTransportArea", false, "SHOP_TRANSPORT_AREA");
     }
 
 
@@ -116,7 +117,8 @@ public class ShopDao extends AbstractDao<Shop, Long> {
                 "\"LAT\" REAL NOT NULL ," + // 35: lat
                 "\"REGISTER_DATE\" TEXT," + // 36: registerDate
                 "\"SHOP_USER_DISTANCE\" TEXT," + // 37: shopUserDistance
-                "\"SHOP_NOTICES\" TEXT);"); // 38: shopNotices
+                "\"SHOP_NOTICES\" TEXT," + // 38: shopNotices
+                "\"SHOP_TRANSPORT_AREA\" TEXT);"); // 39: shopTransportArea
     }
 
     /** Drops the underlying database table. */
@@ -315,6 +317,11 @@ public class ShopDao extends AbstractDao<Shop, Long> {
         if (shopNotices != null) {
             stmt.bindString(39, shopNotices);
         }
+ 
+        String shopTransportArea = entity.getShopTransportArea();
+        if (shopTransportArea != null) {
+            stmt.bindString(40, shopTransportArea);
+        }
     }
 
     @Override
@@ -507,6 +514,11 @@ public class ShopDao extends AbstractDao<Shop, Long> {
         if (shopNotices != null) {
             stmt.bindString(39, shopNotices);
         }
+ 
+        String shopTransportArea = entity.getShopTransportArea();
+        if (shopTransportArea != null) {
+            stmt.bindString(40, shopTransportArea);
+        }
     }
 
     @Override
@@ -555,7 +567,8 @@ public class ShopDao extends AbstractDao<Shop, Long> {
             cursor.getDouble(offset + 35), // lat
             cursor.isNull(offset + 36) ? null : cursor.getString(offset + 36), // registerDate
             cursor.isNull(offset + 37) ? null : cursor.getString(offset + 37), // shopUserDistance
-            cursor.isNull(offset + 38) ? null : cursor.getString(offset + 38) // shopNotices
+            cursor.isNull(offset + 38) ? null : cursor.getString(offset + 38), // shopNotices
+            cursor.isNull(offset + 39) ? null : cursor.getString(offset + 39) // shopTransportArea
         );
         return entity;
     }
@@ -601,6 +614,7 @@ public class ShopDao extends AbstractDao<Shop, Long> {
         entity.setRegisterDate(cursor.isNull(offset + 36) ? null : cursor.getString(offset + 36));
         entity.setShopUserDistance(cursor.isNull(offset + 37) ? null : cursor.getString(offset + 37));
         entity.setShopNotices(cursor.isNull(offset + 38) ? null : cursor.getString(offset + 38));
+        entity.setShopTransportArea(cursor.isNull(offset + 39) ? null : cursor.getString(offset + 39));
      }
     
     @Override

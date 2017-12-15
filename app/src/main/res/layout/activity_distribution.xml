@@ -157,4 +157,33 @@
 
     </RelativeLayout>
 
+    <RelativeLayout
+        android:background="@color/white1"
+        android:layout_width="match_parent"
+        android:layout_height="40dp"
+        android:drawableBottom="@drawable/line"
+        android:orientation="horizontal">
+
+        <TextView
+            android:id="@+id/community_tv"
+            android:paddingLeft="10dp"
+            android:layout_width="match_parent"
+            android:layout_height="match_parent"
+            android:gravity="center_vertical"
+            android:text="配送小区"
+            android:textColor="@color/text_color"
+            android:textSize="14sp" />
+
+        <ImageView
+            android:layout_marginRight="10dp"
+            android:layout_height="10dp"
+            android:layout_width="6dp"
+            android:layout_alignParentRight="true"
+            android:layout_centerVertical="true"
+            android:layout_marginLeft="6dp"
+            android:background="@drawable/right" />
+
+    </RelativeLayout>
+
+
 </LinearLayout>

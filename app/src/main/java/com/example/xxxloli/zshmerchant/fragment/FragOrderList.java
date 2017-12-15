@@ -236,7 +236,7 @@ public class FragOrderList extends BaseFragment implements OrderListAdapter1.Cal
                 // UnPayed(待付款),ShopConsumption(到店消费单)
                 if (orders.get(0).getLineOrder().equals("NormalOrder")&&lineOrderType.equals("All"))
                     receive(orders.get((Integer) v.getTag()));
-                else if (orders.get(0).getLineOrder().equals("UnPayed")){
+                else if (orders.get(0).getStatus().equals("UnPayed")){
                     editPrice(orders.get((Integer) v.getTag()));
                 }else if (lineOrderType.equals("NormalOrder")&&orders.get(0).getLineOrder().equals("NormalOrder")){
                     PrintOrder(orders.get((Integer) v.getTag()));

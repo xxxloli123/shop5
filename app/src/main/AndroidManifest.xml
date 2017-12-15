@@ -35,6 +35,7 @@
     <uses-permission android:name="andorid.permission.MONUN_UNMOUNT_FILESYSTEMS" />
 
     <application
+        android:name="com.example.xxxloli.zshmerchant.app.MyApplication"
         android:allowBackup="true"
         android:icon="@mipmap/ic_logo"
         android:label="@string/app_name"
@@ -57,17 +58,16 @@
             android:name=".Activity.FirstActivity"
             android:launchMode="singleTop"
             android:theme="@style/AppTheme.NoActionBar"
-            android:windowSoftInputMode="adjustPan" >
+            android:windowSoftInputMode="adjustPan">
             <intent-filter>
                 <action android:name="android.intent.action.MAIN" />
 
                 <category android:name="android.intent.category.LAUNCHER" />
             </intent-filter>
         </activity>
-
         <activity
             android:name=".Activity.LoginActivity"
-            android:windowSoftInputMode="adjustPan"></activity>
+            android:windowSoftInputMode="adjustPan" />
         <activity
             android:name=".Activity.ResetPasswordActivity"
             android:theme="@style/AppTheme.NoActionBar"
@@ -76,32 +76,23 @@
             android:name=".MainActivity"
             android:launchMode="singleTop"
             android:theme="@style/AppTheme.NoActionBar"
-            android:windowSoftInputMode="adjustPan">
-
-        </activity>
+            android:windowSoftInputMode="adjustPan" />
         <activity android:name=".Activity.OpenShopActivity" />
-
-        <activity android:name=".Activity.XXRZActivity" >
-        </activity>
-
+        <activity android:name=".Activity.XXRZActivity" />
         <activity android:name=".Activity.IdentityAuthenticationActivity" />
         <activity android:name=".Activity.QualificationAuthenticationActivity" />
         <activity android:name=".Activity.ShopInfoActivity" />
         <activity android:name=".Activity.OrderingSystemActivity" />
         <activity android:name=".Activity.BusinessTimeActivity" />
         <activity android:name=".Activity.ShopQRcodeActivity" />
-
-        <activity android:name=".Activity.CommodityActivity" >
-
-        </activity>
-
+        <activity android:name=".Activity.CommodityActivity" />
         <activity android:name=".Activity.AddCommodityActivity" />
         <activity android:name=".Activity.EditCommodityActivity" />
         <activity android:name=".Activity.EditDishesActivity" />
-        <activity android:name=".Activity.NewMessageActivity"></activity>
+        <activity android:name=".Activity.NewMessageActivity" />
         <activity android:name=".Activity.MessageContentActivity" />
-        <activity android:name=".Activity.OrderingEvaluateActivity"></activity>
-        <activity android:name=".Activity.BusinessAnalyzeActivity"></activity>
+        <activity android:name=".Activity.OrderingEvaluateActivity" />
+        <activity android:name=".Activity.BusinessAnalyzeActivity" />
         <activity android:name=".Activity.DistributionActivity" />
         <activity android:name=".Activity.DistributionServiceActivity" />
         <activity android:name=".Activity.SettingActivity" />
@@ -129,13 +120,13 @@
             android:configChanges="orientation|keyboardHidden|navigation|screenSize"
             android:exported="false"
             android:screenOrientation="behind"
-            android:windowSoftInputMode="adjustResize|stateHidden"></activity>
+            android:windowSoftInputMode="adjustResize|stateHidden" />
         <activity
             android:name="com.alipay.sdk.app.H5AuthActivity"
             android:configChanges="orientation|keyboardHidden|navigation"
             android:exported="false"
             android:screenOrientation="behind"
-            android:windowSoftInputMode="adjustResize|stateHidden"></activity>
+            android:windowSoftInputMode="adjustResize|stateHidden" />
         <activity android:name=".Activity.DomeActivity" />
         <activity android:name=".Activity.CommodityClassify_1_Activity" />
         <activity android:name=".Activity.CommodityClassify_2_Activity" />
@@ -149,12 +140,18 @@
         <activity android:name=".Activity.MZActivity" />
         <activity android:name=".Activity.PlatformActivitsActivity" />
         <activity android:name=".Activity.AddSpecialOfferCommodityActivity" />
-        <activity android:name=".Activity.MyBillActivity"></activity>
-        <activity android:name=".Activity.Main2Activity"></activity>
-        <activity android:name=".Activity.SearchBluetoothActivity"></activity>
-        <activity android:name=".Activity.PersonnelManageActivity"></activity>
-        <activity android:name=".Activity.ExceptionActivity"></activity>
-        <activity android:name=".Activity.FeedbackRecordActivity"></activity>
+        <activity android:name=".Activity.MyBillActivity" />
+        <activity android:name=".Activity.Main2Activity" />
+        <activity android:name=".Activity.SearchBluetoothActivity" />
+        <activity android:name=".Activity.PersonnelManageActivity" />
+        <activity android:name=".Activity.ExceptionActivity" />
+        <activity android:name=".Activity.FeedbackRecordActivity" />
+        <activity
+            android:name=".Activity.ScrollingActivity"
+            android:label="@string/title_activity_scrolling"
+            android:theme="@style/AppTheme.NoActionBar" />
+        <activity android:name=".Activity.UploadIMGActivity" />
+        <activity android:name=".Activity.CommunityActivity"></activity>
     </application>
 
 </manifest>

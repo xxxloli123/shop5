@@ -207,14 +207,14 @@ public class ShopInfoActivity extends BaseActivity {
 //                break;
 //            noUploaded("未上传"), Wait_audit("认证中 "), pass("认证通过"), unPass("认证未通过");
             case R.id.qualification:
-                if (user.getShopBusinessConfirm().equals("unPass"))
+//                if (user.getShopBusinessConfirm().equals("unPass"))
                     startActivity(new Intent(ShopInfoActivity.this, QualificationAuthenticationActivity.class));
-                else Toast.makeText(this, "认证未通过才会再次认证", Toast.LENGTH_SHORT).show();
+//                else Toast.makeText(this, "认证未通过才会再次认证", Toast.LENGTH_SHORT).show();
                 break;
             case R.id.identity:
-                if (user.getIdConfirm().equals("unPass"))
+//                if (user.getIdConfirm().equals("unPass"))
                     startActivity(new Intent(ShopInfoActivity.this, IdentityAuthenticationActivity.class));
-                else Toast.makeText(this, "认证未通过才会再次认证", Toast.LENGTH_SHORT).show();
+//                else Toast.makeText(this, "认证未通过才会再次认证", Toast.LENGTH_SHORT).show();
                 break;
         }
     }
